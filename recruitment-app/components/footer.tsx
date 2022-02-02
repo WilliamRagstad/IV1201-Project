@@ -5,7 +5,7 @@ export default function Footer() {
   const version = useDeno(() => Deno.version.deno)
 
   return (
-    <div className="header">
+    <div className="footer">
       <head>
         <link rel="stylesheet" href="../style/index.css" />
       </head>
