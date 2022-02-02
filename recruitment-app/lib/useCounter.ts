@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import "./styles/counter.css"
 
 export default function useCounter(): [number, boolean, () => void, () => void] {
   const [count, setCount] = useState(0)
