@@ -23,3 +23,7 @@ aleph dev recruitment-app
 ### Further Development
 
 Read more about the development process in the [`DEVELOPMENT.md`](DEVELOPMENT.md) file.
+
+### Testing
+
+It's important to test code, read more about how to write unit tests in the [`TEST.md`](TEST.md) file.
