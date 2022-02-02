@@ -1,5 +1,6 @@
 import { useDeno } from 'aleph/react'
 import React from 'react'
+import Logo from '~/components/logo.tsx'
 
 export default function Header() {
   const version = useDeno(() => Deno.version.deno)
@@ -9,6 +10,7 @@ export default function Header() {
       <head>
         <link rel="stylesheet" href="../style/index.css" />
       </head>
+      <p className="logo"><Logo /></p>
       <p className="nav">
         <a href="/">Home</a>
         <span></span>

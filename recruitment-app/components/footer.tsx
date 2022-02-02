@@ -9,6 +9,7 @@ export default function Footer() {
       <head>
         <link rel="stylesheet" href="../style/index.css" />
       </head>
+  
       <p className="links">
         <a href="https://www.kth.se/" target="_blank">Created at KTH</a>
         <span></span>
