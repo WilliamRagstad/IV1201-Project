@@ -1,6 +1,5 @@
 import { useDeno } from 'aleph/react'
 import React from 'react'
-import Logo from '~/components/logo.tsx'
 import useCounter from '~/lib/useCounter.ts'
 import Header from '~/components/header.tsx'
 import Footer from '~/components/footer.tsx'
@@ -14,32 +13,59 @@ export default function Home() {
     <div className="page">
       <Header></Header>
       <head>
-        <title>Hello World - Aleph.js</title>
+        <title>Amusement Park Recruiting</title>
         <link rel="stylesheet" href="../style/index.css" />
       </head>
-      <p className="logo"><Logo /></p>
-      <h1>Welcome to use <strong>Aleph.js</strong>!</h1>
-      <p className="links">
-        <a href="https://alephjs.org" target="_blank">Website</a>
-        <span></span>
-        <a href="https://alephjs.org/docs/get-started" target="_blank">Get Started</a>
-        <span></span>
-        <a href="https://alephjs.org/docs" target="_blank">Docs</a>
-        <span></span>
-        <a href="https://github.com/alephjs/aleph.js" target="_blank">Github</a>
-      </p>
-      <div className="counter">
-        <span>Counter:</span>
-        {isSyncing && (
-          <em>...</em>
-        )}
-        {!isSyncing && (
-          <strong>{count}</strong>
-        )}
-        <button onClick={decrease}>-</button>
-        <button onClick={increase}>+</button>
-      </div>
-      <p className="copyinfo">Built by Aleph.js in Deno {version}</p>
+      
+      <h1>Welcome to use <strong>Amusement Park Recruiting</strong>!</h1>
+      <h2>Apply for work here</h2>
+      <form action="/" method="post" className="signup_form">
+        <div className="personal_information">
+        First Name:
+          <label className="txt_field">
+            <input type="text" name="firstname"/> 
+          </label>
+            Last Name:
+          <label className="txt_field">
+            <input type="text" name="lastname"/> 
+          </label>
+            Person Number: 
+          <label className="txt_field">
+            <input type="number" name="personnumber"/> 
+          </label>
+          Email:
+          <label className="txt_field">
+            
+            <input type="email" name="email"/> 
+          </label>
+        </div>
+        <div className="expertise">
+          <label className="check_box">
+            <input type="checkbox" name="expertise1"/> 
+            Customer Support
+          </label> 
+          <label className="check_box">
+            <input type="checkbox" name="expertise2"/> 
+            IT
+          </label>
+          <label className="check_box">
+            <input type="checkbox" name="expertise3"/> 
+            Food and Restaurant
+          </label>
+          <label className="check_box">
+            <input type="checkbox" name="expertise4"/> 
+            Administration
+          </label>   
+        </div>
+        <div className="availability_dates">
+          <label>
+            Dates for work:  
+            <input type="date" name="startdate"/> 
+            <input type="date" name="enddate"/> 
+          </label>  
+        </div>    
+        <input type="submit" value="Apply" class="button"/>
+      </form>
       <Footer></Footer>
     </div>
   )
