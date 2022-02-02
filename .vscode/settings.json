@@ -1,0 +1,6 @@
+{
+  "deno.enable": true,
+  "deno.unstable": true,
+  "deno.config": "./recruitment-app/deno.json",
+  "deno.importMap": "./recruitment-app/import_map.json"
+}
