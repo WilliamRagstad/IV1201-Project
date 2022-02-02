@@ -61,3 +61,32 @@ main {
   font-size: 14px;
   color: #999;
 }
+
+.header {
+  padding: 25px;
+}
+
+.nav span,
+.nav a {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.nav span {
+  color: #999;
+}
+
+.nav span::after {
+  content: '·';
+}
+
+.nav a {
+  margin: 0 9px;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.15s ease-in;
+}
+
+.nav a:hover {
+  color: #000;
+}

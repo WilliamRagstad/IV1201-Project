@@ -9,16 +9,13 @@ export default function Header() {
       <head>
         <link rel="stylesheet" href="../style/index.css" />
       </head>
-      <p className="links">
-        <a href="https://alephjs.org" target="_blank">Website</a>
+      <p className="nav">
+        <a href="/">Home</a>
         <span></span>
-        <a href="https://alephjs.org/docs/get-started" target="_blank">Get Started</a>
+        <a href="/job">Apply for Job</a>
         <span></span>
-        <a href="https://alephjs.org/docs" target="_blank">Docs</a>
-        <span></span>
-        <a href="https://github.com/alephjs/aleph.js" target="_blank">Github</a>
+        <a href="/login">Login</a>
       </p>
-     
     </div>
   )
 }
