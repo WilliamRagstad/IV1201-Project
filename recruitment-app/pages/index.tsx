@@ -3,6 +3,7 @@ import React from 'react'
 import Logo from '~/components/logo.tsx'
 import useCounter from '~/lib/useCounter.ts'
 import Header from '~/components/header.tsx'
+import Footer from '~/components/footer.tsx'
 
 export default function Home() {
   const [count, isSyncing, increase, decrease] = useCounter()
@@ -39,6 +40,7 @@ export default function Home() {
         <button onClick={increase}>+</button>
       </div>
       <p className="copyinfo">Built by Aleph.js in Deno {version}</p>
+      <Footer></Footer>
     </div>
   )
 }
