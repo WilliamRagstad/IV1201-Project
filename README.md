@@ -19,3 +19,7 @@ deno run --allow-net recruitment-api\index.ts
 # Start webapp
 aleph dev recruitment-app
 ```
+
+### Further Development
+
+Read more about the development process in the [`DEVELOPMENT.md`](DEVELOPMENT.md) file.
