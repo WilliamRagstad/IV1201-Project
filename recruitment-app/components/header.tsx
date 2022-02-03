@@ -4,11 +4,15 @@ import Logo from '~/components/logo.tsx'
 
 export default function Header() {
   const version = useDeno(() => Deno.version.deno)
-
+  //If logged in, dont show sign up
   return (
     <div className="header">
       <head>
         <link rel="stylesheet" href="../style/index.css" />
+        <head>
+        <title>Amusement Park Recruiting</title>
+        <link rel="stylesheet" href="../style/index.css" />
+      </head>
       </head>
       <p className="logo"><Logo /></p>
       <p className="nav">
@@ -16,7 +20,7 @@ export default function Header() {
         <span></span>
         <a href="/job">Apply for Job</a>
         <span></span>
-        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
       </p>
     </div>
   )
