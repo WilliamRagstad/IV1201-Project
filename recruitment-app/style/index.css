@@ -71,6 +71,17 @@ main {
   color: #999;
 }
 
+@media (max-width: 800px){
+  .page {
+    width: 80%;
+  }
+}
+@media (min-width: 800px){
+  .page {
+    width: 50%;
+  }
+}
+
 .header {
   padding: 25px;
 }
