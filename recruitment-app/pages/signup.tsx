@@ -9,7 +9,7 @@ export default function Signup() {
       <Header></Header>
       <h1>Welcome to use <strong>Amusement Park Recruiting</strong>!</h1>
       <h2>Signup here</h2>
-      <form action="/signedup" method="post" className="signup_form">
+      <form action="http://localhost:8000/newuser" method="post" className="signup_form">
         <div className="personal_information">
             First Name:
           <label className="txt_field">
