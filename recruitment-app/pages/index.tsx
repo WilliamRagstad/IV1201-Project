@@ -4,7 +4,6 @@ import Header from '~/components/header.tsx'
 import Footer from '~/components/footer.tsx'
 
 export default function Home() {
-  const version = useDeno(() => Deno.version.deno)
   //Check if user is logged in and return proper page and if not return log in page
   return (
     <div className="page">

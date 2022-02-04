@@ -3,7 +3,6 @@ import React from 'react'
 import Logo from '~/components/logo.tsx'
 
 export default function Header() {
-  const version = useDeno(() => Deno.version.deno)
   //If logged in, dont show sign up
   return (
     <div className="header">

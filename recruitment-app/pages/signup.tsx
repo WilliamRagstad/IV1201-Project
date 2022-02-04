@@ -4,7 +4,6 @@ import Header from '~/components/header.tsx'
 import Footer from '~/components/footer.tsx'
 
 export default function Signup() {
-  const version = useDeno(() => Deno.version.deno)
   return (
     <div className="page">
       <Header></Header>

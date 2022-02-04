@@ -2,8 +2,6 @@ import { useDeno } from 'aleph/react'
 import React from 'react'
 
 export default function Footer() {
-  const version = useDeno(() => Deno.version.deno)
-
   return (
     <div className="footer">
       <head>
