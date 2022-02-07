@@ -6,7 +6,7 @@
 
 A simple MVC controller utility framework for automatization of Controller to Endpoint connectivity.
 
-To create a new controller, first make a new file `ExampleController.ts` in `recruitment-api/controllers/`.
+To create a new controller, first make a new file `ExampleController.ts` in `recruitment-api/controller/`.
 The code below is a template for the controller structure:
 
 ```ts
@@ -35,7 +35,7 @@ export default class ExampleController implements IController {
 }
 ```
 
-Lastly the controller must be registered to the webserver. do so in `recruitment-api/controllers/index.ts` by adding a new instance to the `ControllerManager.register` list as shown below:
+Lastly the controller must be registered to the webserver. do so in `recruitment-api/controller/index.ts` by adding a new instance to the `ControllerManager.register` list as shown below:
 
 ```ts
 export function registerControllers(router: Router): void {
@@ -46,6 +46,41 @@ export function registerControllers(router: Router): void {
 	]);
 }
 ```
+
+### Add new Models
+
+Add new models to the `recruitment-api/model/` folder, following the same structure as shown in the example below:
+```ts
+/**
+ * User DTO
+ */
+export default class User {
+	email: string;
+	firstName: string;
+	lastName: string;
+	socialSecurityNumber: number;
+	country: string;
+	city?: string;
+	phone?: number;
+	static optionals = ["city", "phone"];
+
+	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, city: string, phone: number, email: string) {
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.socialSecurityNumber = socialSecurityNumber;
+		this.country = country;
+		this.city = city;
+		this.phone = phone;
+	}
+}
+```
+
+It is important to add optional fields to the `statis optionals` array, so that the model can be validated using the `ControllerUtils.classFields` function when parsing the request body using the `ControllerUtils.bodyMappingJSON` function.
+
+
+
+
 
 ## Web App
 
