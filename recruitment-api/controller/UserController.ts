@@ -4,8 +4,8 @@ import IController from "../lib/mvc-manager/IController.ts";
 export default class UserController implements IController {
 	path = "/user";
 
-	post(ctx: Context): void {
-		ctx.response.body = "Hello World from ExampleController/post";
+	post({ response }: Context): void {
+		response.body = "Hello World from ExampleController/post";
 	}
 
 }
