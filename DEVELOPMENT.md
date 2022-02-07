@@ -8,6 +8,7 @@ A simple MVC controller utility framework for automatization of Controller to En
 
 To create a new controller, first make a new file `ExampleController.ts` in `recruitment-api/controllers/`.
 The code below is a template for the controller structure:
+
 ```ts
 import { Context } from "https://deno.land/x/oak/mod.ts";
 import IController from "../lib/mvc-manager/IController.ts";
@@ -34,17 +35,21 @@ export default class ExampleController implements IController {
 }
 ```
 
-Lastly the controller must be registered, do so in `recruitment-api/index.ts` by adding a new instance to the `ControllerManager.register` list.
+Lastly the controller must be registered to the webserver. do so in `recruitment-api/controllers/index.ts` by adding a new instance to the `ControllerManager.register` list as shown below:
+
 ```ts
-ControllerManager.register(router, [
-	new ExampleController(),
-	...
-]);
+export function registerControllers(router: Router): void {
+	ControllerManager.register(router, [
+		new ExampleController(),
+		new UserController(),
+        ...
+	]);
+}
 ```
 
-## Webapp
+## Web App
 
 ### Add new Pages
 Add new pages to the recruitment app by creating new files in the `/pages` directory.
-Aleph will automatically update the webapp to reflect the changes and create routes for the new pages.
+Aleph will automatically update the web app to reflect the changes and create routes for the new pages.
 `/pages/**/index.ts` is the default page for each page and subpages.
