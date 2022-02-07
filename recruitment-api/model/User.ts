@@ -3,17 +3,16 @@
  */
 export default class User {
 	email: string;
-    password: string;
 	firstName: string;
 	lastName: string;
 	socialSecurityNumber: number;
 	country: string;
-	city: string;
+	city?: string;
 	phone?: number;
+	static optionals = ["city", "phone"];
 
-	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, city: string, phone: number, email: string, password: string) {
+	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, city: string, phone: number, email: string) {
 		this.email = email;
-		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.socialSecurityNumber = socialSecurityNumber;
