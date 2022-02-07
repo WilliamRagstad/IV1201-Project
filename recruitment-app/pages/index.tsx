@@ -21,7 +21,7 @@ export default function Home() {
           <label className="txt_field">
             <input type="password" name="password"/> 
           </label>
-        <input type="submit" value="Login" class="button"/>
+        <input type="submit" value="Login" className="button"/>
       </form>
       <Footer></Footer>
     </div>

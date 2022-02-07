@@ -35,7 +35,7 @@ export default function Job() {
             <input type="date" name="enddate"/> 
           </label>  
         </div>    
-        <input type="submit" value="Apply" class="button"/>
+        <input type="submit" value="Apply" className="button"/>
       </form>
       <Footer></Footer>
     </div>

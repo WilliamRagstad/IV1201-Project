@@ -45,7 +45,7 @@ export default function Signup() {
           </label>
         </div>
         
-        <input type="submit" value="Sign Up" class="button"/>
+        <input type="submit" value="Sign Up" className="button"/>
       </form>
       <Footer></Footer>
     </div>
