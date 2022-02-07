@@ -1,6 +1,6 @@
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
-import User from "./model/user.ts";
+import  FullUser  from './model/user.ts';
 
 export default {
     createUser: async (
@@ -16,20 +16,24 @@ export default {
           };
           return;
         }
-        let newUser: User = {
-            firstname: body.value.firstname,
-            lastname: body.value.lastname,
-            personnumber: body.value.personnumber,
-            country: body.value.country,
-            city: body.value.city,
-            phone: body.value.phone,
-            email: body.value.email,
-            password: body.value.password,
-        }
+        if(body){
+        let newUser = new FullUser (
+            body.value.firstname,
+            body.value.lastname,
+            body.value.personnumber,
+            body.value.country,
+            body.value.city,
+            body.value.phone,
+            body.value.email,
+            body.value.password,
+        )
+        newUser.printName();
         let data = newUser;
+        
         response.body = {
             success: true,
             data,
         };
+      }
     }
 }
