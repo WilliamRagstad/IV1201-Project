@@ -1,5 +1,5 @@
 
-import { Request } from "https://deno.land/x/oak/mod.ts";
+import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 
 // deno-lint-ignore no-explicit-any
 type Constructor<T> = new (...args: any[]) => T;
@@ -44,8 +44,29 @@ function classFields<T>(classType: Constructor<T>): { name: string, optional: bo
 	return fields;
 }
 
+/**
+ * Send an HTTP response with a status code of 200 (OK) and the given body.
+ * @param response The response object to use
+ * @param body The body to send back
+ */
+// deno-lint-ignore no-explicit-any
+function ok(response: Response, body: string | Record<string, any>): void {
+	response.status = 200;
+	response.body = body;
+}
+
+/**
+ * Send an HTTP response with a status code of 201 (Created) and the given body.
+ * @param response The response object to use
+ * @param body The body to send back
+ */
+function created(response: Response, body: string | Record<string, any>): void {
+	response.status = 201;
+	response.body = body;
 }
 
 export {
 	bodyMappingJSON,
+	ok,
+	created
 };
