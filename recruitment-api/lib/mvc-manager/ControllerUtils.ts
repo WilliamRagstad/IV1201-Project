@@ -11,12 +11,41 @@ type Constructor<T> = new (...args: any[]) => T;
  * @throws Error if the request body is not of the expected type (JSON) OR if the body cannot be mapped to the given DTO type
  * @returns The mapped DTO
  */
-async function bodyJsonMapping<TModel>(request: Request, dtoType: Constructor<TModel>): Promise<TModel> {
+async function bodyMappingJSON<TModel>(request: Request, dtoType: Constructor<TModel>): Promise<TModel> {
 	const parsed = await request.body({ type: "json" }).value;
-	if (!(parsed instanceof dtoType)) throw new Error("Invalid request body, expected data transport object of type: " + dtoType.name);
-	return parsed;
+	const diff = difference(parsed, dtoType);
+	if (!diff.matching) throw new Error("Invalid request body, expected " + dtoType.name + " DTO." +
+		(diff.missing.length > 0 ? ` Missing properties: ${diff.missing.join(", ")}.` : '') +
+		(diff.invalid.length > 0 ? ` Invalid properties: ${diff.invalid.join(", ")}.` : ''));
+	return parsed as TModel;
+}
+
+// deno-lint-ignore no-explicit-any
+function difference<TModel>(json: Record<string, any>, dtoType: Constructor<TModel>): { matching: boolean, missing: string[], invalid: string[] } {
+	const jsonKeys = Object.keys(json);
+	const dtoFields = classFields(dtoType);
+	const missing = dtoFields.filter(field => !jsonKeys.includes(field.name) && !field.optional).map(field => field.name);
+	const invalid = jsonKeys.filter(key => !dtoFields.find(field => field.name === key));
+	return {
+		matching: missing.length === 0 && invalid.length === 0,
+		missing,
+		invalid
+	};
+}
+
+function classFields<T>(classType: Constructor<T>): { name: string, optional: boolean }[] {
+	const t = classType.toString();
+	const optionals: string[] = classType.prototype.constructor.optionals;
+	const end = Math.min(t.indexOf("constructor"), t.indexOf("static optionals"));
+	const fields = t.substring(t.indexOf("{") + 1, end).split(";").map(s => s.trim()).filter(s => s.length > 0).map(f => ({
+		name: f,
+		optional: optionals.includes(f)
+	}));
+	return fields;
+}
+
 }
 
 export {
-	bodyJsonMapping
+	bodyMappingJSON,
 };
