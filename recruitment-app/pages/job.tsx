@@ -1,43 +1,46 @@
-import { useDeno } from 'aleph/react'
 import React from 'react'
-import Header from '~/components/header.tsx'
-import Footer from '~/components/footer.tsx'
+import DefaultPage from '~/components/defaultpage.tsx'
 
 export default function Job() {
   return (
-    <div className="page">
-      <Header></Header>      
-      <h1>Welcome to use <strong>Amusement Park Recruiting</strong>!</h1>
-      <h2>Apply for work here</h2>
+    <DefaultPage title='Apply for work here'>
       <form action="/" method="post" className="signup_form">
         <div className="expertise">
-          <label className="check_box">
-            <input type="checkbox" name="expertise1"/> 
-            Customer Support
-          </label> 
-          <label className="check_box">
-            <input type="checkbox" name="expertise2"/> 
-            IT
-          </label>
-          <label className="check_box">
-            <input type="checkbox" name="expertise3"/> 
-            Food and Restaurant
-          </label>
-          <label className="check_box">
-            <input type="checkbox" name="expertise4"/> 
-            Administration
-          </label>   
+          <h2>Choose your expertise</h2>
+          <div className="flex-parent">
+            <div className="flex-child">
+              <input className="check_box" type="checkbox" name="expertise1" id="expertise1"/>
+              <label htmlFor="expertise1">Customer Support</label> 
+            </div>
+            <div className="flex-child">
+              <input className="check_box" type="checkbox" name="expertise2" id="expertise2"/>
+              <label htmlFor="expertise2"> IT</label>
+            </div>
+            <div className="flex-child">
+              <input className="check_box" type="checkbox" name="expertise3" id="expertise3"/>
+              <label htmlFor="expertise3"> Food and Restaurant</label>
+            </div>
+            <div className="flex-child">
+              <input className="check_box" type="checkbox" name="expertise4" id="expertise4"/>
+              <label htmlFor="expertise4"> Administration</label>
+            </div>
+          </div>
         </div>
         <div className="availability_dates">
-          <label>
-            Dates for work:  
-            <input type="date" name="startdate"/> 
-            <input type="date" name="enddate"/> 
-          </label>  
+          <h2>Dates for work: </h2>
+          <div className="flex-parent">
+            <div>
+              <label htmlFor="startdate">From: </label>
+              <input type="date" name="startdate" id="startdate"/>
+            </div>
+            <div>
+              <label htmlFor="enddate">To: </label>
+              <input type="date" name="enddate" id="enddate"/>
+            </div>
+          </div>
         </div>    
         <input type="submit" value="Apply" className="button"/>
       </form>
-      <Footer></Footer>
-    </div>
+    </DefaultPage>
   )
 }
