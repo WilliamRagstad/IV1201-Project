@@ -1,5 +1,4 @@
 import IController from "./IController.ts";
-
 import { Router, RouteParams, State, RouterMiddleware, RouterContext } from "https://deno.land/x/oak/mod.ts";
 
 export enum AppMode {
@@ -42,11 +41,13 @@ export class ControllerManager {
 	 */
 	public static register(router: Router, controllers: IController[]) {
 		for (const controller of controllers) {
-			controller.get && router["get"](controller.path, this.endpointHandler(controller.get));
-			controller.getById && router["get"](`${controller.path}/:id`, this.endpointHandler((ctx) => controller.getById && controller.getById(ctx.params.id, ctx)));
-			controller.post && router["post"](controller.path, this.endpointHandler(controller.post));
-			controller.delete && router["delete"](`${controller.path}/:id`, this.endpointHandler((ctx) => controller.delete && controller.delete(ctx.params.id, ctx)));
-			controller.put && router["put"](`${controller.path}/:id`, this.endpointHandler((ctx) => controller.put && controller.put(ctx.params.id, ctx)));
+			// deno-lint-ignore no-explicit-any
+			const basePath = (controller as any).constructor.prototype.path ?? '/'; // Default to root
+			controller.get && router["get"](basePath, this.endpointHandler(controller.get));
+			controller.getById && router["get"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.getById && controller.getById(ctx.params.id, ctx)));
+			controller.post && router["post"](basePath, this.endpointHandler(controller.post));
+			controller.delete && router["delete"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.delete && controller.delete(ctx.params.id, ctx)));
+			controller.put && router["put"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.put && controller.put(ctx.params.id, ctx)));
 		}
 	}
 
