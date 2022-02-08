@@ -1,10 +1,12 @@
 import { Context } from "https://deno.land/x/oak/mod.ts";
 import IController from "../lib/mvc-manager/IController.ts";
+import { Controller } from "../lib/mvc-manager/Decorators.ts";
 import { bodyMappingJSON, created } from "../lib/mvc-manager/ControllerUtils.ts";
 import User from "../model/User.ts";
+// import { Controller } from "../lib/mvc-manager/Decorators.ts";
 
-export default class UserController implements IController {
-	path = "/user";
+@Controller("/user")
+export default class UserController extends IController {
 
 	async post({ request, response }: Context): Promise<void> {
 		const user = await bodyMappingJSON(request, User);
