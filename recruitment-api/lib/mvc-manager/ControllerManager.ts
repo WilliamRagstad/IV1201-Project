@@ -1,6 +1,6 @@
 import IController from "./IController.ts";
-
-import { Router, RouteParams, State, RouterMiddleware, RouterContext } from "https://deno.land/x/oak/mod.ts";
+import { Router, RouteParams, State, RouterMiddleware, RouterContext, Application } from "https://deno.land/x/oak/mod.ts";
+import { RouterMethods, StringEndpoint } from "./types.ts";
 
 export enum AppMode {
 	DEV,
@@ -11,6 +11,7 @@ export class ControllerManager {
 	private static _mode = AppMode.DEV;
 
 	public static setMode(mode: AppMode) { this._mode = mode; }
+	public static getMode() { return this._mode; }
 
 	private static endpointHandler<
 		R extends string,
@@ -40,14 +41,50 @@ export class ControllerManager {
 	/**
 	 * Register a list of controllers
 	 */
-	public static register(router: Router, controllers: IController[]) {
+	public static registerRouter(router: Router<Record<string, any>>, controllers: IController[]) {
 		for (const controller of controllers) {
-			controller.get && router["get"](controller.path, this.endpointHandler(controller.get));
-			controller.getById && router["get"](`${controller.path}/:id`, this.endpointHandler((ctx) => controller.getById && controller.getById(ctx.params.id, ctx)));
-			controller.post && router["post"](controller.path, this.endpointHandler(controller.post));
-			controller.delete && router["delete"](`${controller.path}/:id`, this.endpointHandler((ctx) => controller.delete && controller.delete(ctx.params.id, ctx)));
-			controller.put && router["put"](`${controller.path}/:id`, this.endpointHandler((ctx) => controller.put && controller.put(ctx.params.id, ctx)));
+			// deno-lint-ignore no-explicit-any
+			const basePath: string = (controller as any).constructor.prototype.path ?? '/'; // Default to root
+			controller.get && router["get"](basePath, this.endpointHandler(controller.get));
+			controller.getById && router["get"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.getById && controller.getById(ctx.params.id, ctx)));
+			controller.post && router["post"](basePath, this.endpointHandler(controller.post));
+			controller.delete && router["delete"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.delete && controller.delete(ctx.params.id, ctx)));
+			controller.put && router["put"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.put && controller.put(ctx.params.id, ctx)));
+
+			// Add custom endpoints
+			const endpoints = controller.constructor.prototype.endpoints;
+			if (endpoints) {
+				for (const endpoint of endpoints) {
+					const fullPath = basePath + endpoint.path
+					// console.log(`Registering custom endpoint ${endpoint.method} ${fullPath}`, endpoint);
+					const method: RouterMethods = endpoint.method.toLowerCase();
+					const handler = endpoint.handler as StringEndpoint;
+					if (router[method]) router[method](fullPath, this.endpointHandler((ctx) => handler(ctx.params, ctx)));
+					else console.error(`Invalid endpoint method ${method}`);
+				}
+			}
 		}
+	}
+
+	/**
+	 * Register a list of controllers
+	 */
+	public static registerApp(app: Application, controllers: IController[]) {
+		const router = new Router();
+		this.registerRouter(router, controllers);
+		app.use(router.routes());
+		app.use(router.allowedMethods());
+	}
+
+	/**
+	 * Register a list of controllers and create a new web server
+	 * @param controllers List of controllers to register
+	 * @returns A web server that can be started
+	 */
+	public static createApi(controllers: IController[]) {
+		const app = new Application();
+		this.registerApp(app, controllers);
+		return app;
 	}
 
 }
