@@ -1,5 +1,5 @@
 import IController from "./IController.ts";
-import { Router, RouteParams, State, RouterMiddleware, RouterContext } from "https://deno.land/x/oak/mod.ts";
+import { Router, RouteParams, State, RouterMiddleware, RouterContext, Application } from "https://deno.land/x/oak/mod.ts";
 import { RouterMethods, StringEndpoint } from "./types.ts";
 
 export enum AppMode {
@@ -11,6 +11,7 @@ export class ControllerManager {
 	private static _mode = AppMode.DEV;
 
 	public static setMode(mode: AppMode) { this._mode = mode; }
+	public static getMode() { return this._mode; }
 
 	private static endpointHandler<
 		R extends string,
@@ -40,7 +41,7 @@ export class ControllerManager {
 	/**
 	 * Register a list of controllers
 	 */
-	public static register(router: Router<Record<string, any>>, controllers: IController[]) {
+	public static registerRouter(router: Router<Record<string, any>>, controllers: IController[]) {
 		for (const controller of controllers) {
 			// deno-lint-ignore no-explicit-any
 			const basePath: string = (controller as any).constructor.prototype.path ?? '/'; // Default to root
@@ -58,10 +59,32 @@ export class ControllerManager {
 					// console.log(`Registering custom endpoint ${endpoint.method} ${fullPath}`, endpoint);
 					const method: RouterMethods = endpoint.method.toLowerCase();
 					const handler = endpoint.handler as StringEndpoint;
-					router[method](fullPath, this.endpointHandler((ctx) => handler(ctx.params, ctx)));
+					if (router[method]) router[method](fullPath, this.endpointHandler((ctx) => handler(ctx.params, ctx)));
+					else console.error(`Invalid endpoint method ${method}`);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Register a list of controllers
+	 */
+	public static registerApp(app: Application, controllers: IController[]) {
+		const router = new Router();
+		this.registerRouter(router, controllers);
+		app.use(router.routes());
+		app.use(router.allowedMethods());
+	}
+
+	/**
+	 * Register a list of controllers and create a new web server
+	 * @param controllers List of controllers to register
+	 * @returns A web server that can be started
+	 */
+	public static createApi(controllers: IController[]) {
+		const app = new Application();
+		this.registerApp(app, controllers);
+		return app;
 	}
 
 }
