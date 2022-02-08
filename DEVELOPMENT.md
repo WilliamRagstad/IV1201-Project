@@ -11,10 +11,11 @@ The code below is a template for the controller structure:
 
 ```ts
 import { Context } from "https://deno.land/x/oak/mod.ts";
+import { Controller } from "../lib/mvc-manager/Decorators.ts";
 import IController from "../lib/mvc-manager/IController.ts";
 
+@Controller("/example")
 export default class ExampleController implements IController {
-	path = "/example";
 
 	get(ctx: Context): void {
 		ctx.response.body = "Hello World from ExampleController/get";
@@ -51,6 +52,7 @@ export function registerControllers(router: Router): void {
 
 Add new models to the `recruitment-api/model/` folder, following the same structure as shown in the example below:
 ```ts
+import { Optional } from "../lib/mvc-manager/Decorators.ts";
 /**
  * User DTO
  */
@@ -60,9 +62,10 @@ export default class User {
 	lastName: string;
 	socialSecurityNumber: number;
 	country: string;
+	@Optional()
 	city?: string;
+	@Optional()
 	phone?: number;
-	static optionals = ["city", "phone"];
 
 	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, city: string, phone: number, email: string) {
 		this.email = email;
