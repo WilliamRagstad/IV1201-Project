@@ -17,6 +17,5 @@ export default function Home() {
           <input type="submit" value="Login" className="button"/>
         </form>
       </DefaultPage>
-    
   )
 }
