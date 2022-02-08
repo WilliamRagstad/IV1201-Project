@@ -1,7 +1,6 @@
-
 import { HTTPMethods } from "https://deno.land/x/oak/mod.ts";
 import IController from "./IController.ts";
-import { Constructor, RouterMethods } from "./types.ts";
+import { Constructor } from "./types.ts";
 
 /*
 	dP""b8  dP"Yb  88b 88 888888 88""Yb  dP"Yb  88     88     888888 88""Yb     8888b.  888888  dP""b8  dP"Yb  88""Yb    db    888888  dP"Yb  88""Yb .dP"Y8
@@ -11,22 +10,27 @@ import { Constructor, RouterMethods } from "./types.ts";
 */
 
 export function Controller(path: string) {
-	return function (target: Constructor<IController>) {
-		target.prototype.path = path;
-	}
+  return function (target: Constructor<IController>) {
+    target.prototype.path = path;
+  };
 }
 
 export function Endpoint(method: HTTPMethods, path: string) {
-	// deno-lint-ignore no-explicit-any
-	return function (target: Record<string, any>, key: string, descriptor: PropertyDescriptor) {
-		target.constructor.prototype.endpoints = target.constructor.prototype.endpoints || [];
-		target.constructor.prototype.endpoints.push({
-			method: method.toLowerCase(),
-			path,
-			key: key,
-			handler: descriptor.value
-		});
-	}
+  // deno-lint-ignore no-explicit-any
+  return function (
+    target: Record<string, any>,
+    key: string,
+    descriptor: PropertyDescriptor,
+  ) {
+    target.constructor.prototype.endpoints =
+      target.constructor.prototype.endpoints || [];
+    target.constructor.prototype.endpoints.push({
+      method,
+      path,
+      key,
+      handler: descriptor.value,
+    });
+  };
 }
 
 /*
@@ -37,9 +41,10 @@ export function Endpoint(method: HTTPMethods, path: string) {
 */
 
 export function Optional() {
-	// deno-lint-ignore ban-types
-	return function (target: Object, propertyKey: string) {
-		target.constructor.prototype.optionals = target.constructor.prototype.optionals || [];
-		target.constructor.prototype.optionals.push(propertyKey);
-	}
+  // deno-lint-ignore ban-types
+  return function (target: Object, propertyKey: string) {
+    target.constructor.prototype.optionals =
+      target.constructor.prototype.optionals || [];
+    target.constructor.prototype.optionals.push(propertyKey);
+  };
 }
