@@ -1,60 +1,46 @@
-export class User {
+import DBHandler from "../lib/database-manager/DBHandler.ts";
 
-    email: string;
-    password: string;
+/**
+ * User DTO
+ */
+export default class User {
+	email: string;
+	firstName: string;
+	lastName: string;
+	socialSecurityNumber: number;
+	country: string;
+	password: string;
+	city?: string;
+	phone?: number;
+	static optionals = ["city", "phone"];
 
-    constructor(email: string, password: string) {
-        this.email = email;
-        this.password = password;
-    }
-
-    login():boolean {
-        if(this.email && this.password){//compare to database if user exists
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
-export default class FullUser extends User {
-    firstname?: string;
-    lastname?: string;
-    personnumber?: number;
-    country?: string;
-    city?: string;
-    phone?: number;
-    constructor(firstname: string, lastname: string, personnumber: number, country:string,
-        city: string, phone: number, email: string, password: string) {
-            super(email, password);
-            this.firstname = firstname;
-            this.lastname = lastname; 
-            this.personnumber = personnumber;
-            this.country = country;
-            this.city = city;
-            this.phone = phone;
-        }
-    
-    printName():void {
-        console.log(this.firstname + " " + this.lastname);
-    }
-
-    submitUser():void {
-        //connect to database and insert user
+	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, password: string, city: string, phone: number, email: string) {
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.socialSecurityNumber = socialSecurityNumber;
+		this.country = country;
+		this.password = password;
+		this.city = city;
+		this.phone = phone;
+	}
+	PostUser():void {
+        DBHandler.postUser(this);
     }
 }
 
-class Application {
-    expertise1?: boolean;
-    expertise2?: boolean;
-    expertise3?: boolean;
-    expertise4?: boolean;
+/**
+ * Application DTO
+ */
+export class Application {
+    competence1?: boolean;
+    competence2?: boolean;
+    competence3?: boolean;
 
-    constructor(expertise1: boolean, expertise2: boolean, expertise3: boolean, expertise4: boolean){
-        this.expertise1 = expertise1;
-        this.expertise2 = expertise2;
-        this.expertise3 = expertise3;
-        this.expertise4 = expertise4;
+    constructor(competence1: boolean, competence2: boolean, competence3: boolean){
+        this.competence1 = competence1;
+        this.competence2 = competence2;
+        this.competence3 = competence3;
     }
 
     submitApplication():void {
