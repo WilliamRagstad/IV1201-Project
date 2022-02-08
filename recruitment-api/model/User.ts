@@ -15,7 +15,7 @@ export default class User {
 	@Optional()
 	phone?: number;
 
-	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, password: string, city?: string, phone?: number, email: string) {
+	constructor(email: string, password: string, firstName: string, lastName: string, socialSecurityNumber: number, country: string, city?: string, phone?: number) {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
