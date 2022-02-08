@@ -5,6 +5,7 @@ import { Optional } from "../lib/mvc-manager/Decorators.ts";
  */
 export default class User {
 	email: string;
+	password: string;
 	firstName: string;
 	lastName: string;
 	socialSecurityNumber: number;
@@ -14,12 +15,13 @@ export default class User {
 	@Optional()
 	phone?: number;
 
-	constructor(email: string, firstName: string, lastName: string, socialSecurityNumber: number, country: string, city?: string, phone?: number) {
+	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, password: string, city?: string, phone?: number, email: string) {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.socialSecurityNumber = socialSecurityNumber;
 		this.country = country;
+		this.password = password;
 		this.city = city;
 		this.phone = phone;
 	}
