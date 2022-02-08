@@ -1,5 +1,6 @@
 import IController from "./IController.ts";
 import { Router, RouteParams, State, RouterMiddleware, RouterContext } from "https://deno.land/x/oak/mod.ts";
+import { RouterMethods, StringEndpoint } from "./types.ts";
 
 export enum AppMode {
 	DEV,
@@ -39,15 +40,27 @@ export class ControllerManager {
 	/**
 	 * Register a list of controllers
 	 */
-	public static register(router: Router, controllers: IController[]) {
+	public static register(router: Router<Record<string, any>>, controllers: IController[]) {
 		for (const controller of controllers) {
 			// deno-lint-ignore no-explicit-any
-			const basePath = (controller as any).constructor.prototype.path ?? '/'; // Default to root
+			const basePath: string = (controller as any).constructor.prototype.path ?? '/'; // Default to root
 			controller.get && router["get"](basePath, this.endpointHandler(controller.get));
 			controller.getById && router["get"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.getById && controller.getById(ctx.params.id, ctx)));
 			controller.post && router["post"](basePath, this.endpointHandler(controller.post));
 			controller.delete && router["delete"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.delete && controller.delete(ctx.params.id, ctx)));
 			controller.put && router["put"](`${basePath}/:id`, this.endpointHandler((ctx) => controller.put && controller.put(ctx.params.id, ctx)));
+
+			// Add custom endpoints
+			const endpoints = controller.constructor.prototype.endpoints;
+			if (endpoints) {
+				for (const endpoint of endpoints) {
+					const fullPath = basePath + endpoint.path
+					// console.log(`Registering custom endpoint ${endpoint.method} ${fullPath}`, endpoint);
+					const method: RouterMethods = endpoint.method.toLowerCase();
+					const handler = endpoint.handler as StringEndpoint;
+					router[method](fullPath, this.endpointHandler((ctx) => handler(ctx.params, ctx)));
+				}
+			}
 		}
 	}
 
