@@ -1,22 +1,14 @@
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
-import controller from "./controller.ts";
+import { registerControllers } from "./controller/index.ts";
 
 const app = new Application();
-
-/*app.use((ctx) => {
-  ctx.response.body = "Hello World!";
-});*/
-
-
-
 const router = new Router();
-router.get("/", ({ response }: { response: any }) => {
-  response.body = {
-    message: "hello world",
-  };
+
+router.get("/", (ctx) => {
+	ctx.response.body = "Hello World from root!";
 });
 
-router.post("/newuser", controller.createUser)
+registerControllers(router);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
