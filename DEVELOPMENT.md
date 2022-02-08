@@ -6,8 +6,9 @@
 
 A simple MVC controller utility framework for automatization of Controller to Endpoint connectivity.
 
-To create a new controller, first make a new file `ExampleController.ts` in `recruitment-api/controllers/`.
+To create a new controller, first make a new file `ExampleController.ts` in `recruitment-api/controller/`.
 The code below is a template for the controller structure:
+
 ```ts
 import { Context } from "https://deno.land/x/oak/mod.ts";
 import IController from "../lib/mvc-manager/IController.ts";
@@ -34,17 +35,56 @@ export default class ExampleController implements IController {
 }
 ```
 
-Lastly the controller must be registered, do so in `recruitment-api/index.ts` by adding a new instance to the `ControllerManager.register` list.
+Lastly the controller must be registered to the webserver. do so in `recruitment-api/controller/index.ts` by adding a new instance to the `ControllerManager.register` list as shown below:
+
 ```ts
-ControllerManager.register(router, [
-	new ExampleController(),
-	...
-]);
+export function registerControllers(router: Router): void {
+	ControllerManager.register(router, [
+		new ExampleController(),
+		new UserController(),
+        ...
+	]);
+}
 ```
 
-## Webapp
+### Add new Models
+
+Add new models to the `recruitment-api/model/` folder, following the same structure as shown in the example below:
+```ts
+/**
+ * User DTO
+ */
+export default class User {
+	email: string;
+	firstName: string;
+	lastName: string;
+	socialSecurityNumber: number;
+	country: string;
+	city?: string;
+	phone?: number;
+	static optionals = ["city", "phone"];
+
+	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, city: string, phone: number, email: string) {
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.socialSecurityNumber = socialSecurityNumber;
+		this.country = country;
+		this.city = city;
+		this.phone = phone;
+	}
+}
+```
+
+It is important to add optional fields to the `statis optionals` array, so that the model can be validated using the `ControllerUtils.classFields` function when parsing the request body using the `ControllerUtils.bodyMappingJSON` function.
+
+
+
+
+
+## Web App
 
 ### Add new Pages
 Add new pages to the recruitment app by creating new files in the `/pages` directory.
-Aleph will automatically update the webapp to reflect the changes and create routes for the new pages.
+Aleph will automatically update the web app to reflect the changes and create routes for the new pages.
 `/pages/**/index.ts` is the default page for each page and subpages.

@@ -8,7 +8,7 @@ export default interface IController {
 	 * @description Fetch all instances of the relevant model
      * @param ctx Oak request context
      */
-	 get?(ctx: Context): void;
+	 get?(ctx: Context): void | Promise<void>;
 
     /**
      * METHOD GET /:id
@@ -16,14 +16,14 @@ export default interface IController {
 	 * @param id Id of the resource
      * @param ctx Oak request context
      */
-    getById?(id: string, ctx: Context): void;
+    getById?(id: string, ctx: Context): void | Promise<void>;
 
     /**
      * METHOD POST /
 	 * @description Create a new instance of the relevant model
      * @param ctx Oak request context
      */
-    post?(ctx: Context): void;
+    post?(ctx: Context): void | Promise<void>;
 
     /**
      * METHOD DELETE /:id
@@ -31,7 +31,7 @@ export default interface IController {
 	 * @param id Id of the resource
      * @param ctx Oak request context
      */
-    delete?(id: string, ctx: Context): void;
+    delete?(id: string, ctx: Context): void | Promise<void>;
 
     /**
      * METHOD PUT /:id
@@ -39,5 +39,5 @@ export default interface IController {
 	 * @param id Id of the resource
      * @param ctx Oak request context
      */
-    put?(id: string, ctx: Context): void;
+    put?(id: string, ctx: Context): void | Promise<void>;
 }
