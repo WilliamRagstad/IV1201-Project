@@ -1,2 +1,2 @@
 
-recruitment-api/DBCreds.ts
+recruitment-api/lib/database-manager/DBCreds.ts
