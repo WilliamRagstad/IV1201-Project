@@ -1,7 +1,5 @@
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
-
-// deno-lint-ignore no-explicit-any
-type Constructor<T> = new (...args: any[]) => T;
+import { Constructor } from "./types.ts";
 
 /*
 88""Yb 888888  dP"Yb  88   88 888888 .dP"Y8 888888     88""Yb  dP"Yb  8888b.  Yb  dP     8b    d8    db    88""Yb 88""Yb 88 88b 88  dP""b8
@@ -21,8 +19,8 @@ export async function bodyMappingJSON<TModel>(request: Request, dtoType: Constru
 	const parsed = await request.body({ type: "json" }).value;
 	const diff = difference(parsed, dtoType);
 	if (!diff.matching) throw new Error("Invalid request body, expected " + dtoType.name + " DTO." +
-		(diff.missing.length > 0 ? ` Missing properties: ${diff.missing.join(", ")}.` : '') +
-		(diff.invalid.length > 0 ? ` Invalid properties: ${diff.invalid.join(", ")}.` : ''));
+		(diff.missing.length > 0 ? ` Missing fields: ${diff.missing.join(", ")}.` : '') +
+		(diff.invalid.length > 0 ? ` Invalid fields: ${diff.invalid.join(", ")}.` : ''));
 	return parsed as TModel;
 }
 
@@ -41,9 +39,8 @@ function difference<TModel>(json: Record<string, any>, dtoType: Constructor<TMod
 
 function classFields<T>(classType: Constructor<T>): { name: string, optional: boolean }[] {
 	const t = classType.toString();
-	const optionals: string[] = classType.prototype.constructor.optionals;
-	const end = Math.min(t.indexOf("constructor"), t.indexOf("static optionals"));
-	const fields = t.substring(t.indexOf("{") + 1, end).split(";").map(s => s.trim()).filter(s => s.length > 0).map(f => ({
+	const optionals: string[] = classType.prototype.optionals ?? [];
+	const fields = t.substring(t.indexOf("{") + 1, t.indexOf("constructor")).split(";").map(s => s.trim()).filter(s => s.length > 0).map(f => ({
 		name: f,
 		optional: optionals.includes(f)
 	}));
@@ -73,6 +70,7 @@ export function ok(response: Response, body: string | Record<string, any>): void
  * @param response The response object to use
  * @param body The body to send back
  */
+ // deno-lint-ignore no-explicit-any
  export function created(response: Response, body: string | Record<string, any>): void {
 	response.status = 201;
 	response.body = body;

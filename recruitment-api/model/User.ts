@@ -1,18 +1,21 @@
+import { Optional } from "../lib/mvc-manager/Decorators.ts";
+
 /**
  * User DTO
  */
 export default class User {
 	email: string;
+	password: string;
 	firstName: string;
 	lastName: string;
 	socialSecurityNumber: number;
 	country: string;
-	password: string;
+	@Optional()
 	city?: string;
+	@Optional()
 	phone?: number;
-	static optionals = ["city", "phone"];
 
-	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, password: string, city: string, phone: number, email: string) {
+	constructor(firstName: string, lastName: string, socialSecurityNumber: number, country: string, password: string, city?: string, phone?: number, email: string) {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -23,4 +26,3 @@ export default class User {
 		this.phone = phone;
 	}
 }
-

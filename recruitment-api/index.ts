@@ -1,17 +1,12 @@
-import { Application, Router } from "https://deno.land/x/oak/mod.ts";
-import { registerControllers } from "./controller/index.ts";
+import { AppMode, ControllerManager } from "./lib/mvc-manager/ControllerManager.ts";
+import ExampleController from "./controller/ExampleController.ts";
+import UserController from "./controller/UserController.ts";
 
-const app = new Application();
-const router = new Router();
+ControllerManager.setMode(AppMode.DEV);
+const app = ControllerManager.createApi([
+	new ExampleController(),
+	new UserController()
+]);
 
-router.get("/", (ctx) => {
-	ctx.response.body = "Hello World from root!";
-});
-
-registerControllers(router);
-
-app.use(router.routes());
-app.use(router.allowedMethods());
-
-console.log("Server ready on http://localhost:8000");
+console.log(AppMode[ControllerManager.getMode()] + " Server ready on http://localhost:8000");
 await app.listen({ port: 8000 });
