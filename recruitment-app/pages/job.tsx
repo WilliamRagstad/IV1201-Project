@@ -10,19 +10,15 @@ export default function Job() {
           <div className="flex-parent">
             <div className="flex-child">
               <input className="check_box" type="checkbox" name="expertise1" id="expertise1"/>
-              <label htmlFor="expertise1">Customer Support</label> 
+              <label htmlFor="expertise1"> Ticket sales</label> 
             </div>
             <div className="flex-child">
               <input className="check_box" type="checkbox" name="expertise2" id="expertise2"/>
-              <label htmlFor="expertise2"> IT</label>
+              <label htmlFor="expertise2"> Lotteries</label>
             </div>
             <div className="flex-child">
               <input className="check_box" type="checkbox" name="expertise3" id="expertise3"/>
-              <label htmlFor="expertise3"> Food and Restaurant</label>
-            </div>
-            <div className="flex-child">
-              <input className="check_box" type="checkbox" name="expertise4" id="expertise4"/>
-              <label htmlFor="expertise4"> Administration</label>
+              <label htmlFor="expertise3"> Roller coaster operation</label>
             </div>
           </div>
         </div>
