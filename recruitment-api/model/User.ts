@@ -30,9 +30,9 @@ export default class User {
 }
 
 /**
- * Application DTO
+ * Competence Application DTO
  */
-export class Application {
+export class CompetenceApplication {
     competence1?: boolean;
     competence2?: boolean;
     competence3?: boolean;
