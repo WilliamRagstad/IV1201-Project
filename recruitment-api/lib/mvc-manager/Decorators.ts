@@ -10,11 +10,7 @@ import { Constructor } from "./types.ts";
 
 export function Controller(path: string) {
 	return function (target: Constructor<IController>) {
-		// console.log(target.toString())
-		// console.log(target.constructor.prototype.path)
-		// target.constructor.prototype.path = path;
 		target.prototype.path = path;
-		// console.log(target.constructor.prototype.path)
 	}
 }
 
@@ -28,10 +24,7 @@ export function Controller(path: string) {
 export function Optional() {
 	// deno-lint-ignore ban-types
 	return function (target: Object, propertyKey: string) {
-		// console.log(target.constructor.prototype);
 		target.constructor.prototype.optionals = target.constructor.prototype.optionals || [];
 		target.constructor.prototype.optionals.push(propertyKey);
-		// target.prototype.optionals = target.prototype.optionals || [];
-		// target.prototype.optionals.push(propertyKey);
 	}
 }
