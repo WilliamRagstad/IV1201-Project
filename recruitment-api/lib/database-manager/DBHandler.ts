@@ -13,10 +13,8 @@ export default {
     },
     postUser: async (user: User) => {
         await client.connect();
-        const result = await client.queryArray("INSERT INTO person (person_id, name, surname, pnr, email, password, role_id, username) VALUES ("+Math.random()+","+user.firstName+","+user.lastName+","+user.socialSecurityNumber+","+user.email+","+user.password+","+0+","+user.email+");");
-        console.log(result.rows); 
+        const result = await client.queryArray("INSERT INTO person (name, surname, pnr, email, password, role_id, username) VALUES ('"+user.firstName+"','"+user.lastName+"',"+user.socialSecurityNumber+",'"+user.email+"','"+user.password+"',"+2+",'"+user.email+"'"+");");
         await client.end();
     }
 }
-
 
