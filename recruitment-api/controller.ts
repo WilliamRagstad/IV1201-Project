@@ -1,5 +1,6 @@
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
-
+import { Client } from "https://deno.land/x/postgres/mod.ts";
+import { dbcreds } from "./DBCreds.ts";
 import  FullUser  from './model/user.ts';
 
 export default {
@@ -35,5 +36,23 @@ export default {
             data,
         };
       }
-    }
+    },
+    testDatabase: async (
+      { request, response }: { request: any; response: any },
+      ) => {
+        const client = new Client(dbcreds);
+        await client.connect();
+        
+          const result = await client.queryArray("SELECT * FROM competence");
+          console.log(result.rows); // [[1, 'Carlos'], [2, 'John'], ...]
+          let data = result.rows;
+        
+        
+        
+        await client.end();
+        response.body = {
+            success: true,
+            data,
+        };
+      }
 }
