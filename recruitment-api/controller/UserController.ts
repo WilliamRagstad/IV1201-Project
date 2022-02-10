@@ -7,7 +7,7 @@ import {
   IController,
   ok,
   Params,
-} from "https://deno.land/x/knight@2.0.2/mod.ts";
+} from "https://deno.land/x/knight@2.0.3/mod.ts";
 
 import User from "../model/User.ts";
 
