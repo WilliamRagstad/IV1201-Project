@@ -10,12 +10,13 @@ import {
 } from "https://deno.land/x/knight@2.0.3/mod.ts";
 
 import User from "../model/User.ts";
+import DBHandler from "../lib/database-manager/DBHandler.ts";
 
 @Controller("/user")
 export default class UserController extends IController {
   async post({ request, response }: Context) {
     const user = await bodyMappingFormData(request, User);
-    // TODO: Save user to database
+    DBHandler.postUser(user);
     created(response, `User ${user.firstName} was successfully created`);
   }
 
