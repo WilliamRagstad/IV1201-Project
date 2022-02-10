@@ -1,6 +1,8 @@
 import { Context } from "https://deno.land/x/oak/mod.ts";
-import { Controller } from "../lib/mvc-manager/Decorators.ts";
-import IController from "../lib/mvc-manager/IController.ts";
+import {
+  Controller,
+  IController,
+} from "https://deno.land/x/knight@2.0.1/mod.ts";
 
 @Controller("/example")
 export default class ExampleController extends IController {
