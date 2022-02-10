@@ -1,4 +1,3 @@
-import { useDeno } from 'aleph/react'
 import React from 'react'
 import Logo from '~/components/logo.tsx'
 

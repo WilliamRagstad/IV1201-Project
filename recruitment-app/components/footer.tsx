@@ -1,4 +1,3 @@
-import { useDeno } from 'aleph/react'
 import React from 'react'
 
 export default function Footer() {
