@@ -1,4 +1,4 @@
-import { AppMode, Knight } from "https://deno.land/x/knight@2.0.1/mod.ts";
+import { AppMode, Knight } from "https://deno.land/x/knight@2.0.2/mod.ts";
 import ExampleController from "./controller/ExampleController.ts";
 import UserController from "./controller/UserController.ts";
 
