@@ -4,7 +4,7 @@ import DefaultPage from '../components/defaultpage.tsx'
 export default function Signup() {
   return (
     <DefaultPage title='Sign up'>
-      <form action="/signedup" method="post" className="signup_form">
+      <form action="http://localhost:8000/newuser" method="post" className="signup_form">
         <div className="personal_information">
             First Name:
           <label className="txt_field">

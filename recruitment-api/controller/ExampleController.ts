@@ -1,8 +1,9 @@
 import { Context } from "https://deno.land/x/oak/mod.ts";
+import { Controller } from "../lib/mvc-manager/Decorators.ts";
 import IController from "../lib/mvc-manager/IController.ts";
 
-export default class ExampleController implements IController {
-	path = "/example";
+@Controller("/example")
+export default class ExampleController extends IController {
 
 	get(ctx: Context): void {
 		ctx.response.body = "Hello World from ExampleController/get";
