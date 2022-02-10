@@ -1,18 +1,15 @@
-import {
-  AppMode,
-  ControllerManager,
-} from "./lib/mvc-manager/ControllerManager.ts";
+import { AppMode, Knight } from "https://deno.land/x/knight@2.0.3/mod.ts";
 import ExampleController from "./controller/ExampleController.ts";
 import UserController from "./controller/UserController.ts";
 
-ControllerManager.setMode(AppMode.DEV);
-const app = ControllerManager.createApi([
+Knight.setMode(AppMode.DEV);
+const app = Knight.createApi([
   new ExampleController(),
   new UserController(),
 ]);
 
 console.log(
-  AppMode[ControllerManager.getMode()] +
+  AppMode[Knight.getMode()] +
     " Server ready on http://localhost:8000",
 );
 await app.listen({ port: 8000 });
