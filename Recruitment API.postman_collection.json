@@ -158,6 +158,96 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "UserController Get by Email (Custom)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/user/testUser/email",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user",
+						"testUser",
+						"email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserController Post with Form Data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "firstName",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "lastName",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "socialSecurityNumber",
+							"value": "0000",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "00000",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@kth.se",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1111",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
