@@ -7,12 +7,13 @@ import {
 } from "../lib/mvc-manager/ControllerUtils.ts";
 import { Params, StringRouterContext } from "../lib/mvc-manager/types.ts";
 import User from "../model/User.ts";
+import DBHandler from "../lib/database-manager/DBHandler.ts";
 
 @Controller("/user")
 export default class UserController extends IController {
   async post({ request, response }: StringRouterContext): Promise<void> {
     const user = await bodyMappingJSON(request, User);
-    // TODO: Save user to database
+    DBHandler.postUser(user);
     created(response, `User ${user.firstName} was successfully created`);
   }
 
