@@ -1,5 +1,5 @@
 import {
-  bodyMappingJSON,
+  bodyMappingFormData,
   Context,
   Controller,
   created,
@@ -14,7 +14,7 @@ import User from "../model/User.ts";
 @Controller("/user")
 export default class UserController extends IController {
   async post({ request, response }: Context) {
-    const user = await bodyMappingJSON(request, User);
+    const user = await bodyMappingFormData(request, User);
     // TODO: Save user to database
     created(response, `User ${user.firstName} was successfully created`);
   }
