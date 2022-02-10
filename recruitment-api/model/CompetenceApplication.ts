@@ -1,9 +1,14 @@
+import { Optional } from "https://deno.land/x/knight@2.0.1/mod.ts";
+
 /**
  * Competence Application DTO
  */
 export class CompetenceApplication {
+  @Optional()
   competence1?: boolean;
+  @Optional()
   competence2?: boolean;
+  @Optional()
   competence3?: boolean;
 
   constructor(

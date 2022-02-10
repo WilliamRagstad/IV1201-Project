@@ -1,4 +1,4 @@
-import { Optional } from "../lib/mvc-manager/Decorators.ts";
+import { Optional } from "https://deno.land/x/knight@2.0.1/mod.ts";
 
 /**
  * User DTO
