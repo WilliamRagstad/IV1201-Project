@@ -1,12 +1,17 @@
-import { useDeno } from 'aleph/react'
-import React from 'react'
-import Logo from '~/components/logo.tsx'
+import React from "react";
+import Logo from "~/components/logo.tsx";
 
+/**
+ * Creates a header to use on the webpage.
+ * @returns The created header.
+ */
 export default function Header() {
   //If logged in, dont show sign up
   return (
     <div className="header">
-      <p className="logo"><Logo /></p>
+      <p className="logo">
+        <Logo />
+      </p>
       <p className="nav">
         <a href="/">Home</a>
         <span></span>
@@ -15,5 +20,5 @@ export default function Header() {
         <a href="/signup">Sign Up</a>
       </p>
     </div>
-  )
+  );
 }

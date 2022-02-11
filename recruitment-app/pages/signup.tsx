@@ -1,47 +1,55 @@
-import React from 'react'
-import DefaultPage from '../components/defaultpage.tsx'
+import React from "react";
+import DefaultPage from "../components/defaultpage.tsx";
 
+/**
+ * The signup page.
+ * @returns a page with the form to register to the recruitment app.
+ */
 export default function Signup() {
   return (
-    <DefaultPage title='Sign up'>
-      <form action="http://localhost:8000/user" method="post" className="signup_form">
+    <DefaultPage header="Sign up">
+      <form
+        action="http://localhost:8000/user"
+        method="post"
+        className="signup_form"
+      >
         <div className="personal_information">
-            First Name:
+          First Name:
           <label className="txt_field">
-            <input type="text" name="firstname"/> 
+            <input type="text" name="firstname" />
           </label>
-            Last Name:
+          Last Name:
           <label className="txt_field">
-            <input type="text" name="lastname"/> 
+            <input type="text" name="lastname" />
           </label>
-          Person Number: 
+          Person Number:
           <label className="txt_field">
-            <input type="number" name="personnumber"/> 
+            <input type="number" name="personnumber" />
           </label>
-          Country: 
+          Country:
           <label className="txt_field">
-            <input type="text" name="country"/> 
+            <input type="text" name="country" />
           </label>
-          City: 
+          City:
           <label className="txt_field">
-            <input type="text" name="city"/> 
+            <input type="text" name="city" />
           </label>
-          Phone: 
+          Phone:
           <label className="txt_field">
-            <input type="number" name="phone"/> 
+            <input type="number" name="phone" />
           </label>
           Email:
           <label className="txt_field">
-            <input type="email" name="email"/> 
+            <input type="email" name="email" />
           </label>
           Password:
           <label className="txt_field">
-            <input type="password" name="password"/> 
+            <input type="password" name="password" />
           </label>
         </div>
-        
-        <input type="submit" value="Sign Up" className="button"/>
+
+        <input type="submit" value="Sign Up" className="button" />
       </form>
     </DefaultPage>
-  )
+  );
 }
