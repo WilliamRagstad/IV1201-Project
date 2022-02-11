@@ -15,7 +15,7 @@ export default {
   /**
    * Submits the user.
    * @param user The user to be submitted in the form of a User DTO. 
-   * @returns Success
+   * @returns Empty brackets 
    */
   postUser: async (user: User) => {
     return await sendQuery(
