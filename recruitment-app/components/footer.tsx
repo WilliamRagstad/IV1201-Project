@@ -1,6 +1,9 @@
-import { useDeno } from 'aleph/react'
-import React from 'react'
+import React from "react";
 
+/**
+ * Creates a footer for the webpage.
+ * @returns The created footer.
+ */
 export default function Footer() {
   return (
     <div className="footer">
@@ -9,9 +12,13 @@ export default function Footer() {
         <span></span>
         <a href="/about">About Us</a>
         <span></span>
-        <a href="https://github.com/WilliamRagstad/IV1201-Project" target="_blank">Github</a>
+        <a
+          href="https://github.com/WilliamRagstad/IV1201-Project"
+          target="_blank"
+        >
+          Github
+        </a>
       </p>
-     
     </div>
-  )
+  );
 }
