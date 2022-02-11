@@ -17,11 +17,11 @@ import UserService from "../service/UserService.ts";
  */
 @Controller("/user")
 export default class UserController extends IController {
-  userService: UserService = UserService.getInstance();
+  static userService: UserService = UserService.getInstance();
 
   async post({ request, response }: Context) {
     const user = await bodyMappingFormData(request, User);
-    this.userService.saveUser(user);
+    UserController.userService.saveUser(user);
     created(response, `User ${user.firstName} was successfully created`);
   }
 
