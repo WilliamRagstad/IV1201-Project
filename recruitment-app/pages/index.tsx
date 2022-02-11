@@ -1,6 +1,10 @@
 import React from 'react'
 import DefaultPage from '~/components/defaultpage.tsx'
 
+/**
+ * The Home page with a login screen.
+ * @returns The Login screen component.
+ */
 export default function Home() {
   //Check if user is logged in and return proper page and if not return log in page
   return (
