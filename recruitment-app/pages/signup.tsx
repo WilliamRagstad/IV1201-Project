@@ -1,6 +1,10 @@
 import React from "react";
 import DefaultPage from "../components/defaultpage.tsx";
 
+/**
+ * The signup page.
+ * @returns a page with the form to register to the recruitment app.
+ */
 export default function Signup() {
   return (
     <DefaultPage header="Sign up">
