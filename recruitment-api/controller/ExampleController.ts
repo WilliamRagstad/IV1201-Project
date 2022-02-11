@@ -1,7 +1,7 @@
 import {
+  Context,
   Controller,
   IController,
-  Context
 } from "https://deno.land/x/knight@2.0.3/mod.ts";
 
 @Controller("/example")

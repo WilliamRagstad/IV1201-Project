@@ -1,37 +1,38 @@
 import { Optional } from "https://deno.land/x/knight@2.0.3/mod.ts";
+import Role from "./Role.ts";
 
 /**
  * User DTO
  */
 export default class User {
+  @Optional()
+  id?: number;
   email: string;
   password: string;
+  username: string;
   firstName: string;
   lastName: string;
   socialSecurityNumber: number;
-  country: string;
   @Optional()
-  city?: string;
-  @Optional()
-  phone?: number;
+  role?: Role;
 
   constructor(
+    id: number | undefined,
     email: string,
     password: string,
+    username: string,
     firstName: string,
     lastName: string,
     socialSecurityNumber: number,
-    country: string,
-    city?: string,
-    phone?: number,
+	role?: Role,
   ) {
+    this.id = id;
     this.email = email;
+    this.password = password;
+    this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
     this.socialSecurityNumber = socialSecurityNumber;
-    this.country = country;
-    this.password = password;
-    this.city = city;
-    this.phone = phone;
+	this.role = role;
   }
 }
