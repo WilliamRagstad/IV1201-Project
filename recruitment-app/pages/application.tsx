@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import DefaultPage from '~/components/defaultpage.tsx'
 
+/**
+ * The admin page for recruiters to see the applications
+ * @returns A page with applications
+ */
 export default function Application() {
   //TODO: Check if user is logged in and return proper page and if not return log in page
   //TODO: Add Search function to filter users
