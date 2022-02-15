@@ -167,3 +167,53 @@ form .txt_field{
 label{
   border-bottom: 2px solid #008181;
 }
+.user_box{
+  text-align: center;
+  padding: 50px 0px 50px 0px;
+  border-radius: 10px;
+  width: 100%;
+  list-style: none;
+  margin-bottom: 20px;
+  margin: 5px;
+  background-color: #008181;
+  font-size: 18px;
+  color:floralwhite;
+}
+.user_list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 50%
+}
+.applications{
+  display: flex;
+}
+.application_page{
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #008181;
+  border-radius: 30px;
+  padding-top: 30px;
+}
+.application_page p {
+  color:floralwhite;
+  font-size: 18px;
+  margin: 10px;
+}
+
+.user_arrow{
+  text-align: center;
+  padding: 50px 0px 50px 0px;
+  border-radius: 10px;
+  width: 50%;
+  list-style: none;
+  margin-bottom: 20px;
+  margin: 5px;
+  background-color: #008181;
+  font-size: 18px;
+  color:floralwhite;
+}
+.user_arrow_box{
+  display: flex;
+}
