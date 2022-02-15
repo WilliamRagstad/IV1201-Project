@@ -169,7 +169,7 @@ label{
 }
 .user_box{
   text-align: center;
-  padding: 50px 0px 50px 0px;
+  padding: 30px 0px 30px 0px;
   border-radius: 10px;
   width: 100%;
   list-style: none;
@@ -216,4 +216,11 @@ label{
 }
 .user_arrow_box{
   display: flex;
+}
+
+.user_arrow:hover{
+  background-color: #D63369;
+}
+.user_box:hover{
+  background-color: #D63369;
 }
