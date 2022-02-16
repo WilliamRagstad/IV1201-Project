@@ -35,7 +35,7 @@ export default function Application() {
    * Loops around the list, always trying to fill up the page. 
    */
   function prevPage(){
-    var prev = (index-applications_per_page>-applications_per_page) ? ((index-applications_per_page<0) ? 0 : index-applications_per_page)  : users.length-applications_per_page;
+    var prev = (index-applications_per_page<0) ? ((users.length%applications_per_page != 0) ? (users.length-(users.length%applications_per_page)) : users.length-applications_per_page) : index-applications_per_page ;
     setIndex(prev);
     setFilteredUsers(users.filter((element, i) => (i<(prev+applications_per_page) && i >= prev)));
   }
@@ -75,7 +75,7 @@ export default function Application() {
     
   
   return (
-      <DefaultPage title='View Applications'>
+      <DefaultPage header="View Applications">
           <div className="applications">
             <ul className="user_list">{listUsers}</ul>
             <div className="application_page">
