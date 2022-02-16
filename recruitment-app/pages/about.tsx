@@ -19,7 +19,7 @@ export default function About() {
             This project is part of the KTH course IV1201 Design of Global
             Applications. <br></br>
             See our project at our Github Repository:{" "}
-            <a href="https://github.com/WilliamRagstad/IV1201-Project/">Here</a>
+            <a href="https://github.com/WilliamRagstad/IV1201-Project/" target="_blank">Here</a>
           </p>
         </div>
       </div>
