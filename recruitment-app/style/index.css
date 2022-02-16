@@ -189,6 +189,7 @@ label{
   display: flex;
 }
 .application_page{
+  display: flex;
   text-align: center;
   justify-content: center;
   width: 100%;
@@ -196,12 +197,17 @@ label{
   border-radius: 30px;
   padding-top: 30px;
 }
-.application_page p {
+.application_page p,ul {
   color:floralwhite;
   font-size: 18px;
   margin: 10px;
 }
-
+.competences_list{
+  width: 80%;
+}
+.competence_box{
+  margin: 10px;
+}
 .user_arrow{
   text-align: center;
   padding: 50px 0px 50px 0px;

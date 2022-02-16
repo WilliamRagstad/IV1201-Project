@@ -182,7 +182,7 @@ export default function Application() {
         Name: {user.name}
         <br></br>
       </p>
-      <p>Competences: {user.competences.map((comp) => <p>{comp}</p>)}</p>
+      <ul className="competences_list">Competences: {user.competences.map((comp) => <li className="competence_box">{comp}</li>)}</ul>
     </div>
   );
 
