@@ -32,7 +32,7 @@ export default function Application() {
 
   /**
    * Selects the previous page indice for the list. 
-   * Loops around the list, always trying to fill up the page. 
+   * Loops around the list. 
    */
   function prevPage(){
     var prev = (index-applications_per_page<0) ? ((users.length%applications_per_page != 0) ? (users.length-(users.length%applications_per_page)) : users.length-applications_per_page) : index-applications_per_page ;
@@ -42,7 +42,7 @@ export default function Application() {
   
   /**
    * Selects the next page indice for the list. 
-   * Loops around the list, always trying to fill up the page. 
+   * Loops around the list. 
    */  
   function nextPage(){
     var next = (index+applications_per_page<users.length) ? index+applications_per_page : 0;
