@@ -22,11 +22,11 @@ export default function About() {
         </div>
         <div className="about_container">
             <ul className="about">
-                <li><a href="https://www.linkedin.com/in/william-axbrink/" target="_blank">William Axbrink <span class="iconify"
+                <li><a href="https://www.linkedin.com/in/william-axbrink/" target="_blank">William Axbrink <span className="iconify"
 								data-icon="fa-linkedin" data-inline="true"></span></a></li>
-                <li><a href="https://www.linkedin.com/in/william-r%C3%A5gstad-79787988/" target="_blank">William Rågstad <span class="iconify"
+                <li><a href="https://www.linkedin.com/in/william-r%C3%A5gstad-79787988/" target="_blank">William Rågstad <span className="iconify"
 								data-icon="fa-linkedin" data-inline="true"></span></a></li>
-                <li><a href="https://www.linkedin.com/in/ludvig-lind%C3%A9n-1691a2193/" target="_blank">Ludvig Lindén <span class="iconify"
+                <li><a href="https://www.linkedin.com/in/ludvig-lind%C3%A9n-1691a2193/" target="_blank">Ludvig Lindén <span className="iconify"
 								data-icon="fa-linkedin" data-inline="true"></span></a></li>
             </ul>
         </div>
