@@ -9,12 +9,20 @@ const hash = createHash("sha256");
  * @returns a page with the form to register to the recruitment app.
  */
 export default function Signup() {
+  /**
+   * Function to hash specified password.
+   * @param password The password to hash.
+   * @returns the hashed password.
+   */
   function hashPassword(password: string) {
     hash.update(password);
     const hashed = hash.toString();
     return hashed;
   }
-  const submitForm: React.FormEventHandler = function (event: React.FormEvent<Element>) {
+  /**
+   * Function to perform extra manipulation before sending formdata.
+   */
+  const submitForm = function () {
     const password = (document.getElementById("password") as HTMLInputElement).value;
     const hashed = hashPassword(password);
     (document.getElementById("password") as HTMLInputElement).value = hashed;
