@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DefaultPage from "~/components/defaultpage.tsx";
 
 /**
@@ -113,6 +113,17 @@ export default function Application() {
     ) => (i < (index + applications_per_page) && i >= index)),
   );
 
+  React.useEffect(async ()=>{
+    console.log("testing")
+    const response = await fetch("http://localhost:8000/user/test/email", {
+      method: 'GET',
+      mode: "no-cors",
+
+    })
+    .then(response=>console.log(response))
+
+
+  })
   /**
    * Selects the previous page indice for the list.
    * Loops around the list.
