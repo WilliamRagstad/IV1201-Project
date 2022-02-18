@@ -21,7 +21,24 @@ export default class ApplicationController extends IController {
 
   async get({ response }: Context) {
     const result:Application[] | undefined = await ApplicationController.applicationService.getAll();
-    console.log(result);
-    ok(response, `User with email ${result} was successfully found`);
+    var JSONList:any = [];
+    result!.map((application)=>{JSONList.push(convertApplicationToJSON(application))});
+    ok(response, JSONList);
+  }
+}
+
+/**
+ * Converts the application data to JSON.
+ * @param app The Application DTO
+ * @returns A JSON List
+ */
+function convertApplicationToJSON(app: Application){
+  return {
+    person_id: app.person_id,
+    name: app.name+" "+app.surname,
+    start: [app.from_date],
+    end: [app.to_date],
+    competences: [app.competence_id],
+    email: app.email,
   }
 }
