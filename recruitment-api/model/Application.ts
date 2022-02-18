@@ -6,7 +6,7 @@ export default class Application {
     surname: string;
     email: string;
     competence_id: number;
-    years_of_experience: number;
+    years_of_experience: string;
     from_date: string;
     to_date: string;
 
@@ -16,7 +16,7 @@ export default class Application {
         surname: string,
         email: string,
         competence_id: number,
-        years_of_experience: number,
+        years_of_experience: string,
         from_date: string,
         to_date: string,
     ){
