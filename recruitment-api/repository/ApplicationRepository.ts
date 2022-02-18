@@ -24,16 +24,15 @@ export default class ApplicationRepository extends Repository<Application> {
 
 	async convertTo(row: any): Promise<Application> {
 		// Fetch role from database
-        console.log(row.from_date);
 		return new Application(
-            row.person_id,
-			row.name,
-			row.surname,
-			row.email,
-			row.competence_id,
-			row.years_of_experience,
-			row.from_date,
-			row.to_date,
+            row[0],
+			row[1],
+			row[2],
+			row[3],
+			row[4],
+			row[5],
+			row[6],
+			row[7],
 		);
 	}
 
@@ -57,6 +56,7 @@ export default class ApplicationRepository extends Repository<Application> {
 	 */
 	public async query(query: string): Promise<Application[]> {
 		const result = await this.db.query(query);
+		//console.log(result);
 		return Promise.all(result.rows.map(async (r) => await this.convertTo(r)));
 	}
 
