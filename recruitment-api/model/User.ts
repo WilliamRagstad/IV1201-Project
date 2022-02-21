@@ -1,14 +1,15 @@
 import { Optional } from "https://deno.land/x/knight@2.0.3/mod.ts";
 import Role from "./Role.ts";
-import EmailPassword from "./EmailPassword.ts";
 
 /**
  * User DTO
  */
-export default class User extends EmailPassword {
+export default class User {
   @Optional()
   id?: number;
   username: string;
+  email: string;
+  password: string;
   firstName: string;
   lastName: string;
   socialSecurityNumber: number;
@@ -25,8 +26,9 @@ export default class User extends EmailPassword {
     socialSecurityNumber: number,
 	  role?: Role,
   ) {
-    super(email, password);
     this.id = id;
+    this.email = email;
+    this.password = password;
     this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
