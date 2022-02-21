@@ -38,7 +38,7 @@ function convertApplicationToJSON(app: Application){
     name: app.name+" "+app.surname,
     start: [app.from_date],
     end: [app.to_date],
-    competences: [app.competence_id],
+    competences: [[app.competence_id, app.years_of_experience]],
     email: app.email,
   }
 }

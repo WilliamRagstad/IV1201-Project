@@ -21,19 +21,26 @@ export default function Application() {
     var JSONData:any[] = [];
     for ( var i=0; i<response_data.length; i++){
         if(!(JSONData.filter(function(e) {return e.name == response_data[i].name;}).length>0)){
-            console.log(response_data[i]);
             JSONData.push(response_data[i]);
-            JSONData[JSONData.length-1].competences = []
-            JSONData[JSONData.length-1].start = []
-            JSONData[JSONData.length-1].end = []
+            JSONData[JSONData.length-1].competences = [];
+            JSONData[JSONData.length-1].start = [];
+            JSONData[JSONData.length-1].end = [];
         } else {
-            if(!JSONData[JSONData.length-1].competences.includes(response_data[i].competences[0]))
-              JSONData[JSONData.length-1].competences.push(response_data[i].competences[0]);
+            JSONData[JSONData.length-1].competences.push(response_data[i].competences[0]);
             if(!JSONData[JSONData.length-1].start.includes(response_data[i].start[0]))
               JSONData[JSONData.length-1].start.push(response_data[i].start[0]);
             if(!JSONData[JSONData.length-1].end.includes(response_data[i].end[0]))
               JSONData[JSONData.length-1].end.push(response_data[i].end[0]);
         }
+        var compList = [];
+        var checkList:number[] = [];
+        for(var j = 0; j < JSONData[JSONData.length-1].competences.length; j++){
+          if(!checkList.includes(JSONData[JSONData.length-1].competences[j][0])){
+            checkList.push(JSONData[JSONData.length-1].competences[j][0]);
+            compList.push(JSONData[JSONData.length-1].competences[j])
+          }
+        }
+        JSONData[JSONData.length-1].competences = compList;
     }   
     return JSONData;
   });
@@ -103,16 +110,16 @@ export default function Application() {
    * @param i The Competence ID
    * @returns The competence
    */
-  function listCompetence(i:number){
-    switch(i){
+  function listCompetence(i:number[]){
+    switch(i[0]){
       case( 1 || "A"): {
-        return "Ticket Sales"
+        return "Ticket Sales " + i[1] + " YoE" 
       }
       case 2 || "B": {
-        return "Lotteries"
+        return "Lotteries " + i[1] + " YoE" 
       }
       case 3 || "C": {
-        return "Roller Coaster Operation"
+        return "Roller Coaster Operation " + i[1] + " YoE" 
       }
       default: {
         return "";
