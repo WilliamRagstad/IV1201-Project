@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DefaultPage from "~/components/defaultpage.tsx";
+import { useDeno } from 'aleph/react'
 
 /**
  * The admin page for recruiters to see the applications
@@ -8,122 +9,31 @@ import DefaultPage from "~/components/defaultpage.tsx";
 export default function Application() {
   //TODO: Check if user is logged in and return proper page and if not return log in page
   //TODO: Add Search function to filter users
-  //TODO: Retrieve users from backend
-  //Temp Test Data until connected
-  const users = [
-    {
-      email: "waxbrink@kth.se1",
-      name: "Kalle Karlsson 1",
-      competences: ["Customer Service", "B", "C"],
-      start: "2020-05-30",
-      end: "2021-01-30",
-    },
-    {
-      email: "waxbrink@kth.se2",
-      name: "Pelle Andersson 2",
-      competences: ["A", "B", "C"],
-      start: "2020-06-31",
-      end: "2021-02-25",
-    },
-    {
-      email: "waxbrink@kth.se3",
-      name: "Per Persson 3",
-      competences: ["A", "B", "C"],
-      start: "2020-07-20",
-      end: "2021-03-26",
-    },
-    {
-      email: "waxbrink@kth.se4",
-      name: "Stig Nilsson 4",
-      competences: ["A", "B", "C"],
-      start: "2020-08-05",
-      end: "2021-04-12",
-    },
-    {
-      email: "waxbrink@kth.se5",
-      name: "Sven Svensson 5",
-      competences: ["A", "B", "C"],
-      start: "2020-09-22",
-      end: "2021-05-13",
-    },
-    {
-      email: "waxbrink@kth.se6",
-      name: "Knut Dagsson 6",
-      competences: ["A", "B", "C"],
-      start: "2020-10-12",
-      end: "2021-06-15",
-    },
-    {
-      email: "waxbrink@kth.se7",
-      name: "Patrik Hammar 7",
-      competences: ["A", "B", "C"],
-      start: "2020-12-27",
-      end: "2021-07-20",
-    },
-    {
-      email: "waxbrink@kth.se1",
-      name: "Kalle Karlsson 8",
-      competences: ["Customer Service", "B", "C"],
-      start: "2020-05-30",
-      end: "2021-01-30",
-    },
-    {
-      email: "waxbrink@kth.se2",
-      name: "Pelle Andersson 9",
-      competences: ["A", "B", "C"],
-      start: "2020-06-31",
-      end: "2021-02-25",
-    },
-    {
-      email: "waxbrink@kth.se3",
-      name: "Per Persson 10",
-      competences: ["A", "B", "C"],
-      start: "2020-07-20",
-      end: "2021-03-26",
-    },
-    {
-      email: "waxbrink@kth.se4",
-      name: "Stig Nilsson 11",
-      competences: ["A", "B", "C"],
-      start: "2020-08-05",
-      end: "2021-04-12",
-    },
-    {
-      email: "waxbrink@kth.se5",
-      name: "Sven Svensson 12",
-      competences: ["A", "B", "C"],
-      start: "2020-09-22",
-      end: "2021-05-13",
-    },
-    {
-      email: "waxbrink@kth.se6",
-      name: "Knut Dagsson 13",
-      competences: ["A", "B", "C"],
-      start: "2020-10-12",
-      end: "2021-06-15",
-    },
-  ];
+
+  /**
+   * Retrieves and formats the user data.
+   */
+  const userData = useDeno(async () => {
+    var response_data:any;
+    await fetch(`http://localhost:8000/application`)
+    .then(res => res.text())
+    .then(data => response_data = JSON.parse(data))
+       
+    return response_data;
+  });
+  const [users, setUsers] = useState(userData);
+
   const applications_per_page = 10;
   const [user, setUser] = useState(users[0]);
   const [index, setIndex] = useState(0);
   const [filteredUsers, setFilteredUsers] = useState(
     users.filter((
-      element,
-      i,
+      element:any,
+      i:number,
     ) => (i < (index + applications_per_page) && i >= index)),
   );
 
-  React.useEffect(async ()=>{
-    console.log("testing")
-    const response = await fetch("http://localhost:8000/user/test/email", {
-      method: 'GET',
-      mode: "no-cors",
 
-    })
-    .then(response=>console.log(response))
-
-
-  })
   /**
    * Selects the previous page indice for the list.
    * Loops around the list.
@@ -137,8 +47,8 @@ export default function Application() {
     setIndex(prev);
     setFilteredUsers(
       users.filter((
-        element,
-        i,
+        element:any,
+        i:number,
       ) => (i < (prev + applications_per_page) && i >= prev)),
     );
   }
@@ -154,8 +64,8 @@ export default function Application() {
     setIndex(next);
     setFilteredUsers(
       users.filter((
-        element,
-        i,
+        element:JSON,
+        i:number,
       ) => (i < (next + applications_per_page) && i >= next)),
     );
   }
@@ -171,6 +81,29 @@ export default function Application() {
       {element.name}
     </li>
   ));
+  
+  /**
+   * Lists the competence ID to its corresponding competence
+   * @param i The Competence ID
+   * @returns The competence
+   */
+  function listCompetence(i:number[]){
+    switch(i[0]){
+      case( 1 || "A"): {
+        return "Ticket Sales " + i[1] + " YoE" 
+      }
+      case 2 || "B": {
+        return "Lotteries " + i[1] + " YoE" 
+      }
+      case 3 || "C": {
+        return "Roller Coaster Operation " + i[1] + " YoE" 
+      }
+      default: {
+        return "";
+      }
+      
+    } 
+  }
 
   /**
    * Shows full information about the selected user.
@@ -182,18 +115,18 @@ export default function Application() {
         <br></br>
       </p>
       <p>
-        Start date: {user.start}
+        Start date: {user.start.map((comp) => <p>{comp}</p>)}
         <br></br>
       </p>
       <p>
-        End date: {user.end}
+        End date: {user.end.map((comp) => <p>{comp}</p>)}
         <br></br>
       </p>
       <p>
         Name: {user.name}
         <br></br>
       </p>
-      <p>Competences: {user.competences.map((comp) => <p>{comp}</p>)}</p>
+      <p>Competences: {user.competences.map((comp) => <p>{listCompetence(comp)}</p>)}</p>
     </div>
   );
 
