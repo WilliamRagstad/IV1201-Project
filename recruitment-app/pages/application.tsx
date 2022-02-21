@@ -18,31 +18,8 @@ export default function Application() {
     await fetch(`http://localhost:8000/application`)
     .then(res => res.text())
     .then(data => response_data = JSON.parse(data))
-    var JSONData:any[] = [];
-    for ( var i=0; i<response_data.length; i++){
-        if(!(JSONData.filter(function(e) {return e.name == response_data[i].name;}).length>0)){
-            JSONData.push(response_data[i]);
-            JSONData[JSONData.length-1].competences = [];
-            JSONData[JSONData.length-1].start = [];
-            JSONData[JSONData.length-1].end = [];
-        } else {
-            JSONData[JSONData.length-1].competences.push(response_data[i].competences[0]);
-            if(!JSONData[JSONData.length-1].start.includes(response_data[i].start[0]))
-              JSONData[JSONData.length-1].start.push(response_data[i].start[0]);
-            if(!JSONData[JSONData.length-1].end.includes(response_data[i].end[0]))
-              JSONData[JSONData.length-1].end.push(response_data[i].end[0]);
-        }
-        var compList = [];
-        var checkList:number[] = [];
-        for(var j = 0; j < JSONData[JSONData.length-1].competences.length; j++){
-          if(!checkList.includes(JSONData[JSONData.length-1].competences[j][0])){
-            checkList.push(JSONData[JSONData.length-1].competences[j][0]);
-            compList.push(JSONData[JSONData.length-1].competences[j])
-          }
-        }
-        JSONData[JSONData.length-1].competences = compList;
-    }   
-    return JSONData;
+       
+    return response_data;
   });
   const [users, setUsers] = useState(userData);
 
