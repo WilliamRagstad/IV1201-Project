@@ -1,7 +1,7 @@
 import { Aleph, Server } from 'https://deno.land/x/aleph/server/mod.ts'
+import { parse } from 'https://deno.land/std/flags/mod.ts';
 
-
-const PORT = Number.parseInt(Deno.env.get("PORT") ?? "8080");
+const PORT = Number.parseInt(parse(Deno.args).port ?? Deno.env.get("PORT") ?? "8080");
 
 const aleph = new Aleph(Deno.cwd(), "development")
 const server = new Server(aleph)
