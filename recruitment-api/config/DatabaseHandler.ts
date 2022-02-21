@@ -1,5 +1,4 @@
 import { Client } from "https://deno.land/x/postgres/mod.ts";
-import { credentials } from "./DatabaseCredentials.ts";
 
 /**
  * Database base handler, used to send queries and
@@ -10,7 +9,7 @@ export default class DatabaseHandler {
   private client: Client;
 
   private constructor() {
-    this.client = new Client(credentials);
+    this.client = new Client(Deno.env.get("DATABASE_URL"));
   }
 
   /**
