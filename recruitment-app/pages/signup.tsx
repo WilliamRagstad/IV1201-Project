@@ -1,24 +1,12 @@
 import React from "react";
 import DefaultPage from "../components/defaultpage.tsx";
-import { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";
-
-const hash = createHash("sha256");
+import { hashPassword } from "../lib/passhash.ts";
 
 /**
  * The signup page.
  * @returns a page with the form to register to the recruitment app.
  */
 export default function Signup() {
-  /**
-   * Function to hash specified password.
-   * @param password The password to hash.
-   * @returns the hashed password.
-   */
-  function hashPassword(password: string) {
-    hash.update(password);
-    const hashed = hash.toString();
-    return hashed;
-  }
   /**
    * Function to perform extra manipulation before sending formdata.
    */
