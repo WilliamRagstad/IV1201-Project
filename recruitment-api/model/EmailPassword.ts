@@ -1,5 +1,5 @@
 /**
- * SimpleUser DTO
+ * EmailPassword DTO
  */
 export default class EmailPassword {
   email: string;
