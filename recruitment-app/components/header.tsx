@@ -18,6 +18,8 @@ export default function Header() {
         <a href="/job">Apply for Job</a>
         <span></span>
         <a href="/signup">Sign Up</a>
+        <span></span>
+        <a href="/application">See applications</a>
       </p>
     </div>
   );

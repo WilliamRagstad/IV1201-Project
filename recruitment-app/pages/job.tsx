@@ -2,7 +2,7 @@ import React from "react";
 import DefaultPage from "~/components/defaultpage.tsx";
 
 /**
- * The Job page to apply for work. 
+ * The Job page to apply for work.
  * @returns A page with the forms to select work competence and the availability dates.
  */
 export default function Job() {
