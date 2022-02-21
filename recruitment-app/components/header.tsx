@@ -15,6 +15,8 @@ export default function Header() {
       <p className="nav">
         <a href="/">Home</a>
         <span></span>
+        <a href="/login">Login</a>
+        <span></span>
         <a href="/job">Apply for Job</a>
         <span></span>
         <a href="/signup">Sign Up</a>
