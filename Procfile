@@ -1,1 +1,1 @@
-web: deno run -A https://deno.land/x/aleph/cli.ts dev recruitment-app
+web: deno run --allow-net=:${PORT} recruitment-app\index.ts --port=${PORT}
