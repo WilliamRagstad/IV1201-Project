@@ -13,7 +13,7 @@ export default function Application() {
   /**
    * Retrieves and formats the user data.
    */
-  const userData = useDeno(async () => {
+  const userData = useEffect(async () => {
     var response_data:any;
     await fetch(`http://localhost:8000/application`)
     .then(res => res.text())
