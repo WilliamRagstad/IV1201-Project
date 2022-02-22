@@ -13,16 +13,14 @@ export default function Application() {
   /**
    * Retrieves and formats the user data.
    */
-  const userData = useEffect(async () => {
+   const userData = useDeno(async () => {
     var response_data:any;
     await fetch(`http://localhost:8000/application`)
     .then(res => res.text())
     .then(data => response_data = JSON.parse(data))
-       
     return response_data;
   });
   const [users, setUsers] = useState(userData);
-
   const applications_per_page = 10;
   const [user, setUser] = useState(users[0]);
   const [index, setIndex] = useState(0);
