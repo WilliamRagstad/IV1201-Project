@@ -21,8 +21,7 @@ export default class ApplicationController extends IController {
 
   async get({ response }: Context) {
     const result:Application[] | undefined = await ApplicationController.applicationService.getAll();
-    var JSONList:any = [];
-    result!.map((application)=>{JSONList.push(convertApplicationToJSON(application))});
+    const JSONList =  result!.map(application=>convertApplicationToJSON(application));
     const JSONData = combineData(JSONList);
     ok(response, JSONData);
   }
