@@ -36,8 +36,8 @@ function convertApplicationToJSON(app: Application){
   return {
     person_id: app.person_id,
     name: app.name+" "+app.surname,
-    start: [app.from_date],
-    end: [app.to_date],
+    start: [app.from_date.toLocaleDateString()],
+    end: [app.to_date.toLocaleDateString()],
     competences: [[app.competence_id, app.years_of_experience]],
     email: app.email,
   }
@@ -94,7 +94,7 @@ function compareCompetences(first_list:any[], second_list:any[]){
 function compareDates(first_list:any[], second_list:any[]){
   const duplicates = first_list.filter(
     function(date:any) {
-      return (date-second_list[0]==0)
+      return (date==second_list[0])
     });
   return (duplicates.length == 0 ? true : false);
 }
