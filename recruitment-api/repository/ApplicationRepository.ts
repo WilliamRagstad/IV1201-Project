@@ -25,14 +25,14 @@ export default class ApplicationRepository extends Repository<Application> {
 	async convertTo(row: any): Promise<Application> {
 		// Fetch role from database
 		return new Application(
-            row[0],				//person_id
-			row[1],				//name
-			row[2],				//surname
-			row[3],				//email
-			row[4],				//competence_id
-			row[5],				//years_of_experience
-			row[6],				//from_date
-			row[7],				//to_date
+            row.person_id,
+			row.name,
+			row.surname,
+			row.email,
+			row.competence_id,
+			row.years_of_experience,
+			row.from_date, 
+			row.to_date,
 		);
 	}
 
