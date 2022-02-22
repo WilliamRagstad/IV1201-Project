@@ -75,6 +75,7 @@ export default function Application() {
     <li
       className="user_box"
       onClick={() => setUser(element)}
+      key={"u"+i}
     >
       {element.name}
     </li>
@@ -111,16 +112,16 @@ export default function Application() {
         Email: {user.email}
         <br></br>
       </p>
-      <p>
-        Dates: {user.start.map((comp, i) => <p>{comp} {<br></br>}to{<br></br>} {user.end[i]}</p>)}
+      <ul>
+        Dates: {user.start.map((comp, i) => <li key={"d"+i}>{comp} to {user.end[i]}</li>)}
         <br></br>
-      </p>
+      </ul>
 
       <p>
         Name: {user.name}
         <br></br>
       </p>
-      <p>Competences: {user.competences.map((comp) => <p>{listCompetence(comp)}</p>)}</p>
+      <ul>Competences: {user.competences.map((comp, i) => <li key={"c"+i}>{listCompetence(comp)}</li>)}</ul>
     </div>
   );
 

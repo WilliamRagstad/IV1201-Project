@@ -196,10 +196,11 @@ label{
   border-radius: 30px;
   padding-top: 30px;
 }
-.application_page p {
+.application_page p,.application_page li, .application_page ul {
   color:floralwhite;
   font-size: 18px;
   margin: 10px;
+  list-style: none;
 }
 
 .user_arrow{
