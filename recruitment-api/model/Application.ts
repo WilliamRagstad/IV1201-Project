@@ -5,8 +5,8 @@ export default class Application {
     email: string;
     competence_id: number;
     years_of_experience: string;
-    from_date: string;
-    to_date: string;
+    from_date: Date;
+    to_date: Date;
 
     constructor(
         person_id: number,
@@ -15,8 +15,8 @@ export default class Application {
         email: string,
         competence_id: number,
         years_of_experience: string,
-        from_date: string,
-        to_date: string,
+        from_date: Date,
+        to_date: Date,
     ){
         this.person_id = person_id;
         this.name = name;
