@@ -44,6 +44,6 @@ export default class DatabaseHandler {
    * @returns The result of the query.
    */
   public query(query: string) {
-    return this.client.queryArray(query);
+    return this.client.queryObject(query);
   }
 }
