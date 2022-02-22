@@ -183,7 +183,8 @@ label{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 50%
+  align-content: flex-start;
+  width: 50%;
 }
 .applications{
   display: flex;
@@ -208,6 +209,7 @@ label{
 .competence_box{
   margin: 10px;
 }
+
 .user_arrow{
   text-align: center;
   padding: 50px 0px 50px 0px;
