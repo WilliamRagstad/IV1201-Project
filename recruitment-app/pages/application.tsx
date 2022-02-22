@@ -14,11 +14,15 @@ export default function Application() {
    * Retrieves and formats the user data.
    */
    const userData = useDeno(async () => {
+    try{
     var response_data:any;
     await fetch(`http://localhost:8000/application`)
     .then(res => res.text())
     .then(data => response_data = JSON.parse(data))
     return response_data;
+    } catch(e){
+      return [{email: "No connection to the server", name: "Retry again later", start:["From a moment ago"], end: ["Until it works again"], competences:[] }];
+    }
   });
   const [users, setUsers] = useState(userData);
   const applications_per_page = 10;
