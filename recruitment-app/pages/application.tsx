@@ -99,7 +99,6 @@ export default function Application() {
       default: {
         return "";
       }
-      
     } 
   }
 
@@ -113,13 +112,10 @@ export default function Application() {
         <br></br>
       </p>
       <p>
-        Start date: {user.start.map((comp) => <p>{comp}</p>)}
+        Dates: {user.start.map((comp, i) => <p>{comp} {<br></br>}to{<br></br>} {user.end[i]}</p>)}
         <br></br>
       </p>
-      <p>
-        End date: {user.end.map((comp) => <p>{comp}</p>)}
-        <br></br>
-      </p>
+
       <p>
         Name: {user.name}
         <br></br>
