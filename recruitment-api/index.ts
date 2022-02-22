@@ -12,9 +12,11 @@ const app = Knight.createApi([
 ]);
 DatabaseHandler.getInstance().connect();
 
+const PORT = Number.parseInt(Deno.env.get("PORT") ?? "8000");
+
 console.log(
   AppMode[Knight.getMode()] +
-    " Server ready on http://localhost:8000",
+    " Server ready on http://localhost:" + PORT,
 );
-await app.listen({ port: 8000 });
+await app.listen({ port: PORT });
 DatabaseHandler.getInstance().disconnect();
