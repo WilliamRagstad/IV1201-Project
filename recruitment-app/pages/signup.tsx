@@ -11,11 +11,12 @@ export default function Signup() {
    * Function to perform extra manipulation before sending formdata.
    */
   const submitForm = function () {
-    const password = (document.getElementById("password") as HTMLInputElement).value;
+    const password =
+      (document.getElementById("password") as HTMLInputElement).value;
     const hashed = hashPassword(password);
     (document.getElementById("password") as HTMLInputElement).value = hashed;
-  }
-  
+  };
+
   return (
     <DefaultPage header="Sign up">
       <form
@@ -52,7 +53,7 @@ export default function Signup() {
           </label>
         </div>
 
-        <input type="submit" value="Sign Up" className="button"/>
+        <input type="submit" value="Sign Up" className="button" />
       </form>
     </DefaultPage>
   );

@@ -106,28 +106,6 @@ export default function Application() {
       {element.name}
     </li>
   ));
-  
-  /**
-   * Lists the competence ID to its corresponding competence
-   * @param i The Competence ID
-   * @returns The competence
-   */
-  function listCompetence(i:number[]){
-    switch(i[0]){
-      case( 1 || "A"): {
-        return "Ticket Sales " + i[1] + " YoE" 
-      }
-      case 2 || "B": {
-        return "Lotteries " + i[1] + " YoE" 
-      }
-      case 3 || "C": {
-        return "Roller Coaster Operation " + i[1] + " YoE" 
-      }
-      default: {
-        return "";
-      }
-    } 
-  }
 
   /**
    * Lists the competence ID to its corresponding competence
@@ -192,7 +170,7 @@ export default function Application() {
             <option value="3">Roller Coaster Operation</option>
           </select>
         </label>
-        <input type="button" value="Search" onClick={searchUsers} />
+        <input className="button" type="button" value="Search" onClick={searchUsers} />
       </div>
       <div className="applications">
         <ul className="user_list">{listUsers}</ul>
