@@ -157,19 +157,25 @@ export default function Application() {
 
   return (
     <DefaultPage header="View Applications">
-      <div className="search">
-        Search for name:
-        <label className="txt_field">
-          <input type="text" id="search_name" />
-        </label>
-        Search for competence:
-        <label className="txt_field">
+      <div className="search flex-parent">
+        <div className="flex-child">
+          <label className="txt_field" htmlFor="search_name">Search for name:</label>
+          <input type="text" id="search_name"/>
+        </div>
+        <div className="flex-child">
+          <label className="txt_field" htmlFor="search_competence">Search for competence:</label>
           <select id="search_competence">
             <option value="1">Ticket Sales</option>
             <option value="2">Lotteries</option>
             <option value="3">Roller Coaster Operation</option>
           </select>
-        </label>
+        </div>
+        <div className="flex-child">
+          <label htmlFor="from_date">Available between dates:</label>
+          <input type="date" id="from_date"/>
+          <label htmlFor="to_date">and:</label>
+          <input type="date" id="to_date"/>
+        </div>
         <input className="button" type="button" value="Search" onClick={searchUsers} />
       </div>
       <div className="applications">
