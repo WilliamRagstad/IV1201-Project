@@ -41,6 +41,7 @@ export default function Application() {
     ) => (i < (index + applications_per_page) && i >= index)),
   );
 
+
   /**
    * Function to update shown users.
    */
@@ -105,6 +106,28 @@ export default function Application() {
       {element.name}
     </li>
   ));
+  
+  /**
+   * Lists the competence ID to its corresponding competence
+   * @param i The Competence ID
+   * @returns The competence
+   */
+  function listCompetence(i:number[]){
+    switch(i[0]){
+      case( 1 || "A"): {
+        return "Ticket Sales " + i[1] + " YoE" 
+      }
+      case 2 || "B": {
+        return "Lotteries " + i[1] + " YoE" 
+      }
+      case 3 || "C": {
+        return "Roller Coaster Operation " + i[1] + " YoE" 
+      }
+      default: {
+        return "";
+      }
+    } 
+  }
 
   /**
    * Lists the competence ID to its corresponding competence
@@ -140,7 +163,7 @@ export default function Application() {
         Email: {user.email}
       </p>
       <ul className="application_list">
-        Available dates:{" "}
+        Availability periods:{" "}
         {user.start.map((comp: Date[], i: number) => (
           <li key={"d" + i} className="list_box">{comp} to {user.end[i]}</li>
         ))}
