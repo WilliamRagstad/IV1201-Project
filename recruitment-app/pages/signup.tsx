@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultPage from "../components/defaultpage.tsx";
+import DefaultPage from "../components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
 
 /**

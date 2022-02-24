@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultPage from "~/components/defaultpage.tsx";
+import DefaultPage from "~/components/defaultPage.tsx";
 
 /**
  * The about us page
