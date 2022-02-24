@@ -12,53 +12,65 @@ export default function Application() {
   /**
    * Retrieves and formats the user data.
    */
-  const userData = useDeno(async () => {
-    try {
-      var response_data: any;
-      await fetch(`http://localhost:8000/application`)
-        .then((res) => res.text())
-        .then((data) => response_data = JSON.parse(data));
-      return response_data;
-    } catch (e) {
-      return [{
+  const userData: {
+    person_id: number;
+    name: string;
+    start: Date[];
+    end: Date[];
+    competences: number[][];
+    email: string;
+  }[] = useDeno(async () => {
+    var response_data = await fetch(`http://localhost:8000/application`)
+      .then((res) => res.json()).catch(() => [{
         email: "No connection to the server",
         name: "Retry again later",
         start: ["From a moment ago"],
         end: ["Until it works again"],
         competences: [],
-      }];
-    }
+      }]);
+    console.log(response_data);
+    return response_data;
   });
-  const [users] = useState(userData);
-  const [searchedUsers, setSearchedUsers] = useState(users);
+  const [searchName, setSearchName] = useState("");
+  const [searchCompetence, setSearchCompetence] = useState(1);
+  const [searchFromDate, setSearchFromDate] = useState(new Date());
+  const [searchToDate, setSearchToDate] = useState(new Date());
   const applications_per_page = 6;
-  const [user, setUser] = useState(searchedUsers[0]);
-  const [index, setIndex] = useState(0);
-  const [filteredUsers, setFilteredUsers] = useState(
-    searchedUsers.filter((
-      element: any,
-      i: number,
-    ) => (i < (index + applications_per_page) && i >= index)),
-  );
+  const [user, setUser] = useState(userData[0]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [currentPageUsers, setCurrentPageUsers] = useState([]);
 
+  useEffect(() => {
+    setCurrentPageUsers()
+  }, [userData, pageIndex])
 
   /**
-   * Function to update shown users.
+   * Function to filter shown users.
    */
   function searchUsers() {
-    const text: string =
-      (document.getElementById("search_name") as HTMLInputElement).value
-        .toLowerCase();
-    const competence: number = Number.parseInt(
-      (document.getElementById("search_competence") as HTMLSelectElement).value,
+    console.log(
+      searchName + " | " + searchCompetence + " | " + searchFromDate + " | " +
+        searchToDate,
     );
-    const filterFn =
-      ((user) =>
-        user.name.toLowerCase().includes(text) &&
-        user.competences.some((comp) => comp[0] == competence));
-    const pass = users.filter(filterFn);
+    const filterFn = ((
+      user: {
+        name: string;
+        competences: number[][];
+        start: Date[];
+        end: Date[];
+      },
+    ) =>
+      user.name.toLowerCase().includes(searchName) &&
+      user.competences.some((comp: number[]) => comp[0] == searchCompetence) &&
+      user.start.some((
+        start: Date,
+        i: number,
+      ) => (start >= searchFromDate &&
+        user.end[i] <= searchToDate)
+      ));
+    const pass = userData.filter(filterFn);
     setSearchedUsers(pass);
-    setIndex(0);
+    setPageIndex(0);
     prevPage();
   }
 
@@ -97,7 +109,12 @@ export default function Application() {
   /**
    * Lists the selected users.
    */
-  const listUsers = filteredUsers.map((element, i) => (
+  const listUsers = filteredUsers.map((
+    element: {
+      name: string;
+    },
+    i: string,
+  ) => (
     <li
       className="user_box"
       onClick={() => setUser(element)}
@@ -142,8 +159,10 @@ export default function Application() {
       </p>
       <ul className="application_list">
         Availability periods:{" "}
-        {user.start.map((comp: Date[], i: number) => (
-          <li key={"d" + i} className="list_box">{comp} to {user.end[i]}</li>
+        {user.start.map((comp: Date, i: number) => (
+          <li key={"d" + i} className="list_box">
+            {comp.toLocaleDateString()} to {user.end[i].toLocaleDateString()}
+          </li>
         ))}
       </ul>
       <ul className="application_list">
@@ -159,24 +178,70 @@ export default function Application() {
     <DefaultPage header="View Applications">
       <div className="search flex-parent">
         <div className="flex-child">
-          <label className="txt_field" htmlFor="search_name">Search for name:</label>
-          <input type="text" id="search_name"/>
+          <label className="txt_field" htmlFor="search_name">
+            Search for name:
+          </label>
+          <input
+            type="text"
+            id="search_name"
+            onChange={setSearchName(
+              (document.getElementById("search_name") as HTMLInputElement)
+                .value,
+            )}
+          />
         </div>
         <div className="flex-child">
-          <label className="txt_field" htmlFor="search_competence">Search for competence:</label>
-          <select id="search_competence">
+          <label className="txt_field" htmlFor="search_competence">
+            Search for competence:
+          </label>
+          <select
+            id="search_competence"
+            onChange={setSearchCompetence(
+              Number.parseInt(
+                (document.getElementById(
+                  "search_competence",
+                ) as HTMLSelectElement).value,
+              ),
+            )}
+          >
             <option value="1">Ticket Sales</option>
             <option value="2">Lotteries</option>
             <option value="3">Roller Coaster Operation</option>
           </select>
         </div>
         <div className="flex-child">
-          <label htmlFor="from_date">Available between dates:</label>
-          <input type="date" id="from_date"/>
-          <label htmlFor="to_date">and:</label>
-          <input type="date" id="to_date"/>
+          <label htmlFor="search_from_date">Available between dates:</label>
+          <input
+            type="date"
+            id="search_from_date"
+            defaultValue={new Date().toLocaleDateString()}
+            onChange={setSearchFromDate(
+              new Date(
+                (document.getElementById(
+                  "search_from_date",
+                ) as HTMLInputElement).value,
+              ),
+            )}
+          />
+          <label htmlFor="search_to_date">and:</label>
+          <input
+            type="date"
+            id="search_to_date"
+            defaultValue={new Date().toLocaleDateString()}
+            onChange={setSearchToDate(
+              new Date(
+                (document.getElementById("search_to_date") as HTMLInputElement)
+                  .value,
+              ),
+            )}
+          />
         </div>
-        <input className="button" type="button" value="Search" onClick={searchUsers} />
+        <input
+          className="button"
+          type="button"
+          value="Search"
+          onClick={searchUsers}
+        />
       </div>
       <div className="applications">
         <ul className="user_list">{listUsers}</ul>
