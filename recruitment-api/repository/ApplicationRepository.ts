@@ -30,7 +30,7 @@ export default class ApplicationRepository extends Repository<Application> {
 			row.surname,
 			row.email,
 			row.competence_id,
-			row.years_of_experience,
+			Number.parseFloat(row.years_of_experience),
 			row.from_date, 
 			row.to_date,
 		);
