@@ -44,7 +44,7 @@ export default class ApplicationRepository extends Repository<Application> {
 			model.email,
 			model.competence_id,
 			model.years_of_experience,
-			model.from_date, 
+			model.from_date,
 			model.to_date,
 		];
 	}
@@ -57,6 +57,21 @@ export default class ApplicationRepository extends Repository<Application> {
 	public async query(query: string): Promise<Application[]> {
 		const result = await this.db.query(query);
 		return Promise.all(result.rows.map(async (r) => await this.convertTo(r)));
+		/*
+		const middleStage = await Promise.all(result.rows.map(async (r) => await this.convertTo(r)));
+		// TODO: Combine multiple applications into one
+		return middleStage.reduce((acc: Application[], app: Application) => {
+			const existing = acc.find((u: any) => u.person_id === app.person_id);
+			if (existing) {
+				// TODO: Fix me!
+				existing.competences.push(app.competence_id);
+				existing.availability.push(app.availability_id);
+			} else {
+				acc.push(app);
+			}
+			return acc;
+		}, []);
+		*/
 	}
 
 
@@ -64,9 +79,9 @@ export default class ApplicationRepository extends Repository<Application> {
 	 * Get all users.
 	 * @returns The result of the query.
 	 */
-	public async getAll(): Promise<Application[]> {
+	public async getAll(): Promise<any[]> {
 		return await this.query(
-            "SELECT person.person_id, person.name, person.surname, person.email, competence_profile.competence_id, competence_profile.years_of_experience, availability.from_date, availability.to_date "+
+            "SELECT * "+
             "FROM person "+
             "INNER JOIN competence_profile "+
             "ON person.person_id = competence_profile.person_id "+
@@ -76,5 +91,5 @@ export default class ApplicationRepository extends Repository<Application> {
           );
 	}
 
-    
+
 }
