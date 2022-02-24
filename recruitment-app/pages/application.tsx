@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DefaultPage from "~/components/defaultpage.tsx";
+import DefaultPage from "~/components/defaultPage.tsx";
 import { useDeno } from "aleph/react";
 
 /**
@@ -12,182 +12,217 @@ export default function Application() {
   /**
    * Retrieves and formats the user data.
    */
-  const userData = useDeno(async () => {
-    try {
-      var response_data: any;
-      await fetch(`http://localhost:8000/application`)
-        .then((res) => res.text())
-        .then((data) => response_data = JSON.parse(data));
-      return response_data;
-    } catch (e) {
-      return [{
-        email: "No connection to the server",
-        name: "Retry again later",
-        start: ["From a moment ago"],
-        end: ["Until it works again"],
-        competences: [],
-      }];
-    }
-  });
-  const [users] = useState(userData);
-  const [searchedUsers, setSearchedUsers] = useState(users);
-  const applications_per_page = 6;
-  const [user, setUser] = useState(searchedUsers[0]);
-  const [index, setIndex] = useState(0);
-  const [filteredUsers, setFilteredUsers] = useState(
-    searchedUsers.filter((
-      element: any,
-      i: number,
-    ) => (i < (index + applications_per_page) && i >= index)),
+  const userData = useDeno(
+    async () =>
+      await fetch("http://localhost:8000/application")
+        .then((res) => res.json())
+        .catch((error) => {
+          return {
+            message: "No connection to the API, try again later.",
+          };
+        })
   );
 
+  const applications_per_page = 6;
+  const [pageIndex, setPageIndex] = useState(0);
+  // deno-lint-ignore no-explicit-any ban-types
+  const [currentUser, setCurrentUser]: [any, Function] = useState(null);
+  const [currentPageUsers, setCurrentPageUsers] = useState([]);
+  const [searchCriteria, setSearchCriteria] = useState({
+    name: "",
+    competence: -1,
+    availability: {
+      from: -1,
+      to: -1,
+    },
+  });
+
+  useEffect(() => {
+    if (userData.message || !userData || userData.length === 0) return;
+    if (currentUser === null) setCurrentUser(userData[0]);
+
+    if (pageIndex < 0) setPageIndex(0);
+
+    const searchedUsers = userData
+      // deno-lint-ignore no-explicit-any
+      .filter((user: any) => {
+        // Filter all users that satisfy the search criteria
+        if (
+          searchCriteria.name &&
+          searchCriteria.name.length &&
+          user.name.toLowerCase().includes(searchCriteria.name.toLowerCase())
+        )
+          return false;
+        if (
+          searchCriteria.competence !== -1 &&
+          !user.competence.some(
+            ([id, _]: [number, number]) => id === searchCriteria.competence
+          )
+        )
+          return false;
+        if (
+          searchCriteria.availability.from !== -1 &&
+          user.availability.from < searchCriteria.availability.from
+        )
+          return false;
+        if (
+          searchCriteria.availability.to !== -1 &&
+          user.availability.to > searchCriteria.availability.to
+        )
+          return false;
+        return true;
+      });
+
+    if (pageIndex > Math.floor(searchedUsers.length / applications_per_page))
+      setPageIndex(pageIndex - 1);
+
+    setCurrentPageUsers(
+      searchedUsers.filter(
+        // deno-lint-ignore no-explicit-any
+        (u: any, i: number) =>
+          i < pageIndex + applications_per_page && i >= pageIndex
+      )
+    );
+  }, [userData, searchCriteria, pageIndex]);
 
   /**
    * Function to update shown users.
    */
-  function searchUsers() {
-    const text: string =
-      (document.getElementById("search_name") as HTMLInputElement).value
-        .toLowerCase();
+  function updateSearchCriteria() {
+    const name: string = (
+      document.getElementById("search_name") as HTMLInputElement
+    ).value.toLowerCase();
     const competence: number = Number.parseInt(
-      (document.getElementById("search_competence") as HTMLSelectElement).value,
+      (document.getElementById("search_competence") as HTMLSelectElement).value
     );
-    const filterFn =
-      ((user) =>
-        user.name.toLowerCase().includes(text) &&
-        user.competences.some((comp) => comp[0] == competence));
-    const pass = users.filter(filterFn);
-    setSearchedUsers(pass);
-    setIndex(0);
-    prevPage();
-  }
-
-  /**
-   * Selects the previous page indice for the list.
-   */
-  function prevPage() {
-    var prev = (index - applications_per_page < 0)
-      ? 0
-      : index - applications_per_page;
-    setIndex(prev);
-    setFilteredUsers(
-      searchedUsers.filter((
-        element: any,
-        i: number,
-      ) => (i < (prev + applications_per_page) && i >= prev)),
+    const availability_from: number = Date.parse(
+      (document.getElementById("from_date") as HTMLInputElement).value
     );
-  }
-
-  /**
-   * Selects the next page indice for the list.
-   */
-  function nextPage() {
-    var next = (index + applications_per_page > searchedUsers.length)
-      ? index
-      : index + applications_per_page;
-    setIndex(next);
-    setFilteredUsers(
-      searchedUsers.filter((
-        element: JSON,
-        i: number,
-      ) => (i < (next + applications_per_page) && i >= next)),
+    const availability_to: number = Date.parse(
+      (document.getElementById("to_date") as HTMLInputElement).value
     );
+    setSearchCriteria({
+      name: name,
+      competence: competence,
+      availability: {
+        from: availability_from,
+        to: availability_to,
+      },
+    });
   }
-
-  /**
-   * Lists the selected users.
-   */
-  const listUsers = filteredUsers.map((element, i) => (
-    <li
-      className="user_box"
-      onClick={() => setUser(element)}
-      key={"u" + i}
-    >
-      {element.name}
-    </li>
-  ));
 
   /**
    * Lists the competence ID to its corresponding competence
    * @param i The Competence ID
    * @returns The competence
    */
-  function listCompetence(i: number[]) {
-    switch (i[0]) {
-      case (1 || "A"): {
-        return "Ticket Sales " + i[1] + " Years of experience";
-      }
-      case 2 || "B": {
-        return "Lotteries " + i[1] + " Years of experience";
-      }
-      case 3 || "C": {
-        return "Roller Coaster Operation " + i[1] + " Years of experience";
-      }
-      default: {
-        return "";
-      }
+  function listCompetence([id, experience]: [number, number]) {
+    switch (id) {
+      case 1:
+        return "Ticket Sales " + experience + " Years of experience";
+      case 2:
+        return "Lotteries " + experience + " Years of experience";
+      case 3:
+        return (
+          "Roller Coaster Operation " + experience + " Years of experience"
+        );
+      default:
+        return "Unknown competence";
     }
   }
 
-  /**
-   * Shows full information about the selected user.
-   */
-  const currentApplication = (
-    <div>
-      <p>
-        Name: {user.name}
-      </p>
-      <p>
-        Email: {user.email}
-      </p>
-      <ul className="application_list">
-        Availability periods:{" "}
-        {user.start.map((comp: Date[], i: number) => (
-          <li key={"d" + i} className="list_box">{comp} to {user.end[i]}</li>
-        ))}
-      </ul>
-      <ul className="application_list">
-        Competences:{" "}
-        {user.competences.map((comp: number[], i: number) => (
-          <li key={"c" + i} className="list_box">{listCompetence(comp)}</li>
-        ))}
-      </ul>
-    </div>
-  );
-
   return (
     <DefaultPage header="View Applications">
-      <div className="search flex-parent">
-        <div className="flex-child">
-          <label className="txt_field" htmlFor="search_name">Search for name:</label>
-          <input type="text" id="search_name"/>
-        </div>
-        <div className="flex-child">
-          <label className="txt_field" htmlFor="search_competence">Search for competence:</label>
-          <select id="search_competence">
-            <option value="1">Ticket Sales</option>
-            <option value="2">Lotteries</option>
-            <option value="3">Roller Coaster Operation</option>
-          </select>
-        </div>
-        <div className="flex-child">
-          <label htmlFor="from_date">Available between dates:</label>
-          <input type="date" id="from_date"/>
-          <label htmlFor="to_date">and:</label>
-          <input type="date" id="to_date"/>
-        </div>
-        <input className="button" type="button" value="Search" onClick={searchUsers} />
-      </div>
-      <div className="applications">
-        <ul className="user_list">{listUsers}</ul>
-        <div className="application_page">
-          {currentApplication}
-        </div>
-      </div>
-      <div className="user_arrow_box">
-        <li className="user_arrow" onClick={prevPage}>Previous Page</li>
-        <li className="user_arrow" onClick={nextPage}>Next Page</li>
-      </div>
+      {(userData.message && <h2 className="error-message">{userData.message}</h2>) || (
+        <>
+          <div className="search flex-parent">
+            <div className="flex-child">
+              <label className="txt_field" htmlFor="search_name">
+                Search for name:
+              </label>
+              <input type="text" id="search_name" />
+            </div>
+            <div className="flex-child">
+              <label className="txt_field" htmlFor="search_competence">
+                Search for competence:
+              </label>
+              <select id="search_competence">
+                <option value="-1">All</option>
+                <option value="1">Ticket Sales</option>
+                <option value="2">Lotteries</option>
+                <option value="3">Roller Coaster Operation</option>
+              </select>
+            </div>
+            <div className="flex-child">
+              <label htmlFor="from_date">Available between dates:</label>
+              <input type="date" id="from_date" />
+              <label htmlFor="to_date">and:</label>
+              <input type="date" id="to_date" />
+            </div>
+            <input
+              className="button"
+              type="button"
+              value="Search"
+              onClick={updateSearchCriteria}
+            />
+          </div>
+
+          <div className="applications">
+            <ul className="user_list">
+              {currentPageUsers.map((element: any, i) => (
+                <li
+                  className="user_box"
+                  onClick={() => setCurrentUser(element)}
+                  key={"u" + i}
+                >
+                  {element.name}
+                </li>
+              ))}
+            </ul>
+            <div className="application_page">
+              {currentUser && (
+                <div>
+                  <p>Name: {currentUser.name}</p>
+                  <p>Email: {currentUser.email}</p>
+                  <ul className="application_list">
+                    Availability periods:
+                    {currentUser.start.map((comp: Date[], i: number) => (
+                      <li key={"d" + i} className="list_box">
+                        {comp} to {currentUser.end[i]}
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="application_list">
+                    Competences:
+                    {currentUser.competences.map(
+                      (comp: [number, number], i: number) => (
+                        <li key={"c" + i} className="list_box">
+                          {listCompetence(comp)}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="user_arrow_box">
+            <li
+              className="user_arrow"
+              onClick={() => setPageIndex(pageIndex - 1)}
+            >
+              Previous Page
+            </li>
+            <li
+              className="user_arrow"
+              onClick={() => setPageIndex(pageIndex + 1)}
+            >
+              Next Page
+            </li>
+          </div>
+        </>
+      )}
     </DefaultPage>
   );
 }
