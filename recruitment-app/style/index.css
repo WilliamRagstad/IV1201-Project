@@ -231,11 +231,7 @@ input[type=date]{
   display: flex;
 }
 
-.user_arrow:hover{
-  background-color: #008181;
-  cursor: pointer;
-}
-.user_box:hover{
+.user_arrow:hover,.user_box:hover{
   background-color: #008181;
   cursor: pointer;
 }
@@ -252,7 +248,6 @@ input[type=date]{
   background-color: #008181;
   border-radius: 30px;
   margin: 0 auto;
-
 }
 .about li{
   list-style: none;
