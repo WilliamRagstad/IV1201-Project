@@ -1,6 +1,5 @@
 import { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";
 
-const hashAlg = createHash("sha256");
 
 /**
  * App specific password salt used to hash passwords
@@ -14,6 +13,7 @@ export const Salt = "IV1201_PASSWORD_SALT_1EX048D6A35";
  */
 
 export const Hash = (password: string): string => {
+  const hashAlg = createHash("sha256");
   hashAlg.update(password);
   return hashAlg.toString();
 };
