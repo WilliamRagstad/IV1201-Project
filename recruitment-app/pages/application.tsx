@@ -12,21 +12,23 @@ export default function Application() {
   /**
    * Retrieves and formats the user data.
    */
-const userData = useDeno(
-  async () =>
-    await fetch("http://localhost:8000/application")
-      .then((res) => res.json())
-      .catch((error) => {
-        return {
-          message: "No connection to the API, try again later.",
-        };
-      })
-);
+  const userData = useDeno(
+    async () =>
+      await fetch("http://localhost:8000/application")
+        .then((res) => res.json())
+        .catch((error) => {
+          return {
+            message: "No connection to the API, try again later.",
+          };
+        }),
+  );
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
   // deno-lint-ignore no-explicit-any ban-types
-  const [currentUser, setCurrentUser]: [any, Function] = useState(null);
-  const [currentPageUsers, setCurrentPageUsers] = useState([]);
+  const [currentApplication, setCurrentApplication]: [any, Function] = useState(
+    null,
+  );
+  const [currentPageApplications, setCurrentPageApplications] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState({
     name: "",
     competence: -1,
@@ -38,49 +40,56 @@ const userData = useDeno(
 
   useEffect(() => {
     if (userData.message || !userData || userData.length === 0) return;
-    if (currentUser === null) setCurrentUser(userData[0]);
+    if (currentApplication === null) setCurrentApplication(userData[0]);
 
     if (pageIndex < 0) setPageIndex(0);
 
     const searchedUsers = userData
       // deno-lint-ignore no-explicit-any
-      .filter((user: any) => {
+      .filter((application: any) => {
         // Filter all users that satisfy the search criteria
         if (
           searchCriteria.name &&
           searchCriteria.name.length &&
-          user.name.toLowerCase().includes(searchCriteria.name.toLowerCase())
-        )
+          !(application.user.firstName.toLowerCase() + " " +
+            application.user.lastName.toLowerCase()).includes(
+              searchCriteria.name.toLowerCase(),
+            )
+        ) {
           return false;
+        }
         if (
           searchCriteria.competence !== -1 &&
-          !user.competence.some(
-            ([id, _]: [number, number]) => id === searchCriteria.competence
+          !application.competences.some(
+            (c: any) => c.id === searchCriteria.competence,
           )
-        )
+        ) {
           return false;
+        }
         if (
           searchCriteria.availability.from !== -1 &&
-          user.availability.from < searchCriteria.availability.from
-        )
-          return false;
-        if (
           searchCriteria.availability.to !== -1 &&
-          user.availability.to > searchCriteria.availability.to
-        )
+          !application.availability.some((a: any) =>
+            Date.parse(a.start_date) >= searchCriteria.availability.from &&
+            Date.parse(a.end_date) <= searchCriteria.availability.from
+          )
+        ) {
           return false;
+        }
         return true;
       });
-
-    if (pageIndex > Math.floor(searchedUsers.length / applications_per_page))
+    console.log(searchedUsers.length + " searchresults");
+    if (pageIndex > Math.floor(searchedUsers.length / applications_per_page)) {
       setPageIndex(pageIndex - 1);
+    }
 
-    setCurrentPageUsers(
+    setCurrentPageApplications(
       searchedUsers.filter(
         // deno-lint-ignore no-explicit-any
-        (u: any, i: number) =>
-          i < pageIndex + applications_per_page && i >= pageIndex
-      )
+        (a: any, i: number) =>
+          i < pageIndex * applications_per_page + applications_per_page &&
+          i >= pageIndex * applications_per_page,
+      ),
     );
   }, [userData, searchCriteria, pageIndex]);
 
@@ -92,14 +101,18 @@ const userData = useDeno(
       document.getElementById("search_name") as HTMLInputElement
     ).value.toLowerCase();
     const competence: number = Number.parseInt(
-      (document.getElementById("search_competence") as HTMLSelectElement).value
+      (document.getElementById("search_competence") as HTMLSelectElement).value,
     );
-    const availability_from: number = Date.parse(
-      (document.getElementById("from_date") as HTMLInputElement).value
+    var availability_from: number = Date.parse(
+      (document.getElementById("from_date") as HTMLInputElement).value,
     );
-    const availability_to: number = Date.parse(
-      (document.getElementById("to_date") as HTMLInputElement).value
+    var availability_to: number = Date.parse(
+      (document.getElementById("to_date") as HTMLInputElement).value,
     );
+    if(!(availability_from > 0))
+      availability_from = -1;
+    if(!(availability_to > 0))
+      availability_to = -1;
     setSearchCriteria({
       name: name,
       competence: competence,
@@ -108,6 +121,7 @@ const userData = useDeno(
         to: availability_to,
       },
     });
+    setPageIndex(0);
   }
 
   /**
@@ -115,14 +129,16 @@ const userData = useDeno(
    * @param i The Competence ID
    * @returns The competence
    */
-  function listCompetence([id, experience]: [number, number]) {
-    switch (id) {
+  function listCompetence(comp: any) {
+    switch (comp.id) {
       case 1:
-        return "Ticket Sales " + experience + " Years of experience";
+        return "Ticket Sales " + comp.years_of_experience +
+          " Years of experience";
       case 2:
-        return "Lotteries " + experience + " Years of experience";
+        return "Lotteries " + comp.years_of_experience + " Years of experience";
       case 3:
-        return "Roller Coaster Operation " + experience + " Years of experience";
+        return "Roller Coaster Operation " + comp.years_of_experience +
+          " Years of experience";
       default:
         return "Unknown competence";
     }
@@ -130,20 +146,26 @@ const userData = useDeno(
 
   return (
     <DefaultPage header="View Applications">
-      {(userData.message && <h2 className="error-message">{userData.message}</h2>) || (
+      {(userData.message && (
+        <h2 className="error-message">{userData.message}</h2>
+      )) || (
         <>
           <div className="search flex-parent">
             <div className="flex-child">
               <label className="txt_field" htmlFor="search_name">
                 Search for name:
               </label>
-              <input type="text" id="search_name" />
+              <input
+                type="text"
+                id="search_name"
+                onChange={updateSearchCriteria}
+              />
             </div>
             <div className="flex-child">
               <label className="txt_field" htmlFor="search_competence">
                 Search for competence:
               </label>
-              <select id="search_competence">
+              <select id="search_competence" onChange={updateSearchCriteria}>
                 <option value="-1">All</option>
                 <option value="1">Ticket Sales</option>
                 <option value="2">Lotteries</option>
@@ -152,9 +174,13 @@ const userData = useDeno(
             </div>
             <div className="flex-child">
               <label htmlFor="from_date">Available between dates:</label>
-              <input type="date" id="from_date" />
+              <input
+                type="date"
+                id="from_date"
+                onChange={updateSearchCriteria}
+              />
               <label htmlFor="to_date">and:</label>
-              <input type="date" id="to_date" />
+              <input type="date" id="to_date" onChange={updateSearchCriteria} />
             </div>
             <input
               className="button"
@@ -166,37 +192,46 @@ const userData = useDeno(
 
           <div className="applications">
             <ul className="user_list">
-              {currentPageUsers.map((element: any, i) => (
+              {currentPageApplications.map((app: any, i) => (
                 <li
                   className="user_box"
-                  onClick={() => setCurrentUser(element)}
+                  onClick={() => setCurrentApplication(app)}
                   key={"u" + i}
                 >
-                  {element.name}
+                  {app.user.firstName + " " + app.user.lastName}
                 </li>
               ))}
             </ul>
             <div className="application_page">
-              {currentUser && (
+              {currentApplication && (
                 <div>
-                  <p>Name: {currentUser.name}</p>
-                  <p>Email: {currentUser.email}</p>
+                  <p>
+                    Name: {currentApplication.user.firstName + " " +
+                      currentApplication.user.lastName}
+                  </p>
+                  <p>Email: {currentApplication.user.email}</p>
                   <ul className="application_list">
                     Availability periods:
-                    {currentUser.start.map((comp: Date[], i: number) => (
+                    {currentApplication.availability.map((
+                      availability: any,
+                      i: number,
+                    ) => (
                       <li key={"d" + i} className="list_box">
-                        {comp} to {currentUser.end[i]}
+                        {new Date(availability.start_date).toLocaleDateString()}
+                        {" "}
+                        to{" "}
+                        {new Date(availability.end_date).toLocaleDateString()}
                       </li>
                     ))}
                   </ul>
                   <ul className="application_list">
                     Competences:
-                    {currentUser.competences.map(
-                      (comp: [number, number], i: number) => (
+                    {currentApplication.competences.map(
+                      (comp: any, i: number) => (
                         <li key={"c" + i} className="list_box">
                           {listCompetence(comp)}
                         </li>
-                      )
+                      ),
                     )}
                   </ul>
                 </div>
