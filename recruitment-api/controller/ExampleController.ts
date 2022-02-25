@@ -2,7 +2,7 @@ import {
   Context,
   Controller,
   IController,
-} from "https://deno.land/x/knight@2.0.3/mod.ts";
+} from "https://deno.land/x/knight@2.0.5/mod.ts";
 
 @Controller("/example")
 export default class ExampleController extends IController {
