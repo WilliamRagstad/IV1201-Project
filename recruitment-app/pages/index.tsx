@@ -1,25 +1,16 @@
 import React from "react";
-import DefaultPage from "~/components/defaultpage.tsx";
+import DefaultPage from "~/components/defaultPage.tsx";
 
 /**
- * The Home page with a login screen.
- * @returns The Login screen component.
+ * The Home page
+ * @returns The Home screen component.
  */
 export default function Home() {
-  //Check if user is logged in and return proper page and if not return log in page
   return (
-    <DefaultPage header="Login to site">
-      <form action="/" method="post" className="signup_form">
-        Email:
-        <label className="txt_field">
-          <input type="email" name="email" />
-        </label>
-        Password:
-        <label className="txt_field">
-          <input type="password" name="password" />
-        </label>
-        <input type="submit" value="Login" className="button" />
-      </form>
+    <DefaultPage header="">
+      <p>
+        This is a site for sending in applications to a amusementpark and also letting admins view the applications and change their state.
+      </p>
     </DefaultPage>
   );
 }
