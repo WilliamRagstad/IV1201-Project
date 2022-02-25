@@ -7,7 +7,7 @@ import {
   IController,
   ok,
   Params,
-} from "https://deno.land/x/knight@2.0.5/mod.ts";
+} from "https://deno.land/x/knight@2.1.0/mod.ts";
 
 import ApplicationService from "../service/ApplicationService.ts";
 import Application from "../model/Application.ts";
