@@ -1,95 +1,108 @@
 // deno-lint-ignore-file no-explicit-any
 import Application from "../model/Application.ts";
+import Availability from "../model/Availability.ts";
+import Competence from "../model/Competence.ts";
+import User from "../model/User.ts";
 import Repository from "./Repository.ts";
 
 /**
  * Application repository class.
  */
 export default class ApplicationRepository extends Repository<Application> {
-	private static instance: ApplicationRepository;
-	constructor() {
-		super();
-	}
+  private static instance: ApplicationRepository;
+  constructor() {
+    super();
+  }
 
-	/**
-	 * Get the user repository singleton instance.
-	 * @returns The singleton instance.
-	 */
-	public static getInstance(): ApplicationRepository {
-		if (!ApplicationRepository.instance) {
-			ApplicationRepository.instance = new ApplicationRepository();
-		}
-		return ApplicationRepository.instance;
-	}
+  /**
+   * Get the user repository singleton instance.
+   * @returns The singleton instance.
+   */
+  public static getInstance(): ApplicationRepository {
+    if (!ApplicationRepository.instance) {
+      ApplicationRepository.instance = new ApplicationRepository();
+    }
+    return ApplicationRepository.instance;
+  }
 
-	async convertTo(row: any): Promise<Application> {
-		// Fetch role from database
-		return new Application(
-            row.person_id,
-			row.name,
-			row.surname,
-			row.email,
-			row.competence_id,
-			Number.parseFloat(row.years_of_experience),
-			row.from_date, 
-			row.to_date,
-		);
-	}
+  async convertTo(row: any): Promise<Application> {
+    const user = new User(
+      row.person_id,
+      row.email,
+      row.password,
+      row.username,
+      row.name,
+      row.surname,
+      row.pnr,
+      undefined,
+    );
+    const competence = [
+      new Competence(
+        row.competence_id,
+        Number.parseFloat(row.years_of_experience),
+      ),
+    ];
+    const availability = [
+      new Availability(new Date(row.from_date), new Date(row.to_date)),
+    ];
+    return new Application(
+      user,
+      competence,
+      availability,
+    );
+  }
 
-	convertFrom(model: Application): unknown[] {
-		return [
-			model.person_id,
-			model.name,
-			model.surname,
-			model.email,
-			model.competence_id,
-			model.years_of_experience,
-			model.from_date,
-			model.to_date,
-		];
-	}
+  convertFrom(model: Application): unknown[] {
+    throw "Not implemented";
+  }
 
-	/**
-	 * Send a custom query to the database.
-	 * @param query The query to execute.
-	 * @returns The result of the query.
-	 */
-	public async query(query: string): Promise<Application[]> {
-		const result = await this.db.query(query);
-		return Promise.all(result.rows.map(async (r) => await this.convertTo(r)));
-		/*
-		const middleStage = await Promise.all(result.rows.map(async (r) => await this.convertTo(r)));
-		// TODO: Combine multiple applications into one
-		return middleStage.reduce((acc: Application[], app: Application) => {
-			const existing = acc.find((u: any) => u.person_id === app.person_id);
-			if (existing) {
-				// TODO: Fix me!
-				existing.competences.push(app.competence_id);
-				existing.availability.push(app.availability_id);
-			} else {
-				acc.push(app);
-			}
-			return acc;
-		}, []);
-		*/
-	}
+  /**
+   * Send a custom query to the database.
+   * @param query The query to execute.
+   * @returns The result of the query.
+   */
+  public async query(query: string): Promise<Application[]> {
+    const result = await this.db.query(query);
+    const middleStage = await Promise.all(
+      result.rows.map(async (r) => await this.convertTo(r)),
+    );
+    return middleStage.reduce((acc: Application[], app: Application) => {
+      const existing = acc.find((a: any) => a.user.id === app.user.id);
+      if (existing) {
+        // There is only one compentence and availability when first fetching from the database.
+        if (
+          !existing.competences.some((c: Competence) =>
+            c.id == app.competences[0].id
+          )
+        )
+          existing.competences.push(app.competences[0]);
+        if (
+          !existing.availability.some((a: Availability) =>
+            (a.start_date.getTime() == app.availability[0].start_date.getTime()) &&
+            (a.end_date.getTime() == app.availability[0].end_date.getTime())
+          )
+        )
+          existing.availability.push(app.availability[0]);
+      } else {
+        acc.push(app);
+      }
+      return acc;
+    }, []);
+  }
 
-
-	/**
-	 * Get all users.
-	 * @returns The result of the query.
-	 */
-	public async getAll(): Promise<any[]> {
-		return await this.query(
-            "SELECT * "+
-            "FROM person "+
-            "INNER JOIN competence_profile "+
-            "ON person.person_id = competence_profile.person_id "+
-            "INNER JOIN availability "+
-            "ON person.person_id = availability.person_id "+
-            "ORDER BY person.person_id;"
-          );
-	}
-
-
+  /**
+   * Get all applications.
+   * @returns The result of the query.
+   */
+  public async getAll(): Promise<any[]> {
+    return await this.query(
+      "SELECT person.person_id, person.email, person.password, person.name, person.surname, person.pnr, competence_profile.competence_id, competence_profile.years_of_experience, availability.from_date, availability.to_date " +
+        "FROM person " +
+        "INNER JOIN competence_profile " +
+        "ON person.person_id = competence_profile.person_id " +
+        "INNER JOIN availability " +
+        "ON person.person_id = availability.person_id " +
+        "ORDER BY person.person_id;",
+    );
+  }
 }
