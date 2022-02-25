@@ -1,4 +1,4 @@
-import { Optional } from "https://deno.land/x/knight@2.0.3/mod.ts";
+import { Optional } from "https://deno.land/x/knight@2.1.0/mod.ts";
 
 /**
  * Competence DTO
