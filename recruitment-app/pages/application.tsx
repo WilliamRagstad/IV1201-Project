@@ -12,17 +12,16 @@ export default function Application() {
   /**
    * Retrieves and formats the user data.
    */
-  const userData = useDeno(
-    async () =>
-      await fetch("http://localhost:8000/application")
-        .then((res) => res.json())
-        .catch((error) => {
-          return {
-            message: "No connection to the API, try again later.",
-          };
-        })
-  );
-
+const userData = useDeno(
+  async () =>
+    await fetch("http://localhost:8000/application")
+      .then((res) => res.json())
+      .catch((error) => {
+        return {
+          message: "No connection to the API, try again later.",
+        };
+      })
+);
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
   // deno-lint-ignore no-explicit-any ban-types
@@ -86,7 +85,7 @@ export default function Application() {
   }, [userData, searchCriteria, pageIndex]);
 
   /**
-   * Function to update shown users.
+   * Function to filter shown users.
    */
   function updateSearchCriteria() {
     const name: string = (
@@ -123,9 +122,7 @@ export default function Application() {
       case 2:
         return "Lotteries " + experience + " Years of experience";
       case 3:
-        return (
-          "Roller Coaster Operation " + experience + " Years of experience"
-        );
+        return "Roller Coaster Operation " + experience + " Years of experience";
       default:
         return "Unknown competence";
     }

@@ -42,7 +42,7 @@ function convertApplicationToJSON(app: Application) {
     name: app.name + " " + app.surname,
     start: [app.from_date],
     end: [app.to_date],
-    competences: [[app.competence_id, app.years_of_experience]],
+    competences: [{id: app.competence_id, years_of_experience: app.years_of_experience}],
     email: app.email,
   };
 }
@@ -74,10 +74,8 @@ function combineDuplicates(
   for (var i = 0; i < JSONList.length; i++) {
     //If object does not already exist in the new list, add it
     if (compareNames(JSONData, JSONList[i].name)) {
+      JSONList[i];
       JSONData.push(JSONList[i]);
-      JSONData[JSONData.length - 1].competences = [];
-      JSONData[JSONData.length - 1].start = [];
-      JSONData[JSONData.length - 1].end = [];
     } else {
       //Add the competences and dates to the final object if a duplicate does not exist
       if (
