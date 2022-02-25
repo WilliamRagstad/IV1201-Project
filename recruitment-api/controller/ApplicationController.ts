@@ -21,8 +21,6 @@ export default class ApplicationController extends IController {
     .getInstance();
 
   async get({ response }: Context) {
-    const result: any | undefined = await ApplicationController
-      .applicationService.getAll();
-    ok(response, result);
+    ok(response, await ApplicationController.applicationService.getAll());
   }
 }
