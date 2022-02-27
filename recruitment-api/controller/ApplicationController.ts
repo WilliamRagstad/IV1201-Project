@@ -7,7 +7,7 @@ import {
   IController,
   ok,
   Params,
-} from "https://deno.land/x/knight@2.0.3/mod.ts";
+} from "https://deno.land/x/knight@2.1.0/mod.ts";
 
 import ApplicationService from "../service/ApplicationService.ts";
 import Application from "../model/Application.ts";
@@ -21,8 +21,6 @@ export default class ApplicationController extends IController {
     .getInstance();
 
   async get({ response }: Context) {
-    const result: any | undefined = await ApplicationController
-      .applicationService.getAll();
-    ok(response, result);
+    ok(response, await ApplicationController.applicationService.getAll());
   }
 }
