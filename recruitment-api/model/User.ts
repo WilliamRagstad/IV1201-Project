@@ -1,4 +1,4 @@
-import { Optional } from "https://deno.land/x/knight@2.0.3/mod.ts";
+import { Optional } from "https://deno.land/x/knight@2.1.0/mod.ts";
 import Role from "./Role.ts";
 
 /**
@@ -7,9 +7,9 @@ import Role from "./Role.ts";
 export default class User {
   @Optional()
   id?: number;
+  username: string;
   email: string;
   password: string;
-  username: string;
   firstName: string;
   lastName: string;
   socialSecurityNumber: number;
@@ -24,7 +24,7 @@ export default class User {
     firstName: string,
     lastName: string,
     socialSecurityNumber: number,
-	role?: Role,
+	  role?: Role,
   ) {
     this.id = id;
     this.email = email;
@@ -33,6 +33,6 @@ export default class User {
     this.firstName = firstName;
     this.lastName = lastName;
     this.socialSecurityNumber = socialSecurityNumber;
-	this.role = role;
+	  this.role = role;
   }
 }

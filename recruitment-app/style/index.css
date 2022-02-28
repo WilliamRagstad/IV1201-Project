@@ -25,7 +25,7 @@ main {
   font-size: 18px;
   font-weight: 400;
   text-align: center;
-  color: #000;  
+  color: #000;
 }
 
 .page p {
@@ -82,7 +82,7 @@ main {
 }
 
 .header {
-  padding: 25px;
+  padding: 15px;
 }
 
 .nav span,
@@ -121,17 +121,18 @@ main {
   background: #D63369;
   border-radius: 25px;
   font-weight: 700;
+  list-style: none;
 }
 .button:hover{
   background-color: #008181;
+  cursor: pointer;
 }
 
 form .txt_field{
   position: relative;
-  border-bottom: 2px solid #008181;
   margin: 30px 0;
 }
-.txt_field input{
+input{
   width: 100%;
   padding:0 5px;
   height: 40px;
@@ -139,6 +140,10 @@ form .txt_field{
   border: none;
   background: none;
   outline: none;
+  border-bottom: 2px solid #008181;
+}
+select{
+  border-bottom: 2px solid #008181;
 }
 .signup_form {
   padding: 20px;
@@ -149,7 +154,6 @@ form .txt_field{
   padding:0 5px;
   height: 20px;
   font-size: 16px;
-  border: 2px solid #008181;
   margin-right: 5px;
 }
 .flex-parent{
@@ -158,24 +162,23 @@ form .txt_field{
   flex-direction: column;
   align-items: center;
 }
-.flex-parent input[type=date]{
-  width: 200px;
+input[type=date]{
+  width: 150px;
 }
 .flex-child{
-  width: 200px;
-}
-label{
-  border-bottom: 2px solid #008181;
+  width: 100%;
+  margin: 10px;
 }
 .user_box{
   text-align: center;
   padding: 30px 0px 30px 0px;
   border-radius: 10px;
   width: 100%;
+  height: fit-content;
   list-style: none;
   margin-bottom: 20px;
   margin: 5px;
-  background-color: #008181;
+  background-color: #D63369;
   font-size: 18px;
   color:floralwhite;
 }
@@ -183,12 +186,15 @@ label{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 50%
+  align-content: flex-start;
+  width: 50%;
+  margin: 0 10px 0 0;
 }
 .applications{
   display: flex;
 }
 .application_page{
+  display: flex;
   text-align: center;
   justify-content: center;
   width: 100%;
@@ -196,22 +202,28 @@ label{
   border-radius: 30px;
   padding-top: 30px;
 }
-.application_page p,.application_page li, .application_page ul {
+.application_page p,ul {
   color:floralwhite;
   font-size: 18px;
   margin: 10px;
   list-style: none;
 }
+.competences_list{
+  width: 80%;
+}
+.competence_box{
+  margin: 10px;
+}
 
 .user_arrow{
   text-align: center;
-  padding: 50px 0px 50px 0px;
+  padding: 30px 0px 30px 0px;
   border-radius: 10px;
   width: 50%;
   list-style: none;
   margin-bottom: 20px;
   margin: 5px;
-  background-color: #008181;
+  background-color: #D63369;
   font-size: 18px;
   color:floralwhite;
 }
@@ -219,11 +231,9 @@ label{
   display: flex;
 }
 
-.user_arrow:hover{
-  background-color: #D63369;
-}
-.user_box:hover{
-  background-color: #D63369;
+.user_arrow:hover,.user_box:hover{
+  background-color: #008181;
+  cursor: pointer;
 }
 .about_container{
   justify-content:center;
@@ -238,7 +248,6 @@ label{
   background-color: #008181;
   border-radius: 30px;
   margin: 0 auto;
-
 }
 .about li{
   list-style: none;
@@ -259,4 +268,10 @@ label{
   color:floralwhite;
   font-size: 18px;
   padding: 50px;
+}
+
+
+.page .error-message {
+    margin: 5em 0;
+    color: #D63369 !important;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultPage from "~/components/defaultpage.tsx";
+import DefaultPage from "~/components/defaultPage.tsx";
 
 /**
  * The Job page to apply for work.
@@ -8,11 +8,11 @@ import DefaultPage from "~/components/defaultpage.tsx";
 export default function Job() {
   return (
     <DefaultPage header="Apply for work here">
-      <form action="/" method="post" className="signup_form">
-        <div className="expertise">
+      <form action="/" method="post" className="signup_form flex-parent">
+        <div>
           <h2>Choose your expertise</h2>
           <div className="flex-parent">
-            <div className="flex-child">
+            <div>
               <input
                 className="check_box"
                 type="checkbox"
@@ -21,7 +21,7 @@ export default function Job() {
               />
               <label htmlFor="expertise1">Ticket sales</label>
             </div>
-            <div className="flex-child">
+            <div>
               <input
                 className="check_box"
                 type="checkbox"
@@ -30,7 +30,7 @@ export default function Job() {
               />
               <label htmlFor="expertise2">Lotteries</label>
             </div>
-            <div className="flex-child">
+            <div>
               <input
                 className="check_box"
                 type="checkbox"
