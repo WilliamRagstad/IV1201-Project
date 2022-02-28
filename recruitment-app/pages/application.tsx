@@ -74,10 +74,10 @@ export default function Application() {
         if (
           searchCriteria.availability.from !== -1 &&
           searchCriteria.availability.to !== -1 &&
-          !(application.availability.some((a: any) =>
+          !application.availability.some((a: any) =>
             Date.parse(a.start_date) >= searchCriteria.availability.from &&
             Date.parse(a.end_date) <= searchCriteria.availability.to
-          ))
+          )
         ) {
           return false;
         }
