@@ -37,8 +37,9 @@ export default class UserService {
    */
   async findUserByEmail({ email }: User): Promise<User | undefined> {
     const result = await this.userRepository.query(
-      "SELECT * FROM person WHERE email='" + email + "'",
-    );
+      "SELECT * FROM person WHERE email='" + email + "'");
+    console.log("SELECT * FROM person WHERE email='" + email + "'");
+    console.log(result[0]);
     return result.length > 0 ? result[0] : undefined;
   }
 
@@ -50,9 +51,10 @@ export default class UserService {
    */
   async verifyUser(email: string, password: string) {
     const user = await this.findUserByEmail({ email } as User);
-    if (user) {
-      return user.password === password;
+    console.log(user);
+    if (user && user.password === password) {
+      return user.role?.id;
     }
-    return false;
+    return 0;
   }
 }
