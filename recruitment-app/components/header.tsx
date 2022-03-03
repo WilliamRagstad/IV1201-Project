@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "~/components/logo.tsx";
-
 /**
  * Creates a header to use on the webpage.
  * @returns The created header.
  */
 export default function Header() {
-  //If logged in, dont show sign up
+  /**
+   * Checks the users authorization
+   */
+  const [title, setTitle] = useState('other');
+  useEffect(async ()=> {
+    if(localStorage.length > 0 && title=="other"){
+      await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
+        .then((res) => res.json())
+        .then(data => {setTitle(data.user)})
+        .catch(()=>{
+          setTitle("other");
+      })
+    } 
+  });
+
   return (
     <div className="header">
       <p className="logo">
@@ -15,13 +28,11 @@ export default function Header() {
       <p className="nav">
         <a href="/">Home</a>
         <span></span>
-        <a href="/login">Login</a>
-        <span></span>
-        <a href="/signup">Sign Up</a>
-        <span></span>
-        <a href="/job">Apply for Job</a>
-        <span></span>
-        <a href="/application">See applications</a>
+        {(title==="other") && (<><a href="/login">Login</a><span></span></>)}
+        {(title==="other") && (<><a href="/signup">Sign Up</a></>)}
+        {(title==="applicant") && (<><a href="/job">Apply for Job</a><span></span></>)}
+        {(title==="recruiter") && (<><a href="/application">See applications</a><span></span></>)}
+        {(title!=="other") && (<><a href="/" onClick={()=>{localStorage.clear();window.location.reload()}}>Logout</a></>)}
       </p>
     </div>
   );
