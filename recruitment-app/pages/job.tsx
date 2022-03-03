@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 
 /**
@@ -6,9 +6,25 @@ import DefaultPage from "~/components/defaultPage.tsx";
  * @returns A page with the forms to select work competence and the availability dates.
  */
 export default function Job() {
+  /**
+   * Checks the users authorization
+   */
+   const [title, setTitle] = useState('other');
+   useEffect(async ()=> {
+     if(localStorage.length > 0 && title=="other"){
+       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
+         .then((res) => res.json())
+         .then(data => setTitle(data.user))
+         .catch(()=>{
+           setTitle("other");
+       })
+     } 
+   });
+
   return (
     <DefaultPage header="Apply for work here">
-      <form action="/" method="post" className="signup_form flex-parent">
+      {(title!=="applicant")&&(<><p>403 - Forbidden Access</p></>) ||
+      (title==="applicant")&&(<form action="/" method="post" className="signup_form flex-parent">
         <div>
           <h2>Choose your expertise</h2>
           <div className="flex-parent">
@@ -55,7 +71,7 @@ export default function Job() {
           </div>
         </div>
         <input type="submit" value="Apply" className="button" />
-      </form>
+      </form>)}
     </DefaultPage>
   );
 }
