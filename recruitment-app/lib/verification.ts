@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 
+/**
+ * Verifies the users JWT to check authorization privileges. 
+ * @returns The users role title. 
+ */
 export const useVerify = () => {
     const [title, setTitle] = useState("other");
     useEffect(()=> {
