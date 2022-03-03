@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
-import {useVerify} from "../lib/verification.ts"
+import { useVerify } from "../lib/verification.ts"
 
 /**
  * The Login page with a login form.
@@ -37,7 +37,6 @@ export default function Login() {
       }
     })
     .catch(error => console.log("Try Again"));
-    
   };
 
   return (

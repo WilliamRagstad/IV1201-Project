@@ -8,6 +8,7 @@ import {useVerify} from "../lib/verification.ts"
  * @returns a page with the form to register to the recruitment app.
  */
 export default function Signup() {
+  const title = useVerify();
   /**
    * Function to perform extra manipulation before sending formdata.
    */
@@ -17,9 +18,7 @@ export default function Signup() {
     const hashed = hashPassword(password);
     (document.getElementById("password") as HTMLInputElement).value = hashed;
   };
-  const title = useVerify();
-
-
+  
   return (
     <DefaultPage header="Sign up">
       {(title!="other")&&(<><p>Already signed in</p></>)||(title=="other")&&(<form

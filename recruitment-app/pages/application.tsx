@@ -22,7 +22,6 @@ export default function Application() {
         }),
   );
 
-  
   const title = useVerify();
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);

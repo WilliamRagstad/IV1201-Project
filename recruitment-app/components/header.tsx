@@ -6,11 +6,7 @@ import {useVerify} from "../lib/verification.ts"
  * @returns The created header.
  */
 export default function Header() {
-  /**
-   * Checks the users authorization
-   */
   const title = useVerify();
-
   return (
     <div className="header">
       <p className="logo">

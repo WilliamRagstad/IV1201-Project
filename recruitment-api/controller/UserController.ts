@@ -1,6 +1,5 @@
 import {
   bodyMappingFormData,
-  bodyMappingJSON,
   Context,
   Controller,
   created,
@@ -14,8 +13,6 @@ import {
 import User from "../model/User.ts";
 import UserService from "../service/UserService.ts";
 import { verifyJWT, createJWT } from "../../shared/jwt.ts";
-
-
 
 /**
  * User controller class.
