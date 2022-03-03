@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DefaultPage from "../components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
 
@@ -17,9 +17,24 @@ export default function Signup() {
     (document.getElementById("password") as HTMLInputElement).value = hashed;
   };
 
+  /**
+   * Checks the users authorization
+   */
+   const [title, setTitle] = useState('other');
+   useEffect(async ()=> {
+     if(localStorage.length > 0 && title=="other"){
+       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
+         .then((res) => res.json())
+         .then(data => setTitle(data.user))
+         .catch(()=>{
+           setTitle("other");
+       })
+     } 
+   });
+
   return (
     <DefaultPage header="Sign up">
-      <form
+      {(title!="other")&&(<><p>Already signed in</p></>)||(title=="other")&&(<form
         action="http://localhost:8000/user"
         method="post"
         className="signup_form"
@@ -54,7 +69,7 @@ export default function Signup() {
         </div>
 
         <input type="submit" value="Sign Up" className="button" />
-      </form>
+      </form>)}
     </DefaultPage>
   );
 }

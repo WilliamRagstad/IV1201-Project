@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
-import { useDeno } from "aleph/react";
 
 /**
  * The Login page with a login form.
  * @returns The Login screen component.
  */
 export default function Login() {
+  const [error, setError] = useState("");
   /**
    * Checks the users authorization
    */
@@ -37,16 +37,25 @@ export default function Login() {
       data.append(pair[0], pair[1] as string);
     }
     //TODO: Make POST request instead (data as body)
-    //TODO: Better error-handling
     await fetch("http://localhost:8000/user/validate/"+data.get("email")+"/"+data.get("password"))
     .then(response => response.text())
-    .then(data => data!="" ? localStorage.setItem("JWT", data) : new Error())
-    .catch(error => console.log(error));
+    .then(data => {
+      if(data){
+        localStorage.setItem("JWT", data);
+        window.location.href="/";
+      } else{
+        (document.getElementById("password") as HTMLInputElement).value = ""
+        setError("Wrong username or password, try again");
+      }
+    })
+    .catch(error => console.log("Try Again"));
+    
   };
 
   return (
     <DefaultPage header="Login to site">
-      <form
+      {(title!=="other")&&(<><p>Already logged in</p></>) ||
+      (title==="other")&&(<><form
         id="myForm"
         className="signup_form"
         encType="multipart/form-data"
@@ -59,8 +68,8 @@ export default function Login() {
         <label className="txt_field">
           <input id="password" type="password" name="password" />
         </label>
-        <a href="/"><button className="button" onClick={submitForm}>Login</button></a>
       </form>
+      <button className="button" onClick={submitForm}>Login</button></>)}
     </DefaultPage>
   );
 }
