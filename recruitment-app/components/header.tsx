@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Logo from "~/components/logo.tsx";
+import {useVerify} from "../lib/verification.ts"
 /**
  * Creates a header to use on the webpage.
  * @returns The created header.
@@ -8,17 +9,7 @@ export default function Header() {
   /**
    * Checks the users authorization
    */
-  const [title, setTitle] = useState('other');
-  useEffect(async ()=> {
-    if(localStorage.length > 0 && title=="other"){
-      await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
-        .then((res) => res.json())
-        .then(data => {setTitle(data.user)})
-        .catch(()=>{
-          setTitle("other");
-      })
-    } 
-  });
+  const title = useVerify();
 
   return (
     <div className="header">

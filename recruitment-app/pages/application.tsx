@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { useDeno } from "aleph/react";
+import {useVerify} from "../lib/verification.ts"
 
 /**
  * The admin page for recruiters to see the applications
@@ -21,21 +22,8 @@ export default function Application() {
         }),
   );
 
-  /**
-   * Checks the users authorization
-   */
-   const [title, setTitle] = useState('other');
-   useEffect(async ()=> {
-     if(localStorage.length > 0 && title=="other"){
-       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
-         .then((res) => res.json())
-         .then(data => setTitle(data.user))
-         .catch(()=>{
-           setTitle("other");
-       })
-     } 
-   });
-
+  
+  const title = useVerify();
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
   // deno-lint-ignore no-explicit-any ban-types

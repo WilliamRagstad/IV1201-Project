@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "../components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
+import {useVerify} from "../lib/verification.ts"
 
 /**
  * The signup page.
@@ -16,21 +17,8 @@ export default function Signup() {
     const hashed = hashPassword(password);
     (document.getElementById("password") as HTMLInputElement).value = hashed;
   };
+  const title = useVerify();
 
-  /**
-   * Checks the users authorization
-   */
-   const [title, setTitle] = useState('other');
-   useEffect(async ()=> {
-     if(localStorage.length > 0 && title=="other"){
-       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
-         .then((res) => res.json())
-         .then(data => setTitle(data.user))
-         .catch(()=>{
-           setTitle("other");
-       })
-     } 
-   });
 
   return (
     <DefaultPage header="Sign up">

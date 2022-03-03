@@ -1,26 +1,14 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
+import {useVerify} from "../lib/verification.ts"
 
 /**
  * The Job page to apply for work.
  * @returns A page with the forms to select work competence and the availability dates.
  */
 export default function Job() {
-  /**
-   * Checks the users authorization
-   */
-   const [title, setTitle] = useState('other');
-   useEffect(async ()=> {
-     if(localStorage.length > 0 && title=="other"){
-       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
-         .then((res) => res.json())
-         .then(data => setTitle(data.user))
-         .catch(()=>{
-           setTitle("other");
-       })
-     } 
-   });
-
+  const title = useVerify();
+  
   return (
     <DefaultPage header="Apply for work here">
       {(title!=="applicant")&&(<><p>403 - Forbidden Access</p></>) ||

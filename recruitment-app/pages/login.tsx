@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
+import {useVerify} from "../lib/verification.ts"
 
 /**
  * The Login page with a login form.
@@ -8,20 +9,7 @@ import { hashPassword } from "../lib/passhash.ts";
  */
 export default function Login() {
   const [error, setError] = useState("");
-  /**
-   * Checks the users authorization
-   */
-   const [title, setTitle] = useState('other');
-   useEffect(async ()=> {
-     if(localStorage.length > 0 && title=="other"){
-       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
-         .then((res) => res.json())
-         .then(data => setTitle(data.user))
-         .catch(()=>{
-           setTitle("other");
-       })
-     } 
-   });
+  const title = useVerify();
 
   /**
    * Function to perform extra manipulation before sending formdata.
