@@ -12,35 +12,11 @@ import {
 } from "https://deno.land/x/knight@2.1.0/mod.ts";
 
 import User from "../model/User.ts";
-import EmailPassword from "../model/EmailPassword.ts";
 import UserService from "../service/UserService.ts";
-import { create, verify, Payload, Header, getNumericDate } from "https://deno.land/x/djwt@v2.4/mod.ts";
+import { verifyJWT, createJWT } from "../../shared/jwt.ts";
 
 
-const encoder = new TextEncoder()
-var keyBuf = encoder.encode("mySuperSecret");
 
-var key = await crypto.subtle.importKey(
-  "raw",
-  keyBuf,
-  {name: "HMAC", hash: "SHA-256"},
-  true,
-  ["sign", "verify"],
-)
-
-let payloader = (title:string) => {
-  let payload:Payload = {
-    iss: title,
-    exp: getNumericDate(60*60)
-  }
-  return payload
-}
-const algorithm = "HS256"
-
-const header: Header = {
-  alg: algorithm,
-  typ: "JWT",
-};
 /**
  * User controller class.
  */
@@ -56,7 +32,9 @@ export default class UserController extends IController {
 
   @Endpoint("GET", "/verify/:token")
   async getvalidation({ token }: Params,{ response }: Context) {
-    ok(response, await verify(token, key));
+    response.headers.append("Access-Control-Allow-Origin", "*");
+    const res = await verifyJWT(token);
+    ok(response, res);
   }
 
   @Endpoint("GET", "/:id/email")
@@ -69,14 +47,12 @@ export default class UserController extends IController {
   async validation({ email, password }: Params, { response }: Context) {
     const userExists = await UserController.userService.verifyUser(email, password);
     response.headers.append("Access-Control-Allow-Origin", "*");
-    
     if(userExists==(2 || undefined)){
-      ok(response, await create(header, payloader("applicant"), key));
+      ok(response, await createJWT("applicant"));
     }
     else if(userExists==1)
-      ok(response, await create(header, payloader("recruiter"), key));
+      ok(response, await createJWT("recruiter"));
     else
       notFound(response);
   }
-
 }
