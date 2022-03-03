@@ -43,6 +43,7 @@ export default class UserController extends IController {
     ok(response, `User with email ${email} was successfully found`);
   }
 
+  //TODO: Change to POST request
   @Endpoint("GET", "/validate/:email/:password")
   async validation({ email, password }: Params, { response }: Context) {
     const userExists = await UserController.userService.verifyUser(email, password);
