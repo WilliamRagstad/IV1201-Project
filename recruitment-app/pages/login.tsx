@@ -8,19 +8,21 @@ import { useDeno } from "aleph/react";
  * @returns The Login screen component.
  */
 export default function Login() {
-  /*const [url, setUrl] = useState(undefined);
+  /**
+   * Checks the users authorization
+   */
+   const [title, setTitle] = useState('other');
+   useEffect(async ()=> {
+     if(localStorage.length > 0 && title=="other"){
+       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
+         .then((res) => res.json())
+         .then(data => setTitle(data.user))
+         .catch(()=>{
+           setTitle("other");
+       })
+     } 
+   });
 
-  useEffect(async ()=>{
-    if(url){
-      await fetch(url,{
-        method: 'GET',
-        mode: 'no-cors',
-      })
-      .then(response => response.json())
-      .then(data => console.log(data));
-    }
-  },[url])
-*/
   /**
    * Function to perform extra manipulation before sending formdata.
    */
@@ -29,15 +31,17 @@ export default function Login() {
     (document.getElementById("password") as HTMLInputElement).value;
     const hashed = hashPassword(password);
     (document.getElementById("password") as HTMLInputElement).value = hashed;
-
+    
     const data = new URLSearchParams();
     for (const pair of new FormData(document.getElementById('myForm') as HTMLFormElement | undefined)){
       data.append(pair[0], pair[1] as string);
     }
-    var new_url = "http://localhost:8000/user/validate/"+data.get("email")+"/"+data.get("password");
-    await fetch(new_url)
+    //TODO: Make POST request instead (data as body)
+    //TODO: Better error-handling
+    await fetch("http://localhost:8000/user/validate/"+data.get("email")+"/"+data.get("password"))
     .then(response => response.text())
-    .then(data => localStorage.setItem("JWT", data));
+    .then(data => data!="" ? localStorage.setItem("JWT", data) : new Error())
+    .catch(error => console.log(error));
   };
 
   return (
