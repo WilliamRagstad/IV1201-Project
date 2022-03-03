@@ -32,7 +32,7 @@ export default function Header() {
         {(title==="other") && (<><a href="/signup">Sign Up</a></>)}
         {(title==="applicant") && (<><a href="/job">Apply for Job</a><span></span></>)}
         {(title==="recruiter") && (<><a href="/application">See applications</a><span></span></>)}
-        {(title!=="other") && (<><a href="/" onClick={()=>{localStorage.clear();window.location.reload()}}>Logout</a></>)}
+        {(title!=="other") && (<><a href="/" onClick={()=>{localStorage.clear();window.location.href="/";}}>Logout</a></>)}
       </p>
     </div>
   );
