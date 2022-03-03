@@ -1,6 +1,5 @@
 import { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";
 
-const hash = createHash("sha256");
 
 /**
    * Function to hash specified password.
@@ -8,6 +7,7 @@ const hash = createHash("sha256");
    * @returns the hashed password.
    */
 export function hashPassword(password: string) {
+    const hash = createHash("sha256");
     hash.update(password);
     const hashed = hash.toString();
     return hashed;
