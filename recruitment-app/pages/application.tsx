@@ -7,8 +7,6 @@ import { useDeno } from "aleph/react";
  * @returns A page with applications
  */
 export default function Application() {
-  //TODO: Check if user is logged in and return proper page and if not return log in page
-
   /**
    * Retrieves and formats the user data.
    */
@@ -22,6 +20,22 @@ export default function Application() {
           };
         }),
   );
+
+  /**
+   * Checks the users authorization
+   */
+   const [title, setTitle] = useState('other');
+   useEffect(async ()=> {
+     if(localStorage.length > 0 && title=="other"){
+       await fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
+         .then((res) => res.json())
+         .then(data => setTitle(data.user))
+         .catch(()=>{
+           setTitle("other");
+       })
+     } 
+   });
+
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
   // deno-lint-ignore no-explicit-any ban-types
@@ -148,7 +162,9 @@ export default function Application() {
     <DefaultPage header="View Applications">
       {(userData.message && (
         <h2 className="error-message">{userData.message}</h2>
-      )) || (
+      )) || 
+      (title!="recruiter") && (<><p>Error 403 - Forbidden</p></>) || 
+      (title=="recruiter") && (
         <>
           <div className="search flex-parent">
             <div className="flex-child">
