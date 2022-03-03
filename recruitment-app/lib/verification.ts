@@ -5,9 +5,14 @@ export const useVerify = () => {
     useEffect(()=> {
         if(localStorage.length > 0 && title=="other"){
           fetch("http://localhost:8000/user/verify/"+localStorage.getItem("JWT")+"/")
-            .then((res) => res.json())
+            .then((res) => {
+              if(!res.ok)
+                throw Error(res.statusText);
+              else
+                return res.json()
+            })
             .then(data => setTitle(data.user))
-            .catch(()=>{
+            .catch((error)=>{
               setTitle("other");
           })
         } 
