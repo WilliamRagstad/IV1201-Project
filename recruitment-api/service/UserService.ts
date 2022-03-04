@@ -45,12 +45,12 @@ export default class UserService {
    * Verify a user by email and password against the database.
    * @param email Email of the user to verify.
    * @param password Password of the user to verify.
-   * @returns If the user exists and the password is correct.
+   * @returns The user if the email and password was matched, else false.
    */
   async verifyUser(email: string, password: string) {
     const user = await this.findUserByEmail({ email } as User);
     if (user && user.password === password) {
-      return user.role?.id ?? false;
+      return user;
     }
     return false;
   }
