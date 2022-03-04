@@ -12,7 +12,7 @@ import {
 
 import User from "../model/User.ts";
 import UserService from "../service/UserService.ts";
-import { verifyJWT, createJWT } from "../lib/jwt.ts";
+import { verifyJWT, createJWT } from "../../shared/auth/jwt.ts";
 
 /**
  * User controller class.
@@ -43,10 +43,10 @@ export default class UserController extends IController {
   //TODO: Change to POST request
   @Endpoint("GET", "/validate/:email/:password")
   async validation({ email, password }: Params, { response }: Context) {
-    const userExists = await UserController.userService.verifyUser(email, password);
+    const verifiedUser = await UserController.userService.verifyUser(email, password);
     response.headers.append("Access-Control-Allow-Origin", "*");
-    if(userExists)
-      ok(response, await createJWT(userExists));
+    if(verifiedUser)
+      ok(response, await createJWT(verifiedUser));
     else
       notFound(response);
   }
