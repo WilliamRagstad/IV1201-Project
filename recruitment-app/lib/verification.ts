@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
  * Verifies the users JWT to check authorization privileges. 
  * @returns The users role title. 
  */
-export const useVerify = () => {
+export const fetchJWTAuthorization = () => {
     const [title, setTitle] = useState("other");
     useEffect(()=> {
         if(localStorage.length > 0 && title=="other"){
@@ -15,7 +15,14 @@ export const useVerify = () => {
               else
                 return res.json()
             })
-            .then(data => setTitle(data.user))
+            .then(data => {
+              if(data.user==1)
+                setTitle("recruiter");
+              else if(data.user==2)
+                setTitle("applicant");
+              else
+                setTitle("other");
+            })
             .catch((error)=>{
               setTitle("other");
           })
