@@ -50,8 +50,8 @@ export default class UserService {
   async verifyUser(email: string, password: string) {
     const user = await this.findUserByEmail({ email } as User);
     if (user && user.password === password) {
-      return user.role?.id;
+      return user.role?.id ?? false;
     }
-    return 0;
+    return false;
   }
 }
