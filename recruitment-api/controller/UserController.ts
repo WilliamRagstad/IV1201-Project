@@ -12,7 +12,7 @@ import {
 
 import User from "../model/User.ts";
 import UserService from "../service/UserService.ts";
-import { verifyJWT, createJWT } from "../../shared/jwt.ts";
+import { verifyJWT, createJWT } from "../lib/jwt.ts";
 
 /**
  * User controller class.
@@ -45,11 +45,8 @@ export default class UserController extends IController {
   async validation({ email, password }: Params, { response }: Context) {
     const userExists = await UserController.userService.verifyUser(email, password);
     response.headers.append("Access-Control-Allow-Origin", "*");
-    if(userExists==(2 || undefined)){
-      ok(response, await createJWT("applicant"));
-    }
-    else if(userExists==1)
-      ok(response, await createJWT("recruiter"));
+    if(userExists)
+      ok(response, await createJWT(userExists));
     else
       notFound(response);
   }
