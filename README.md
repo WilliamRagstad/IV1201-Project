@@ -27,3 +27,8 @@ Read more about the development process in the [`DEVELOPMENT.md`](DEVELOPMENT.md
 ### Testing
 
 It's important to test code, read more about how to write unit tests in the [`TEST.md`](TEST.md) file.
+
+# Course Comments
+## Data Migration Policy
+In case a user lacks a password or a username, the server will send a mail to your specified email-address and allow you to set a password for your account. For any further lacking details, it will be changed in the profile section. 
+*Note that these functions are not implemented, and only written down for grading purposes.*
