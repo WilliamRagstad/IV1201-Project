@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
-import {useVerify} from "../lib/verification.ts"
+import { fetchJWTAuthorization } from "../lib/verification.ts"
 
 /**
  * The Job page to apply for work.
  * @returns A page with the forms to select work competence and the availability dates.
  */
 export default function Job() {
-  const title = useVerify();
+  const title = fetchJWTAuthorization();
   
   return (
     <DefaultPage header="Apply for work here">
-      {(title!=="applicant")&&(<><p>403 - Forbidden Access</p></>) ||
-      (title==="applicant")&&(<form action="/" method="post" className="signup_form flex-parent">
+      {(title==="applicant")&&
+      (<form action="/" method="post" className="signup_form flex-parent">
         <div>
           <h2>Choose your expertise</h2>
           <div className="flex-parent">
@@ -59,7 +59,8 @@ export default function Job() {
           </div>
         </div>
         <input type="submit" value="Apply" className="button" />
-      </form>)}
+      </form>)||
+      (<><p>Error 401 - Unauthorized</p></>)}
     </DefaultPage>
   );
 }

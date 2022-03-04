@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "../components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
-import {useVerify} from "../lib/verification.ts"
+import { fetchJWTAuthorization } from "../lib/verification.ts"
 
 /**
  * The signup page.
  * @returns a page with the form to register to the recruitment app.
  */
 export default function Signup() {
-  const title = useVerify();
+  const title = fetchJWTAuthorization();
   /**
    * Function to perform extra manipulation before sending formdata.
    */
@@ -21,7 +21,7 @@ export default function Signup() {
   
   return (
     <DefaultPage header="Sign up">
-      {(title!="other")&&(<><p>Already signed in</p></>)||(title=="other")&&(<form
+      {(title=="other")&&(<form
         action="http://localhost:8000/user"
         method="post"
         className="signup_form"
@@ -56,7 +56,8 @@ export default function Signup() {
         </div>
 
         <input type="submit" value="Sign Up" className="button" />
-      </form>)}
+      </form>)
+      ||(<><p>Already signed in</p></>)}
     </DefaultPage>
   );
 }

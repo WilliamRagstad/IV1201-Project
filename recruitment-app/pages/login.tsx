@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
-import { useVerify } from "../lib/verification.ts"
+import { fetchJWTAuthorization } from "../lib/verification.ts"
 
 /**
  * The Login page with a login form.
@@ -9,7 +9,7 @@ import { useVerify } from "../lib/verification.ts"
  */
 export default function Login() {
   const [error, setError] = useState("");
-  const title = useVerify();
+  const title = fetchJWTAuthorization();
 
   /**
    * Function to perform extra manipulation before sending formdata.
@@ -41,8 +41,7 @@ export default function Login() {
 
   return (
     <DefaultPage header="Login to site">
-      {(title!=="other")&&(<><p>Already logged in</p></>) ||
-      (title==="other")&&(<><form
+      {(title==="other")&&(<><form
         id="myForm"
         className="signup_form"
         encType="multipart/form-data"
@@ -56,7 +55,8 @@ export default function Login() {
           <input id="password" type="password" name="password" />
         </label>
       </form>
-      <button className="button" onClick={submitForm}>Login</button></>)}
+      <button className="button" onClick={submitForm}>Login</button></>)
+      ||(<><p>Already logged in</p></>)}
     </DefaultPage>
   );
 }
