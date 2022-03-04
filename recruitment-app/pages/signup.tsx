@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import DefaultPage from "../components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
 import { fetchJWTAuthorization } from "../lib/verification.ts"
+const title = await fetchJWTAuthorization();
 
 /**
  * The signup page.
  * @returns a page with the form to register to the recruitment app.
  */
 export default function Signup() {
-  const title = fetchJWTAuthorization();
   /**
    * Function to perform extra manipulation before sending formdata.
    */

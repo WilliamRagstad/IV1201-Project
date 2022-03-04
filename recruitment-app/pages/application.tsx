@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { useDeno } from "aleph/react";
 import { fetchJWTAuthorization } from "../lib/verification.ts"
+const title = await fetchJWTAuthorization();
 
 /**
  * The admin page for recruiters to see the applications
@@ -22,7 +23,6 @@ export default function Application() {
         }),
   );
 
-  const title = fetchJWTAuthorization();
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
   // deno-lint-ignore no-explicit-any ban-types
@@ -155,9 +155,11 @@ export default function Application() {
 
   return (
     <DefaultPage header="View Applications">
+      {console.log(title)}
       {(userData.message && (
         <h2 className="error-message">{userData.message}</h2>
-      ))  || 
+      )) ||
+      (title==("applicant"||"other"))&&(<><p>Error 401 - Unauthorized</p></>) || 
       (title=="recruiter") && (
         <>
           <div className="search flex-parent">
@@ -267,8 +269,7 @@ export default function Application() {
             <h2 className="error-message">No users matching search criteria</h2>
           )}
         </>
-      )||
-      (<><p>Error 401 - Unauthorized</p></>)}
+      )}
     </DefaultPage>
   );
 }

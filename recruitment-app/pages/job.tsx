@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { fetchJWTAuthorization } from "../lib/verification.ts"
+const title = await fetchJWTAuthorization();
 
 /**
  * The Job page to apply for work.
  * @returns A page with the forms to select work competence and the availability dates.
  */
 export default function Job() {
-  const title = fetchJWTAuthorization();
   
   return (
     <DefaultPage header="Apply for work here">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
 import { fetchJWTAuthorization } from "../lib/verification.ts"
+const title = await fetchJWTAuthorization();
 
 /**
  * The Login page with a login form.
@@ -9,7 +10,6 @@ import { fetchJWTAuthorization } from "../lib/verification.ts"
  */
 export default function Login() {
   const [error, setError] = useState("");
-  const title = fetchJWTAuthorization();
 
   /**
    * Function to perform extra manipulation before sending formdata.
