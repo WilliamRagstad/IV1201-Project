@@ -1,14 +1,15 @@
 import React from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
+export { ssr } from "~/lib/verification.ts";
 
 /**
  * The about us page
  * @returns The about us page.
  */
-export default function About() {
+export default function About({ user }: any) {
   //Check if user is logged in and return proper page and if not return log in page
   return (
-    <DefaultPage header="About us">
+    <DefaultPage header="About us" user={user}>
       <head>
         <script src="https://code.iconify.design/1/1.0.7/iconify.min.js">
         </script>
@@ -19,7 +20,12 @@ export default function About() {
             This project is part of the KTH course IV1201 Design of Global
             Applications. <br></br>
             See our project at our Github Repository:{" "}
-            <a href="https://github.com/WilliamRagstad/IV1201-Project/" target="_blank">Here</a>
+            <a
+              href="https://github.com/WilliamRagstad/IV1201-Project/"
+              target="_blank"
+            >
+              Here
+            </a>
           </p>
         </div>
       </div>
