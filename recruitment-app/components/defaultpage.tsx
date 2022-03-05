@@ -11,7 +11,11 @@ import "../style/index.css";
  * @returns The default webpage with specified children-elements and header.
  */
 export default function DefaultPage(
-  { header, user, children }: { header: string; user: any; children: React.ReactNode },
+  { header, user, children }: {
+    header: string;
+    user: any;
+    children: React.ReactNode;
+  },
 ) {
   return (
     <div className="page">
