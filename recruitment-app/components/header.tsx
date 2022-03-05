@@ -7,7 +7,7 @@ const title = await fetchJWTAuthorization();
  * Creates a header to use on the webpage.
  * @returns The created header.
  */
-export default function Header() {
+export default function Header({ user }: any) {
   return (
     <div className="header">
       <p className="logo">
