@@ -38,12 +38,17 @@ export default function Application() {
     },
   });
 
+  /**
+   * UseEffect for updating shown user list when page is changed.
+   */
   useEffect(() => {
     if (userData.message || !userData || userData.length === 0) return;
     if (currentApplication === null) setCurrentApplication(userData[0]);
 
-    if (pageIndex < 0) setPageIndex(0);
-
+    if (pageIndex < 0) {
+      setPageIndex(0);
+      return;
+    }
     const searchedUsers = userData
       // deno-lint-ignore no-explicit-any
       .filter((application: any) => {
@@ -71,16 +76,16 @@ export default function Application() {
           searchCriteria.availability.to !== -1 &&
           !application.availability.some((a: any) =>
             Date.parse(a.start_date) >= searchCriteria.availability.from &&
-            Date.parse(a.end_date) <= searchCriteria.availability.from
+            Date.parse(a.end_date) <= searchCriteria.availability.to
           )
         ) {
           return false;
         }
         return true;
       });
-    console.log(searchedUsers.length + " searchresults");
     if (pageIndex > Math.floor(searchedUsers.length / applications_per_page)) {
       setPageIndex(pageIndex - 1);
+      return;
     }
 
     setCurrentPageApplications(
@@ -91,10 +96,11 @@ export default function Application() {
           i >= pageIndex * applications_per_page,
       ),
     );
+    setCurrentApplication(searchedUsers[0]);
   }, [userData, searchCriteria, pageIndex]);
 
   /**
-   * Function to filter shown users.
+   * Function to update search criteria.
    */
   function updateSearchCriteria() {
     const name: string = (
@@ -109,10 +115,12 @@ export default function Application() {
     var availability_to: number = Date.parse(
       (document.getElementById("to_date") as HTMLInputElement).value,
     );
-    if(!(availability_from > 0))
+    if (isNaN(availability_from)) {
       availability_from = -1;
-    if(!(availability_to > 0))
+    }
+    if (isNaN(availability_to)) {
       availability_to = -1;
+    }
     setSearchCriteria({
       name: name,
       competence: competence,
@@ -189,70 +197,73 @@ export default function Application() {
               onClick={updateSearchCriteria}
             />
           </div>
-
-          <div className="applications">
-            <ul className="user_list">
-              {currentPageApplications.map((app: any, i) => (
-                <li
-                  className="user_box"
-                  onClick={() => setCurrentApplication(app)}
-                  key={"u" + i}
-                >
-                  {app.user.firstName + " " + app.user.lastName}
-                </li>
-              ))}
-            </ul>
-            <div className="application_page">
-              {currentApplication && (
-                <div>
-                  <p>
-                    Name: {currentApplication.user.firstName + " " +
-                      currentApplication.user.lastName}
-                  </p>
-                  <p>Email: {currentApplication.user.email}</p>
-                  <ul className="application_list">
-                    Availability periods:
-                    {currentApplication.availability.map((
-                      availability: any,
-                      i: number,
-                    ) => (
-                      <li key={"d" + i} className="list_box">
-                        {new Date(availability.start_date).toLocaleDateString()}
-                        {" "}
-                        to{" "}
-                        {new Date(availability.end_date).toLocaleDateString()}
-                      </li>
-                    ))}
-                  </ul>
-                  <ul className="application_list">
-                    Competences:
-                    {currentApplication.competences.map(
-                      (comp: any, i: number) => (
-                        <li key={"c" + i} className="list_box">
-                          {listCompetence(comp)}
+          {currentPageApplications.length > 0 && (
+                <>
+                  <div className="applications">
+                    <ul className="user_list">
+                      {currentPageApplications.map((app: any, i) => (
+                        <li
+                          className="user_box"
+                          onClick={() => setCurrentApplication(app)}
+                          key={"u" + i}
+                        >
+                          {app.user.firstName + " " + app.user.lastName}
                         </li>
-                      ),
-                    )}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
+                      ))}
+                    </ul>
 
-          <div className="user_arrow_box">
-            <li
-              className="user_arrow"
-              onClick={() => setPageIndex(pageIndex - 1)}
-            >
-              Previous Page
-            </li>
-            <li
-              className="user_arrow"
-              onClick={() => setPageIndex(pageIndex + 1)}
-            >
-              Next Page
-            </li>
-          </div>
+                    <div className="application_page">
+                      <div>
+                        <p>
+                          Name: {currentApplication.user.firstName + " " +
+                            currentApplication.user.lastName}
+                        </p>
+                        <p>Email: {currentApplication.user.email}</p>
+                        <ul className="application_list">
+                          Availability periods:
+                          {currentApplication.availability.map((
+                            availability: any,
+                            i: number,
+                          ) => (
+                            <li key={"d" + i} className="list_box">
+                              {new Date(availability.start_date)
+                                .toLocaleDateString()} to{" "}
+                              {new Date(availability.end_date)
+                                .toLocaleDateString()}
+                            </li>
+                          ))}
+                        </ul>
+                        <ul className="application_list">
+                          Competences:
+                          {currentApplication.competences.map(
+                            (comp: any, i: number) => (
+                              <li key={"c" + i} className="list_box">
+                                {listCompetence(comp)}
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="user_arrow_box">
+                    <li
+                      className="user_arrow"
+                      onClick={() => setPageIndex(pageIndex - 1)}
+                    >
+                      Previous Page
+                    </li>
+                    <li
+                      className="user_arrow"
+                      onClick={() => setPageIndex(pageIndex + 1)}
+                    >
+                      Next Page
+                    </li>
+                  </div>
+                </>
+              ) || (
+            <h2 className="error-message">No users matching search criteria</h2>
+          )}
         </>
       )}
     </DefaultPage>
