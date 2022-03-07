@@ -1,4 +1,4 @@
-import { Client } from "https://deno.land/x/postgres/mod.ts";
+import { Client, Transaction } from "https://deno.land/x/postgres/mod.ts";
 
 /**
  * Database base handler, used to send queries and
@@ -38,12 +38,16 @@ export default class DatabaseHandler {
     if (this.client.connected) await this.client.end();
   }
 
+  public createTransaction(name: string) {
+    return this.client.createTransaction(name);
+  }
+
   /**
    * Send a query to the database.
    * @param query The query to send to the database.
    * @returns The result of the query.
    */
-  public query(query: string) {
-    return this.client.queryObject(query);
+  public query(query: string, transaction: Transaction) {
+    return transaction.queryObject(query);
   }
 }
