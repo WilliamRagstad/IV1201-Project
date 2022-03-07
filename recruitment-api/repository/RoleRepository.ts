@@ -41,8 +41,8 @@ export default class RoleRepository extends Repository<Role> {
    * @param query The query to execute.
    * @returns The result of the query.
    */
-  public async query(query: string): Promise<Role[]> {
-    const result = await this.db.query(query);
+  public async query(query: string, transaction: any): Promise<Role[]> {
+    const result = await this.db.query(query, transaction);
     return result.rows.map(this.convertTo);
   }
 
@@ -50,16 +50,16 @@ export default class RoleRepository extends Repository<Role> {
    * Get all users.
    * @returns The result of the query.
    */
-  public async getAll(): Promise<Role[]> {
-    return await this.query("SELECT * FROM role");
+  public async getAll(transaction: any): Promise<Role[]> {
+    return await this.query("SELECT * FROM role", transaction);
   }
   /**
    * Find a user by email.
    * @param id The id of the user to find.
    * @returns The user with the given id.
    */
-  public async findById(id: number): Promise<Role | undefined> {
-    const result = await this.query("SELECT * FROM role WHERE role_id=" + id);
+  public async findById(id: number, transaction: any): Promise<Role | undefined> {
+    const result = await this.query("SELECT * FROM role WHERE role_id=" + id, transaction);
     return result.length > 0 ? result[0] : undefined;
   }
 }
