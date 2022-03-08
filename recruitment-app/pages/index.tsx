@@ -1,4 +1,5 @@
 import React from "react";
+import { useDeno } from "aleph/react";
 import DefaultPage from "~/components/defaultPage.tsx";
 export { ssr } from "~/lib/verification.ts";
 /**
@@ -6,6 +7,7 @@ export { ssr } from "~/lib/verification.ts";
  * @returns The Home screen component.
  */
 export default function Home({ user }: any) {
+  useDeno(() => user);
   return (
     <DefaultPage header="" user={user}>
       <p>
@@ -14,8 +16,8 @@ export default function Home({ user }: any) {
       </p>
       <br />
       <p>
-        {user &&
-            `Welcome ${user.firstName}, you have logged in as ${user.role.name}.` ||
+        {(user &&
+          `Welcome ${user.firstName}, you have logged in as ${user.role.name}.`) ||
           "Please login by clicking at the link in the header"}
       </p>
       <br />

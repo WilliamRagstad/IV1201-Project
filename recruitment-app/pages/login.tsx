@@ -8,6 +8,7 @@ export { ssr } from "~/lib/verification.ts";
  * @returns The Login screen component.
  */
 export default function Login({ user }: { user: any }) {
+  useDeno(() => user);
   console.log(user ?? "user is undefined");
   const [error, setError] = useState("");
 
@@ -24,7 +25,7 @@ export default function Login({ user }: { user: any }) {
 
     //TODO: Make POST request instead (data as body)
     const res = await fetch(
-      `http://localhost:8000/user/validate/${emailElm.value}/${hashedPassword}`,
+      `http://localhost:8000/user/validate/${emailElm.value}/${hashedPassword}`
     );
     const jwt = await res.text();
     if (jwt) {
@@ -38,35 +39,34 @@ export default function Login({ user }: { user: any }) {
 
   return (
     <DefaultPage header="Login to site" user={user}>
-      {!user && (
-            <>
-              <form
-                id="myForm"
-                className="signup_form"
-                encType="multipart/form-data"
-                method="POST"
-                onSubmit={submitForm}
-              >
-                Email:
-                <label className="txt_field">
-                  <input id="email" type="email" name="email" />
-                </label>
-                Password:
-                <label className="txt_field">
-                  <input id="password" type="password" name="password" />
-                </label>
-                <label>
-                  {error && <p>{error}</p>}
-                </label>
-                <button type="submit" className="button">Login</button>
-              </form>
-            </>
-          ) ||
-        (
-          <>
-            <p>Already logged in</p>
-          </>
-        )}
+      {(!user && (
+        <>
+          <form
+            id="myForm"
+            className="signup_form"
+            encType="multipart/form-data"
+            method="POST"
+            onSubmit={submitForm}
+          >
+            Email:
+            <label className="txt_field">
+              <input id="email" type="email" name="email" />
+            </label>
+            Password:
+            <label className="txt_field">
+              <input id="password" type="password" name="password" />
+            </label>
+            <label>{error && <p>{error}</p>}</label>
+            <button type="submit" className="button">
+              Login
+            </button>
+          </form>
+        </>
+      )) || (
+        <>
+          <p>Already logged in</p>
+        </>
+      )}
     </DefaultPage>
   );
 }

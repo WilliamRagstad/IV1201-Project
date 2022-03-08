@@ -7,12 +7,12 @@ export { ssr } from "~/lib/verification.ts";
  * @returns The about us page.
  */
 export default function About({ user }: any) {
+  useDeno(() => user);
   //Check if user is logged in and return proper page and if not return log in page
   return (
     <DefaultPage header="About us" user={user}>
       <head>
-        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js">
-        </script>
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
       </head>
       <div className="about_container">
         <div className="about">
@@ -41,8 +41,7 @@ export default function About({ user }: any) {
                 className="iconify"
                 data-icon="fa-linkedin"
                 data-inline="true"
-              >
-              </span>
+              ></span>
             </a>
           </li>
           <li>
@@ -55,8 +54,7 @@ export default function About({ user }: any) {
                 className="iconify"
                 data-icon="fa-linkedin"
                 data-inline="true"
-              >
-              </span>
+              ></span>
             </a>
           </li>
           <li>
@@ -69,8 +67,7 @@ export default function About({ user }: any) {
                 className="iconify"
                 data-icon="fa-linkedin"
                 data-inline="true"
-              >
-              </span>
+              ></span>
             </a>
           </li>
         </ul>
