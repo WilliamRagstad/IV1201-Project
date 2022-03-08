@@ -27,7 +27,15 @@ export default class ApplicationService {
    * @returns All Applications
    */
   async getAll() {
-    const applications = await this.applicationRepository.getAll();
+    const transaction = this.applicationRepository.db.createTransaction("transaction_get");
+    await transaction.begin();
+    var applications: Application[] = [];
+    try {
+      applications = await this.applicationRepository.getAll(transaction);
+      await transaction.commit();
+    } catch (e: any) {
+      transaction.rollback();
+    }
     return applications.length > 0 ? applications : undefined;
   }
 }

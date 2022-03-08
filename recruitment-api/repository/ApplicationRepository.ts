@@ -61,8 +61,8 @@ export default class ApplicationRepository extends Repository<Application> {
    * @param query The query to execute.
    * @returns The result of the query.
    */
-  public async query(query: string): Promise<Application[]> {
-    const result = await this.db.query(query);
+  public async query(query: string, transaction: any): Promise<Application[]> {
+    const result = await this.db.query(query, transaction);
     const middleStage = await Promise.all(
       result.rows.map(async (r) => await this.convertTo(r)),
     );
@@ -97,7 +97,7 @@ export default class ApplicationRepository extends Repository<Application> {
    * Get all applications.
    * @returns The result of the query.
    */
-  public async getAll(): Promise<any[]> {
+  public async getAll(transaction: any): Promise<any[]> {
     return await this.query(
       "SELECT person.person_id, person.email, person.password, person.name, person.surname, person.pnr, competence_profile.competence_id, competence_profile.years_of_experience, availability.from_date, availability.to_date " +
         "FROM person " +
@@ -106,6 +106,7 @@ export default class ApplicationRepository extends Repository<Application> {
         "INNER JOIN availability " +
         "ON person.person_id = availability.person_id " +
         "ORDER BY person.person_id;",
+      transaction,
     );
   }
 }
