@@ -1,7 +1,8 @@
 // Possible API base URLs:
+//? Important: The base urls must no contain a trailing slash
 const baseURLs = [
-  "http://localhost:8000/",
-  "https://iv1201-recruitment-api.herokuapp.com/",
+  "http://localhost:8000",
+  "https://iv1201-recruitment-api.herokuapp.com",
 ];
 
 /**
@@ -10,7 +11,8 @@ const baseURLs = [
  */
 export async function getAPI(endpoint: string) {
   const results = await Promise.allSettled(
-    baseURLs.map((b) => fetch(b + endpoint)),
+    //? Remove first slash from endpoint
+    baseURLs.map((b) => fetch(`${b}/${endpoint.replace("/", "")}`)),
   );
   return (results.find((result) => result.status === "fulfilled") as
     | PromiseFulfilledResult<Response>
