@@ -27,7 +27,14 @@ export default class UserService {
    * @param user Save a user to the database.
    */
   async saveUser(user: User) {
-    await this.userRepository.save(user);
+    const transaction = this.userRepository.db.createTransaction("transaction_save");
+    await transaction.begin();
+    try {
+      await this.userRepository.save(user, transaction);
+      await transaction.commit();
+    } catch (e: any) {
+      transaction.rollback();
+    }
   }
 
   /**
@@ -36,8 +43,17 @@ export default class UserService {
    * @returns The user with the given email.
    */
   async findUserByEmail({ email }: User): Promise<User | undefined> {
-    const result = await this.userRepository.query(
-      "SELECT * FROM person WHERE email='" + email + "'");
+    const transaction = this.userRepository.db.createTransaction("transaction_find");
+    await transaction.begin();
+    var result: User[] = [];
+    try{
+      result = await this.userRepository.query(
+      "SELECT * FROM person WHERE email='" + email + "'", transaction);
+      await transaction.commit();
+    }
+    catch(e: any) {
+      transaction.rollback();
+    }
     return result.length > 0 ? result[0] : undefined;
   }
 
