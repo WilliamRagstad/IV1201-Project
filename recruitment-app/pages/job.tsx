@@ -61,6 +61,7 @@ export default function Job({ user }: any) {
               </div>
             </div>
             <input type="submit" value="Apply" className="button" />
+          </div>
           </form>
         )
         : (
