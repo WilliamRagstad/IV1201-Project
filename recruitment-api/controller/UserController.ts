@@ -44,7 +44,7 @@ export default class UserController extends IController {
         id: verifiedUser.id,
         firstName: verifiedUser.firstName,
         lastName: verifiedUser.lastName,
-        usernmae: verifiedUser.username,
+        username: verifiedUser.username,
         email: verifiedUser.email,
         role: verifiedUser.role,
       }
