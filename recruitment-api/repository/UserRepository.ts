@@ -2,6 +2,7 @@
 import User from "../model/User.ts";
 import Repository from "./Repository.ts";
 import RoleRepository from "./RoleRepository.ts";
+import { Transaction } from "https://deno.land/x/postgres/mod.ts";
 
 /**
  * User repository class.
@@ -25,7 +26,7 @@ export default class UserRepository extends Repository<User> {
     return UserRepository.instance;
   }
 
-  async convertTo(row: any, transaction: any): Promise<User> {
+  async convertTo(row: any, transaction: Transaction): Promise<User> {
     // Fetch role from database
     const role = await this.roleRepository.findById(row.role_id, transaction);
     return new User(
@@ -58,9 +59,9 @@ export default class UserRepository extends Repository<User> {
   /**
    * Send a custom query to the database.
    * @param query The query to execute.
-   * @returns The result of the query.
+   * @returns The result of the query converted to the given model type.
    */
-  public async query(query: string, transaction: any): Promise<User[]> {
+  public async query(query: string, transaction: Transaction): Promise<User[]> {
     const result = await this.db.query(query, transaction);
     return Promise.all(result.rows.map(async (r) => await this.convertTo(r, transaction)));
   }
@@ -69,7 +70,7 @@ export default class UserRepository extends Repository<User> {
    * Get all users.
    * @returns The result of the query.
    */
-  public async getAll(transaction: any): Promise<User[]> {
+  public async getAll(transaction: Transaction): Promise<User[]> {
     return await this.query("SELECT * FROM person", transaction);
   }
 
@@ -79,9 +80,9 @@ export default class UserRepository extends Repository<User> {
    */
   public async save(
     { firstName, lastName, socialSecurityNumber, email, password, role }: User,
-    transaction: any,
+    transaction: Transaction,
   ) {
-    await this.query(
+	  await this.query(
       "INSERT INTO person (name, surname, pnr, email, password, role_id, username) VALUES " +
         this.toValues(
           firstName,
@@ -101,7 +102,7 @@ export default class UserRepository extends Repository<User> {
    * @param id The id of the user to find.
    * @returns The user with the given id.
    */
-  public async findById(id: number, transaction: any): Promise<User | undefined> {
+  public async findById(id: number, transaction: Transaction): Promise<User | undefined> {
     const result = await this.query(
       "SELECT * FROM person WHERE person_id=" + id, transaction
     );
@@ -112,7 +113,7 @@ export default class UserRepository extends Repository<User> {
    * Delete a user by id.
    * @param id The id of the user to delete.
    */
-  public async delete(id: number, transaction: any) {
+  public async delete(id: number, transaction: Transaction) {
     await this.query("DELETE FROM person WHERE person_id=" + id, transaction);
   }
 }
