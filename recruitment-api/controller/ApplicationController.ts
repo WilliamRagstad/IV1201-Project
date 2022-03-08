@@ -1,16 +1,11 @@
 import {
-  bodyMappingFormData,
   Context,
   Controller,
-  created,
-  Endpoint,
   IController,
   ok,
-  Params,
 } from "https://deno.land/x/knight@2.1.0/mod.ts";
 
 import ApplicationService from "../service/ApplicationService.ts";
-import Application from "../model/Application.ts";
 
 /**
  * User controller class.
