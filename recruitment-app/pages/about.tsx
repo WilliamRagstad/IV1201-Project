@@ -1,4 +1,5 @@
 import React from "react";
+import { useDeno } from "aleph/react";
 import DefaultPage from "~/components/defaultPage.tsx";
 export { ssr } from "~/lib/verification.ts";
 
