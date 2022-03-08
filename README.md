@@ -34,4 +34,4 @@ In case a user lacks a password or a username, the server will send a mail to yo
 *Note that these functions are not implemented, and only written down for grading purposes.*
 
 ## Transactions
-All transaction starts and ends in the Service Layer and will rollback in case of any errors. 
+All transaction starts and ends in the Service Layer and will rollback in case of any errors. Every call to the database will be handled in a transaction, even if no data gets changed. 
