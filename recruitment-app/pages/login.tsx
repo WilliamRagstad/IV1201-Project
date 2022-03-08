@@ -27,7 +27,7 @@ export default function Login({ user }: { user: any }) {
 
     //TODO: Make POST request instead (data as body)
     const res = await getAPI(
-      `/user/validate/${emailElm.value}/${hashedPassword}`
+      `user/validate/${emailElm.value}/${hashedPassword}`
     );
     const jwt = await res.text();
     if (jwt) {

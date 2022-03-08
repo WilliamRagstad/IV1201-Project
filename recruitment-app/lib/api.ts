@@ -7,12 +7,12 @@ const baseURLs = [
 
 /**
  * Fetch data from the local or public API.
- * @param endpoint Name of the endpoint without the base url.
+ * @param endpoint Name of the endpoint without the base url. Must not contain a leading slash!
  */
 export async function getAPI(endpoint: string) {
   const results = await Promise.allSettled(
     //? Remove first slash from endpoint
-    baseURLs.map((b) => fetch(`${b}/${endpoint.replace("/", "")}`)),
+    baseURLs.map((b) => fetch(`${b}/${endpoint}`)),
   );
   return (results.find((result) => result.status === "fulfilled") as
     | PromiseFulfilledResult<Response>

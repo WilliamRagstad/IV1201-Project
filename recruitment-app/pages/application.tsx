@@ -15,7 +15,7 @@ export default function Application({ user }: any) {
    */
   const userData = useDeno(
     async () =>
-      await getAPI("/application")
+      await getAPI("application")
         .then((res) => res.json())
         .catch((error) => {
           return {
