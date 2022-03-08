@@ -2,6 +2,7 @@ import React, { FormEventHandler, useState } from "react";
 import { useDeno } from "aleph/react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
+import { getAPI } from "../lib/api.ts";
 export { ssr } from "~/lib/verification.ts";
 
 /**
@@ -25,8 +26,8 @@ export default function Login({ user }: { user: any }) {
     const hashedPassword = hashPassword(password);
 
     //TODO: Make POST request instead (data as body)
-    const res = await fetch(
-      `http://localhost:8000/user/validate/${emailElm.value}/${hashedPassword}`
+    const res = await getAPI(
+      `/user/validate/${emailElm.value}/${hashedPassword}`
     );
     const jwt = await res.text();
     if (jwt) {

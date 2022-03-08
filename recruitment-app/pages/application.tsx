@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { useDeno } from "aleph/react";
+import { getAPI } from "../lib/api.ts";
 export { ssr } from "~/lib/verification.ts";
 
 /**
@@ -14,7 +15,7 @@ export default function Application({ user }: any) {
    */
   const userData = useDeno(
     async () =>
-      await fetch("http://localhost:8000/application")
+      await getAPI("/application")
         .then((res) => res.json())
         .catch((error) => {
           return {
