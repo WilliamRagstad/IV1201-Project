@@ -38,8 +38,22 @@ export default class DatabaseHandler {
     if (this.client.connected) await this.client.end();
   }
 
-  public createTransaction(name: string) {
-    return this.client.createTransaction(name);
+  public async useTransaction<T>(
+    name: string,
+    callback: (transaction: Transaction) => T | undefined | Promise<T | undefined>,
+    onError?: (error: unknown) => T | undefined,
+  ): Promise<T | undefined> {
+    const transaction = this.client.createTransaction(name + this.uniqueId());
+    await transaction.begin();
+    try {
+      const result = await callback(transaction);
+      await transaction.commit();
+      return result;
+    } catch (error: unknown) {
+      transaction.rollback();
+      if (onError) return onError(error);
+      return undefined;
+    }
   }
 
   /**
@@ -49,5 +63,10 @@ export default class DatabaseHandler {
    */
   public query(query: string, transaction: Transaction) {
     return transaction.queryObject(query);
+  }
+
+  /* Helper functions */
+  private uniqueId() {
+    return Math.random().toString(36).substr(2, 9);
   }
 }

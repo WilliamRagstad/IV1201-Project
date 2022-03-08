@@ -26,16 +26,10 @@ export default class ApplicationService {
    * Retrieves all applications
    * @returns All Applications
    */
-  async getAll() {
-    const transaction = this.applicationRepository.db.createTransaction("transaction_get");
-    await transaction.begin();
-    var applications: Application[] = [];
-    try {
-      applications = await this.applicationRepository.getAll(transaction);
-      await transaction.commit();
-    } catch (e: any) {
-      transaction.rollback();
-    }
-    return applications.length > 0 ? applications : undefined;
+  async getAll(): Promise<Application[] | undefined> {
+    return await this.applicationRepository.db.useTransaction<Application[]>(
+      "transaction_applications_get",
+      async (t) => await this.applicationRepository.getAll(t),
+    );
   }
 }
