@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { useDeno } from "aleph/react";
@@ -24,8 +25,7 @@ export default function Application({ user }: any) {
 
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
-  // deno-lint-ignore no-explicit-any ban-types
-  const [currentApplication, setCurrentApplication]: [any, Function] = useState(
+  const [currentApplication, setCurrentApplication] = useState(
     null,
   );
   const [currentPageApplications, setCurrentPageApplications] = useState([]);
@@ -50,7 +50,6 @@ export default function Application({ user }: any) {
       return;
     }
     const searchedUsers = userData
-      // deno-lint-ignore no-explicit-any
       .filter((application: any) => {
         // Filter all users that satisfy the search criteria
         if (
@@ -90,7 +89,6 @@ export default function Application({ user }: any) {
 
     setCurrentPageApplications(
       searchedUsers.filter(
-        // deno-lint-ignore no-explicit-any
         (a: any, i: number) =>
           i < pageIndex * applications_per_page + applications_per_page &&
           i >= pageIndex * applications_per_page,
@@ -109,10 +107,10 @@ export default function Application({ user }: any) {
     const competence: number = Number.parseInt(
       (document.getElementById("search_competence") as HTMLSelectElement).value,
     );
-    var availability_from: number = Date.parse(
+    let availability_from: number = Date.parse(
       (document.getElementById("from_date") as HTMLInputElement).value,
     );
-    var availability_to: number = Date.parse(
+    let availability_to: number = Date.parse(
       (document.getElementById("to_date") as HTMLInputElement).value,
     );
     if (isNaN(availability_from)) {
