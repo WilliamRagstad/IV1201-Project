@@ -158,7 +158,7 @@ export default function Application({ user }: any) {
       {
         userData.message ? (
           <h2 className="error-message">{userData.message}</h2>
-        ) : user.role.name === "recruiter" ? (
+        ) : user && user.role.name === "recruiter" ? (
           <>
             <div className="search flex-parent">
               <div className="flex-child">
