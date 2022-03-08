@@ -8,6 +8,7 @@ import {
   ok,
   Params,
   notFound,
+  badRequest
 } from "https://deno.land/x/knight@2.1.0/mod.ts";
 
 import User from "../model/User.ts";
@@ -23,8 +24,11 @@ export default class UserController extends IController {
 
   async post({ request, response }: Context) {
     const user = await bodyMappingFormData(request, User);
-    UserController.userService.saveUser(user);
-    created(response, `User ${user.firstName} was successfully created`);
+    if (await UserController.userService.saveUser(user)) {
+		created(response, `User ${user.firstName} was successfully created!`);
+	} else {
+		badRequest(response, `User ${user.firstName} could not be created.`);
+	}
   }
 
   @Endpoint("GET", "/:id/email")

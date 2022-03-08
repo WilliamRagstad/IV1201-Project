@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import Role from "../model/Role.ts";
 import Repository from "./Repository.ts";
+import { Transaction } from "https://deno.land/x/postgres/mod.ts";
 
 /**
  * Role repository class.
@@ -41,7 +42,7 @@ export default class RoleRepository extends Repository<Role> {
    * @param query The query to execute.
    * @returns The result of the query.
    */
-  public async query(query: string, transaction: any): Promise<Role[]> {
+  public async query(query: string, transaction: Transaction): Promise<Role[]> {
     const result = await this.db.query(query, transaction);
     return result.rows.map(this.convertTo);
   }
@@ -50,7 +51,7 @@ export default class RoleRepository extends Repository<Role> {
    * Get all users.
    * @returns The result of the query.
    */
-  public async getAll(transaction: any): Promise<Role[]> {
+  public async getAll(transaction: Transaction): Promise<Role[]> {
     return await this.query("SELECT * FROM role", transaction);
   }
   /**
@@ -58,7 +59,7 @@ export default class RoleRepository extends Repository<Role> {
    * @param id The id of the user to find.
    * @returns The user with the given id.
    */
-  public async findById(id: number, transaction: any): Promise<Role | undefined> {
+  public async findById(id: number, transaction: Transaction): Promise<Role | undefined> {
     const result = await this.query("SELECT * FROM role WHERE role_id=" + id, transaction);
     return result.length > 0 ? result[0] : undefined;
   }
