@@ -12,7 +12,7 @@ import {
 
 import User from "../model/User.ts";
 import UserService from "../service/UserService.ts";
-import { verifyJWT, createJWT } from "../../shared/auth/jwt.ts";
+import { createJWT } from "../../shared/auth/jwt.ts";
 
 /**
  * User controller class.
