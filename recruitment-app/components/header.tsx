@@ -41,7 +41,7 @@ export default function Header({ user }: any) {
           // If the user is a recruiter, show the application page.
           ? (
             <>
-              <a href="/application">See applications</a>
+              <a href="/applications">See applications</a>
               <span></span>
               {logout}
             </>

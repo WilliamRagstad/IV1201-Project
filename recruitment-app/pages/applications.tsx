@@ -9,7 +9,7 @@ export { ssr } from "~/lib/verification.ts";
  * The admin page for recruiters to see the applications
  * @returns A page with applications
  */
-export default function Application({ user }: any) {
+export default function Applications({ user }: any) {
   /**
    * Retrieves and formats the user data.
    */
