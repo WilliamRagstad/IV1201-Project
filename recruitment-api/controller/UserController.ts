@@ -27,13 +27,6 @@ export default class UserController extends IController {
     created(response, `User ${user.firstName} was successfully created`);
   }
 
-  @Endpoint("GET", "/verify/:token")
-  async getvalidation({ token }: Params,{ response }: Context) {
-    response.headers.append("Access-Control-Allow-Origin", "*");
-    const res = await verifyJWT(token);
-    ok(response, res);
-  }
-
   @Endpoint("GET", "/:id/email")
   getByEmail({ id }: Params, { response }: Context) {
     const email = id + "@example.com";
