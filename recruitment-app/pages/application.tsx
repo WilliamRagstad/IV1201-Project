@@ -25,7 +25,8 @@ export default function Application({ user }: any) {
 
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
-  const [currentApplication, setCurrentApplication]: [any, any] = useState(null);
+  const [currentApplication, setCurrentApplication]: [any, any] =
+    useState(null);
   const [currentPageApplications, setCurrentPageApplications] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState({
     name: "",
