@@ -27,14 +27,7 @@ export default class UserService {
    * @param user Save a user to the database.
    */
   async saveUser(user: User) {
-    const transaction = this.userRepository.db.createTransaction("transaction_save");
-    await transaction.begin();
-    try {
-      await this.userRepository.save(user, transaction);
-      await transaction.commit();
-    } catch (e: any) {
-      transaction.rollback();
-    }
+    await this.userRepository.save(user);
   }
 
   /**
@@ -43,17 +36,8 @@ export default class UserService {
    * @returns The user with the given email.
    */
   async findUserByEmail({ email }: User): Promise<User | undefined> {
-    const transaction = this.userRepository.db.createTransaction("transaction_find");
-    await transaction.begin();
-    var result: User[] = [];
-    try{
-      result = await this.userRepository.query(
-      "SELECT * FROM person WHERE email='" + email + "'", transaction);
-      await transaction.commit();
-    }
-    catch(e: any) {
-      transaction.rollback();
-    }
+    const result = await this.userRepository.query(
+      "SELECT * FROM person WHERE email='" + email.toLowerCase() + "'");
     return result.length > 0 ? result[0] : undefined;
   }
 
@@ -61,12 +45,12 @@ export default class UserService {
    * Verify a user by email and password against the database.
    * @param email Email of the user to verify.
    * @param password Password of the user to verify.
-   * @returns If the user exists and the password is correct.
+   * @returns The user if the email and password was matched, else false.
    */
   async verifyUser(email: string, password: string) {
-    const user = await this.findUserByEmail({ email } as User);
-    if (user) {
-      return user.password === password;
+    const user = await this.findUserByEmail({ email: email.toLowerCase() } as User);
+    if (user && user.password === password) {
+      return user;
     }
     return false;
   }
