@@ -8,8 +8,6 @@ export { ssr } from "~/lib/verification.ts";
  * @returns A page with the forms to select work competence and the availability dates.
  */
 export default function Job({ user }: any) {
-  console.log(user);
-
   useDeno(() => user);
 
   return (
