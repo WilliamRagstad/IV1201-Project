@@ -15,7 +15,7 @@ export async function getAPI(endpoint: string) {
   return (results.find((result) => result.status === "fulfilled") as
     | PromiseFulfilledResult<Response>
     | undefined)?.value ??
-    new Response(null, {
+    new Response(new Blob(), {
       status: 404,
       statusText: "Request failed, endpoint not found",
     });
