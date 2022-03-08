@@ -25,7 +25,7 @@ export default class ApplicationRepository extends Repository<Application> {
     return ApplicationRepository.instance;
   }
 
-  async convertTo(row: any): Promise<Application> {
+  convertTo(row: any): Application {
     const user = new User(
       row.person_id,
       row.email,
@@ -52,7 +52,7 @@ export default class ApplicationRepository extends Repository<Application> {
     );
   }
 
-  convertFrom(model: Application): unknown[] {
+  convertFrom(_model: Application): unknown[] {
     throw "Not implemented";
   }
 
@@ -69,7 +69,7 @@ export default class ApplicationRepository extends Repository<Application> {
     return middleStage.reduce((acc: Application[], app: Application) => {
       const existing = acc.find((a: any) => a.user.id === app.user.id);
       if (existing) {
-        // There is only one compentence and availability when first fetching from the database.
+        // There is only one competence and availability when first fetching from the database.
         if (
           !existing.competences.some((c: Competence) =>
             c.id == app.competences[0].id
