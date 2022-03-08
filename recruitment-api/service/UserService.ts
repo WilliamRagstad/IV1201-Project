@@ -37,7 +37,7 @@ export default class UserService {
    */
   async findUserByEmail({ email }: User): Promise<User | undefined> {
     const result = await this.userRepository.query(
-      "SELECT * FROM person WHERE email='" + email + "'");
+      "SELECT * FROM person WHERE email='" + email.toLowerCase() + "'");
     return result.length > 0 ? result[0] : undefined;
   }
 
@@ -48,7 +48,7 @@ export default class UserService {
    * @returns The user if the email and password was matched, else false.
    */
   async verifyUser(email: string, password: string) {
-    const user = await this.findUserByEmail({ email } as User);
+    const user = await this.findUserByEmail({ email: email.toLowerCase() } as User);
     if (user && user.password === password) {
       return user;
     }
