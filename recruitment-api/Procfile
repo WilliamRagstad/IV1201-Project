@@ -1,0 +1,1 @@
+web: deno run -A --unsafely-ignore-certificate-errors recruitment-api/index.ts
