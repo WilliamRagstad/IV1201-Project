@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DefaultPage from "~/components/defaultPage.tsx";
 import { useDeno } from "aleph/react";
-import { getAPI } from "../lib/api.ts";
+import { getAPI } from "~/lib/api.ts";
 export { ssr } from "~/lib/verification.ts";
 
 /**
