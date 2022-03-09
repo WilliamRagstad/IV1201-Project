@@ -13,16 +13,23 @@ export default function Applications({ user }: any) {
   /**
    * Retrieves and formats the user data.
    */
-  const userData = useDeno(
-    async () =>
-      await getAPI("application")
-        .then((res) => res.json())
-        .catch((error) => {
-          return {
-            message: "No connection to the API, try again later.",
-          };
+  const [userData, setUserData]: [
+    any[] | Record<string, any> | undefined,
+    any
+  ] = useState(undefined);
+
+  useEffect(() => {
+    getAPI("application")
+      .then((res) => res.json())
+      .then((data) => setUserData(data))
+      .catch((error) =>
+        setUserData({
+          message: "No connection to the API, try again later.",
         })
-  );
+      );
+  }, []);
+
+
 
   const applications_per_page = 6;
   const [pageIndex, setPageIndex] = useState(0);
@@ -42,14 +49,14 @@ export default function Applications({ user }: any) {
    * UseEffect for updating shown user list when page is changed.
    */
   useEffect(() => {
-    if (!userData || userData.message || userData.length === 0) return;
+    if (!userData || (userData as any).message || (userData as any).length === 0) return;
     if (currentApplication === null) setCurrentApplication(userData[0]);
 
     if (pageIndex < 0) {
       setPageIndex(0);
       return;
     }
-    const searchedUsers = userData.filter((application: any) => {
+    const searchedUsers = (userData as any).filter((application: any) => {
       // Filter all users that satisfy the search criteria
       if (
         searchCriteria.name &&
@@ -158,8 +165,10 @@ export default function Applications({ user }: any) {
   return (
     <DefaultPage header="View Applications" user={user}>
       {
-        userData.message ? (
-          <h2 className="error-message">{userData.message}</h2>
+        !userData ? (
+          <h2 className="error-message">No applications found</h2>
+        ) : (userData as any).message ? (
+          <h2 className="error-message">{(userData as any).message}</h2>
         ) : user && user.role.name === "recruiter" ? (
           <>
             <div className="search flex-parent">
