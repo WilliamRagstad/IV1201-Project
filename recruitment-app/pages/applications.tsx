@@ -10,6 +10,7 @@ export { ssr } from "~/lib/verification.ts";
  * @returns A page with applications
  */
 export default function Applications({ user }: any) {
+	useDeno(() => user);
   /**
    * Retrieves and formats the user data.
    */
