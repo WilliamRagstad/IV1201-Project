@@ -39,6 +39,10 @@ main {
   margin-top: 6px;
 }
 
+.footer {
+	padding: 20px;
+}
+
 .links span,
 .links a {
   display: inline-block;
