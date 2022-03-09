@@ -58,7 +58,7 @@ export default function Login({ user }: { user: any }) {
             <label className="txt_field">
               <input id="password" type="password" name="password" />
             </label>
-            <label>{error && <p>{error}</p>}</label>
+            {error && <p className="error-message">{error}</p>}
             <button type="submit" className="button">
               Login
             </button>
