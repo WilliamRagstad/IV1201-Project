@@ -12,8 +12,7 @@ import ApplicationService from "../service/ApplicationService.ts";
  */
 @Controller("/application")
 export default class ApplicationController extends IController {
-  static applicationService: ApplicationService = ApplicationService
-    .getInstance();
+  static applicationService = ApplicationService.instance();
 
   async get({ response }: Context) {
 	  response.headers.set("Access-Control-Allow-Origin", "*");
