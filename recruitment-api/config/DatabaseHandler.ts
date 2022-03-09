@@ -38,6 +38,13 @@ export default class DatabaseHandler {
     if (this.client.connected) await this.client.end();
   }
 
+  /**
+   * Performs the functions encased as a transaction.
+   * @param name The transaction ID
+   * @param callback The Database query to be performed.
+   * @param onError The expected response in case of error.
+   * @returns The result or undefined in case of error. 
+   */
   public async useTransaction<T>(
     name: string,
     callback: (transaction: Transaction) => T | undefined | Promise<T | undefined>,
