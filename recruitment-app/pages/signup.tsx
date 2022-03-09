@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDeno } from "aleph/react";
 import DefaultPage from "../components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
