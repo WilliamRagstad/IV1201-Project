@@ -9,7 +9,7 @@ import {
   Params,
   notFound,
   badRequest
-} from "https://deno.land/x/knight@2.1.0/mod.ts";
+} from "https://deno.land/x/knight@2.2.0/mod.ts";
 
 import User from "../model/User.ts";
 import UserService from "../service/UserService.ts";
