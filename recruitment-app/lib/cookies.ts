@@ -1,3 +1,6 @@
+/**
+ * Used to remove all the cookies.
+ */
 export function deleteAllCookies() {
   var cookies = document.cookie.split(";");
 
