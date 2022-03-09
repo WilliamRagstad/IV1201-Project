@@ -64,9 +64,9 @@ export default function Job({ user }: any) {
         )
         : (
           <>
-            <p className="error-message">Error 401 - Unauthorized</p>
+            <p className="error-message">You are not authorized to view this page</p>
           </>
-        )//! TODO: Don't manage routing in page components!!!
+        )
       }
     </DefaultPage>
   );
