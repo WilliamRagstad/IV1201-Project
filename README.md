@@ -18,7 +18,13 @@ deno run --allow-net recruitment-api\index.ts
 
 # Start webapp
 aleph dev recruitment-app
+
+# Start both together
+./run.bat
 ```
+
+### View the work
+The website can be viewed at: https://iv1201-recruitment.herokuapp.com/
 
 ### Further Development
 
