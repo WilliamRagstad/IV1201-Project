@@ -16,6 +16,7 @@ export default class ApplicationController extends IController {
     .getInstance();
 
   async get({ response }: Context) {
+	  response.headers.set("Access-Control-Allow-Origin", "*");
     ok(response, await ApplicationController.applicationService.getAll());
   }
 }
