@@ -21,13 +21,10 @@ const firstOf = <T>(ps: Promise<T>[]): Promise<T> | Promise<string[]> =>
  * @param endpoint Name of the endpoint without the base url. Must not contain a leading slash!
  */
 export async function getAPI(endpoint: string) {
-  // console.log(`Fetching ${endpoint}`);
 
   const results = await firstOf(
     baseURLs.map((b) => fetch(`${b}/${endpoint}`)),
   );
-  // console.log(results);
-  // alert(1);
   if (Array.isArray(results)) {
     console.error(results);
     return emptyResponse;
