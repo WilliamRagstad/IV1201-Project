@@ -41,7 +41,7 @@ export default function Application({ user }: any) {
    * UseEffect for updating shown user list when page is changed.
    */
   useEffect(() => {
-    if (userData.message || !userData || userData.length === 0) return;
+    if (!userData || userData.message || userData.length === 0) return;
     if (currentApplication === null) setCurrentApplication(userData[0]);
 
     if (pageIndex < 0) {
@@ -280,7 +280,7 @@ export default function Application({ user }: any) {
             )}
           </>
         ) : (
-          <p>Error 401 - Unauthorized</p>
+          <p className="error-message">Error 401 - Unauthorized</p>
         ) //! TODO: Don't manage routing in page components!!!
       }
     </DefaultPage>

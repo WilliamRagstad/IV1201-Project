@@ -61,7 +61,7 @@ export default function Signup({ user }: any) {
         </form>
       )) || (
         <>
-          <p>Already signed in</p>
+          <p className="error-message">Already signed in</p>
         </>
       )}
     </DefaultPage>

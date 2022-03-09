@@ -4,6 +4,7 @@ import Availability from "../model/Availability.ts";
 import Competence from "../model/Competence.ts";
 import User from "../model/User.ts";
 import Repository from "./Repository.ts";
+import { Transaction } from "https://deno.land/x/postgres/mod.ts";
 
 /**
  * Application repository class.
@@ -97,7 +98,7 @@ export default class ApplicationRepository extends Repository<Application> {
    * Get all applications.
    * @returns The result of the query.
    */
-  public async getAll(transaction: any): Promise<any[]> {
+  public async getAll(transaction: Transaction): Promise<Application[]> {
     return await this.query(
       "SELECT person.person_id, person.email, person.password, person.name, person.surname, person.pnr, competence_profile.competence_id, competence_profile.years_of_experience, availability.from_date, availability.to_date " +
         "FROM person " +

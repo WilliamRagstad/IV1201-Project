@@ -1,4 +1,5 @@
 import DatabaseHandler from "../config/DatabaseHandler.ts";
+import { Transaction } from "https://deno.land/x/postgres/mod.ts";
 
 /**
  * Base repository class.
@@ -16,7 +17,7 @@ export default abstract class Repository<TModel> {
    * @param transaction The transaction to execute other database calls in.
    */
   // deno-lint-ignore no-explicit-any
-  abstract convertTo(row: any, transaction: any): TModel | Promise<TModel>;
+  abstract convertTo(row: any, transaction: Transaction): TModel | Promise<TModel>;
   /**
    * Convert a model object to a database row.
    * @param row The model object to convert to a database row.
@@ -37,25 +38,25 @@ export default abstract class Repository<TModel> {
    * Send a custom query to the database.
    * @param query The query to send to the database.
    */
-  query?(query: string, transaction: any): Promise<TModel[]>;
+  query?(query: string, transaction: Transaction): Promise<TModel[]>;
   /**
    * Get all the model objects from the database.
    */
-  getAll?(transaction: any): Promise<TModel[]>;
+  getAll?(transaction: Transaction): Promise<TModel[]>;
   /**
    * Save a model object to the database.
    * @param model The model object to save to the database.
    */
-  save?(model: TModel, transaction: any): Promise<void> | void;
+  save?(model: TModel, transaction: Transaction): Promise<void> | void;
   // abstract find(model: T): Promise<T>;
   /**
    * Find a model object by its id.
    * @param id The id of the model object to find.
    */
-  findById?(id: number, transaction: any): Promise<TModel | undefined>;
+  findById?(id: number, transaction: Transaction): Promise<TModel | undefined>;
   /**
    * Delete a model object from the database.
    * @param id The id of the model object to delete.
    */
-  delete?(id: number, transaction: any): Promise<void> | void;
+  delete?(id: number, transaction: Transaction): Promise<void> | void;
 }
