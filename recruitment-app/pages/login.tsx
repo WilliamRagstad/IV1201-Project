@@ -66,7 +66,7 @@ export default function Login({ user }: { user: any }) {
         </>
       )) || (
         <>
-          <p className="error-message">Already logged in</p>
+          <p className="error-message">You are already logged in</p>
         </>
       )}
     </DefaultPage>
