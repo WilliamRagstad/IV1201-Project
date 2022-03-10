@@ -1,5 +1,6 @@
-
-
+/**
+ * Availability DTO
+ */
 export default class Availability {
 	start_date: Date;
 	end_date: Date;

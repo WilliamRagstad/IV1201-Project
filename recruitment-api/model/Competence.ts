@@ -1,5 +1,3 @@
-import { Optional } from "https://deno.land/x/knight@2.1.0/mod.ts";
-
 /**
  * Competence DTO
  */

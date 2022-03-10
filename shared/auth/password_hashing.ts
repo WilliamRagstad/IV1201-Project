@@ -11,7 +11,6 @@ export const Salt = "IV1201_PASSWORD_SALT_1EX048D6A35";
  * @param password The password to hash.
  * @returns the hashed password.
  */
-
 export const Hash = (password: string): string => {
   const hashAlg = createHash("sha256");
   hashAlg.update(password);
