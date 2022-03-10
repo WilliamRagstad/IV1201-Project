@@ -13,6 +13,7 @@ import {
 
 import User from "../model/User.ts";
 import UserService from "../service/UserService.ts";
+import LoggingService from "../service/LoggingService.ts";
 import { createJWT } from "../../shared/auth/jwt.ts";
 
 /**
@@ -21,6 +22,7 @@ import { createJWT } from "../../shared/auth/jwt.ts";
 @Controller("/user")
 export default class UserController extends IController {
   static userService = UserService.instance();
+  static log = LoggingService.instance().logger;
 
   async post({ request, response }: Context) {
     const user = await bodyMappingFormData(request, User);
