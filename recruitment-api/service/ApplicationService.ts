@@ -19,10 +19,17 @@ export default Service(
      * @returns All Applications
      */
     async getAll(): Promise<Application[] | undefined> {
-      return await this.applicationRepository.db.useTransaction<Application[]>(
+      this.log.debug("Get all applications transaction started");
+      const applications = await this.applicationRepository.db.useTransaction<Application[]>(
         "transaction_applications_get",
         async (t) => await this.applicationRepository.getAll(t),
       );
+      if (applications) {
+        this.log.debug(`Get all applications transaction finished. Found ${applications.length} applications`);
+      } else {
+        this.log.error("Get all applications transaction failed");
+      }
+      return applications;
     }
   },
 );
