@@ -10,6 +10,8 @@ First you need to have Deno installed. Run the command below to install the late
 ```shell
 deno install -A -f -n aleph https://deno.land/x/aleph/cli.ts
 ```
+You also need the Heroku CLI for the database.<br />
+https://devcenter.heroku.com/articles/heroku-cli
 ### Start the Environment
 
 ```shell
