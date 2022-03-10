@@ -1,10 +1,12 @@
 import { Client, Transaction } from "https://deno.land/x/postgres/mod.ts";
+import LoggingService from "../service/LoggingService.ts";
 
 /**
  * Database base handler, used to send queries and
  * manage the communication with the database.
  */
 export default class DatabaseHandler {
+  private log = LoggingService.instance().logger;
   private static instance: DatabaseHandler;
   private client: Client;
 
@@ -28,14 +30,27 @@ export default class DatabaseHandler {
    * Connect to the database.
    */
   public async connect() {
-    if (!this.client.connected) await this.client.connect();
+    if (!this.client.connected) {
+      this.log.info("Connecting to database...");
+      try {
+        await this.client.connect();
+        this.log.success("Successfully connected to database");
+      } catch (error) {
+        this.log.error("Failed to connect to database");
+        this.log.error(error);
+        throw error;
+      }
+    }
   }
 
   /**
    * Disconnect from the database and delete all non-persistent data.
    */
   public async disconnect() {
-    if (this.client.connected) await this.client.end();
+    if (this.client.connected) {
+      this.log.info("Disconnecting from database...");
+      await this.client.end();
+    }
   }
 
   /**
@@ -47,7 +62,9 @@ export default class DatabaseHandler {
    */
   public async useTransaction<T>(
     name: string,
-    callback: (transaction: Transaction) => T | undefined | Promise<T | undefined>,
+    callback: (
+      transaction: Transaction,
+    ) => T | undefined | Promise<T | undefined>,
     onError?: (error: unknown) => T | undefined,
   ): Promise<T | undefined> {
     const transaction = this.client.createTransaction(name + this.uniqueId());

@@ -1,4 +1,4 @@
-import { AppMode, Knight } from "https://deno.land/x/knight@2.1.0/mod.ts";
+import { AppMode, Knight } from "https://deno.land/x/knight@2.2.1/mod.ts";
 import DatabaseHandler from "./config/DatabaseHandler.ts";
 
 Knight.setMode(AppMode.DEV);
