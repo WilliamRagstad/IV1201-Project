@@ -8,7 +8,7 @@ import LoggingService from "../service/LoggingService.ts";
  */
 export default Service(
   class ApplicationService {
-    static log = LoggingService.instance().logger;
+    private log = LoggingService.instance().logger;
     applicationRepository: ApplicationRepository;
     constructor() {
       this.applicationRepository = ApplicationRepository.getInstance();

@@ -14,7 +14,7 @@ import LoggingService from "../service/LoggingService.ts";
 @Controller("/application")
 export default class ApplicationController extends IController {
   static applicationService = ApplicationService.instance();
-  static log = LoggingService.instance().logger;
+  private log = LoggingService.instance().logger;
 
   async get({ response }: Context) {
     response.headers.set("Access-Control-Allow-Origin", "*");

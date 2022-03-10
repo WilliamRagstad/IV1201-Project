@@ -9,7 +9,7 @@ import { Service } from "https://deno.land/x/knight@2.2.0/mod.ts";
  */
 export default Service(
   class UserService {
-    static log = LoggingService.instance().logger;
+    private log = LoggingService.instance().logger;
     userRepository: UserRepository;
     constructor() {
       this.userRepository = UserRepository.getInstance();

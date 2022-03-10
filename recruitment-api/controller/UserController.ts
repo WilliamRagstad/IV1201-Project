@@ -22,7 +22,7 @@ import { createJWT } from "../../shared/auth/jwt.ts";
 @Controller("/user")
 export default class UserController extends IController {
   static userService = UserService.instance();
-  static log = LoggingService.instance().logger;
+  private log = LoggingService.instance().logger;
 
   async post({ request, response }: Context) {
     const user = await bodyMappingFormData(request, User);
