@@ -25,23 +25,29 @@ export default class UserController extends IController {
   private log = LoggingService.instance().logger;
 
   async post({ request, response }: Context) {
+    this.log.debug("Request to: POST /user");
     const user = await bodyMappingFormData(request, User);
     if (await UserController.userService.saveUser(user)) {
       created(response, `User ${user.firstName} was successfully created!`);
+      this.log.success(`Successfully created user ${user.firstName} with email ${user.email}`);
     } else {
       badRequest(response, `User ${user.firstName} could not be created.`);
+      this.log.warn(`Failed to create user ${user.firstName} with email ${user.email}`);
     }
   }
 
   @Endpoint("GET", "/:id/email")
   getByEmail({ id }: Params, { response }: Context) {
+    this.log.debug("Request to: GET /user/:id/email");
     const email = id + "@example.com";
     ok(response, `User with email ${email} was successfully found`);
+    this.log.success(`Successfully found user with email ${email}`);
   }
 
   //TODO: Change to POST request
   @Endpoint("GET", "/validate/:email/:password")
   async validation({ email, password }: Params, { response }: Context) {
+    this.log.debug("Request to: GET /user/validate/ by " + email);
     const verifiedUser = await UserController.userService.verifyUser(
       email,
       password,
@@ -58,8 +64,10 @@ export default class UserController extends IController {
         role: verifiedUser.role,
       };
       ok(response, await createJWT(strippedUser));
+      this.log.success(`Successfully validated user ${email} and created JWT session`);
     } else {
       notFound(response);
+      this.log.warn(`Failed to validate user ${email}`);
     }
   }
 }
