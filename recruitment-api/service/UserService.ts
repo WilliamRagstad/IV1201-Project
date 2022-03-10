@@ -2,7 +2,7 @@ import User from "../model/User.ts";
 import UserRepository from "../repository/UserRepository.ts";
 import LoggingService from "../service/LoggingService.ts";
 import { Transaction } from "https://deno.land/x/postgres/mod.ts";
-import { Service } from "https://deno.land/x/knight@2.2.0/mod.ts";
+import { Service } from "https://deno.land/x/knight@2.2.1/mod.ts";
 
 /**
  * User service class.

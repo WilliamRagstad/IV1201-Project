@@ -1,4 +1,4 @@
-import { Service } from "https://deno.land/x/knight@2.2.0/mod.ts";
+import { Service } from "https://deno.land/x/knight@2.2.1/mod.ts";
 import Application from "../model/Application.ts";
 import ApplicationRepository from "../repository/ApplicationRepository.ts";
 import LoggingService from "../service/LoggingService.ts";

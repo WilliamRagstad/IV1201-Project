@@ -4,7 +4,7 @@ import {
   Logger,
   LoggingLevel,
   Service,
-} from "https://deno.land/x/knight@2.2.0/mod.ts";
+} from "https://deno.land/x/knight@2.2.1/mod.ts";
 
 export default Service(
   class LoggingService {
