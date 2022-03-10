@@ -20,13 +20,20 @@ export default Service(
      * @param user Save a user to the database.
      */
     async saveUser(user: User): Promise<boolean> {
-      return await this.userRepository.db.useTransaction<boolean>(
+      this.log.debug("Save user transaction started");
+      const wasSuccessful = await this.userRepository.db.useTransaction<boolean>(
         "transaction_user_save",
         async (t) => {
           await this.userRepository.save(user, t);
           return true;
         },
       ) ?? false;
+      if (wasSuccessful) {
+        this.log.success("Transaction successful, user saved");
+      } else {
+        this.log.error("Transaction failed, database rollback");
+      }
+      return wasSuccessful;
     }
 
     /**
@@ -52,6 +59,7 @@ export default Service(
      * @returns The user if the email and password was matched, else false.
      */
     async verifyUser(email: string, password: string) {
+      this.log.debug("Verify user transaction started");
       const user = await this.userRepository.db.useTransaction<User>(
         "transaction_user_verify",
         async (t) =>
@@ -61,8 +69,10 @@ export default Service(
           ),
       );
       if (user && user.password === password) {
+        this.log.success("User was successfully verified");
         return user;
       }
+      this.log.warn("Could not verify user");
       return false;
     }
   },
