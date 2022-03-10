@@ -1,14 +1,14 @@
 import {
+  badRequest,
   bodyMappingFormData,
   Context,
   Controller,
   created,
   Endpoint,
   IController,
+  notFound,
   ok,
   Params,
-  notFound,
-  badRequest
 } from "https://deno.land/x/knight@2.2.0/mod.ts";
 
 import User from "../model/User.ts";
@@ -27,10 +27,10 @@ export default class UserController extends IController {
   async post({ request, response }: Context) {
     const user = await bodyMappingFormData(request, User);
     if (await UserController.userService.saveUser(user)) {
-		created(response, `User ${user.firstName} was successfully created!`);
-	} else {
-		badRequest(response, `User ${user.firstName} could not be created.`);
-	}
+      created(response, `User ${user.firstName} was successfully created!`);
+    } else {
+      badRequest(response, `User ${user.firstName} could not be created.`);
+    }
   }
 
   @Endpoint("GET", "/:id/email")
@@ -42,9 +42,12 @@ export default class UserController extends IController {
   //TODO: Change to POST request
   @Endpoint("GET", "/validate/:email/:password")
   async validation({ email, password }: Params, { response }: Context) {
-    const verifiedUser = await UserController.userService.verifyUser(email, password);
+    const verifiedUser = await UserController.userService.verifyUser(
+      email,
+      password,
+    );
     response.headers.append("Access-Control-Allow-Origin", "*");
-    if(verifiedUser) {
+    if (verifiedUser) {
       // We want to remove sensitive information before sending the user back to the client
       const strippedUser = {
         id: verifiedUser.id,
@@ -53,10 +56,10 @@ export default class UserController extends IController {
         username: verifiedUser.username,
         email: verifiedUser.email,
         role: verifiedUser.role,
-      }
+      };
       ok(response, await createJWT(strippedUser));
-    }
-    else
+    } else {
       notFound(response);
+    }
   }
 }

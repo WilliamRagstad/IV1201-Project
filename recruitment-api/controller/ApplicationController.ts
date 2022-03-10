@@ -17,7 +17,7 @@ export default class ApplicationController extends IController {
   static log = LoggingService.instance().logger;
 
   async get({ response }: Context) {
-	  response.headers.set("Access-Control-Allow-Origin", "*");
+    response.headers.set("Access-Control-Allow-Origin", "*");
     ok(response, await ApplicationController.applicationService.getAll());
   }
 }
