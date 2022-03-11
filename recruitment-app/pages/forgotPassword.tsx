@@ -14,7 +14,7 @@ export default function ForgotPassword({ user }: { user: any }) {
   /**
    * Function to perform extra manipulation before sending formdata.
    */
-  const submitForm: FormEventHandler = async function (event: React.FormEvent) {
+  const submitForm: FormEventHandler = function (event: React.FormEvent) {
     event.preventDefault();
     setError("");
     const emailElm = document.getElementById("email") as HTMLInputElement;
