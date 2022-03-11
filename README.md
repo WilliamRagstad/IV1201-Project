@@ -11,7 +11,11 @@ First you need to have Deno installed. Run the command below to install the late
 deno install -A -f -n aleph https://deno.land/x/aleph/cli.ts
 ```
 You also need the Heroku CLI for the database.<br />
-https://devcenter.heroku.com/articles/heroku-cli
+Download installer [here](https://devcenter.heroku.com/articles/heroku-cli) or get it via NPM:
+```shell
+npm install -g heroku
+```
+
 ### Start the Environment
 
 ```shell
@@ -38,8 +42,8 @@ It's important to test code, read more about how to write unit tests in the [`TE
 
 # Course Comments
 ## Data Migration Policy
-In case a user lacks a password or a username, the server will send a mail to your specified email-address and allow you to set a password for your account. For any further lacking details, it will be changed in the profile section. 
+In case a user lacks a password or a username, the server will send a mail to your specified email-address and allow you to set a password for your account. For any further lacking details, it will be changed in the profile section.
 *Note that these functions are not implemented, and only written down for grading purposes.*
 
 ## Transactions
-All transaction starts and ends in the Service Layer and will rollback in case of any errors. Every call to the database will be handled in a transaction, even if no data gets changed. 
+All transaction starts and ends in the Service Layer and will rollback in case of any errors. Every call to the database will be handled in a transaction, even if no data gets changed.
