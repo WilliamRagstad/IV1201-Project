@@ -1,2 +1,2 @@
-# Test app
-deno test -A --config recruitment-app\deno.json 
+@echo off
+deno test -A --config recruitment-app\deno.json
