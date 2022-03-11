@@ -23,16 +23,12 @@ export default function Signup({ user }: any) {
     const password = passwordElm.value;
     const hashedPassword = hashPassword(password);
     passwordElm.value = hashedPassword;
-    const data = new URLSearchParams();
-    for (const pair of new FormData(document.getElementById('signup_form_data') as HTMLFormElement | undefined)){
-      data.append(pair[0], pair[1] as string);
-    }
     const res = await getAPI('user', {
       method: 'POST',
-      body: data,
+      body: new URLSearchParams(new FormData(document.getElementById('signup_form') as HTMLFormElement | undefined).toString()),
     });
     const jwt = await res.text();
-    if(jwt && res.status==201){
+    if(res.ok && jwt){
       document.cookie = `JWT=${jwt}`;
       window.location.href = "/";
     }
@@ -49,7 +45,7 @@ export default function Signup({ user }: any) {
           className="signup_form"
           encType="multipart/form-data"
           onSubmit={submitForm}
-          id="signup_form_data"
+          id="signup_form"
         >
           <div className="personal_information">
             First Name:
