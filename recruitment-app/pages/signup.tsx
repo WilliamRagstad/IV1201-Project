@@ -32,14 +32,14 @@ export default function Signup({ user }: any) {
       method: 'POST',
       body: data,
     });
-    const jwt = await res.text();
-    if(res.ok && jwt){
-      document.cookie = `JWT=${jwt}`;
+    const txt = await res.text();
+    if(res.ok && txt){
+      document.cookie = `JWT=${txt}`;
       window.location.href = "/";
     }
     else{
       passwordElm.value = "";
-      setError("Something went wrong, try again");
+      setError("Something went wrong, try again. <br/>" + txt);
     }
   };
 
