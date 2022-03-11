@@ -41,11 +41,27 @@ export default class UserController extends IController {
       password: { type: "string", required: true },
     });
     if (await this.userService.saveUser(user)) {
-      created(response, await createJWT(new SafeUser(undefined, user.email, user.username, user.firstName, user.lastName, new Role(2, "applicant"))));
-      this.log.success(`Successfully created user ${user.firstName} with email ${user.email}`);
+      created(
+        response,
+        await createJWT(
+          new SafeUser(
+            undefined,
+            user.email,
+            user.username,
+            user.firstName,
+            user.lastName,
+            new Role(2, "applicant"),
+          ),
+        ),
+      );
+      this.log.success(
+        `Successfully created user ${user.firstName} with email ${user.email}`,
+      );
     } else {
       badRequest(response, `User ${user.firstName} could not be created.`);
-      this.log.warn(`Failed to create user ${user.firstName} with email ${user.email}`);
+      this.log.warn(
+        `Failed to create user ${user.firstName} with email ${user.email}`,
+      );
     }
   }
 
@@ -68,8 +84,22 @@ export default class UserController extends IController {
     response.headers.append("Access-Control-Allow-Origin", "*");
     if (verifiedUser) {
       // We want to remove sensitive information before sending the user back to the client
-      ok(response, await createJWT(new SafeUser(verifiedUser.id, verifiedUser.email, verifiedUser.username, verifiedUser.firstName, verifiedUser.lastName, verifiedUser.role)));
-      this.log.success(`Successfully validated user ${email} and created JWT session`);
+      ok(
+        response,
+        await createJWT(
+          new SafeUser(
+            verifiedUser.id,
+            verifiedUser.email,
+            verifiedUser.username,
+            verifiedUser.firstName,
+            verifiedUser.lastName,
+            verifiedUser.role,
+          ),
+        ),
+      );
+      this.log.success(
+        `Successfully validated user ${email} and created JWT session`,
+      );
     } else {
       notFound(response);
       this.log.warn(`Failed to validate user ${email}`);
