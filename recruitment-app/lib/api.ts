@@ -22,7 +22,7 @@ const firstOf = <T>(ps: Promise<T>[]): Promise<T> | Promise<string[]> =>
  * @param options Optional settings that you want to apply to the request. 
  * @returns The response from the server. 
  */
-export async function getAPI(endpoint: string, options: any = []) {
+export async function getAPI(endpoint: string, options: RequestInit | undefined = undefined) {
   const results = await firstOf(
     baseURLs.map((b) => fetch(`${b}/${endpoint}`, options)),
   );
