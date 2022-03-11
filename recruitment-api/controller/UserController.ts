@@ -12,6 +12,7 @@ import {
 } from "https://deno.land/x/knight@2.2.1/mod.ts";
 
 import User from "../model/User.ts";
+import SafeUser from "../model/SafeUser.ts";
 import UserService from "../service/UserService.ts";
 import LoggingService from "../service/LoggingService.ts";
 import Role from "../model/Role.ts";
@@ -30,14 +31,7 @@ export default class UserController extends IController {
     response.headers.append("Access-Control-Allow-Origin", "*");  
     const user = await bodyMappingForm(request, User);
     if (await UserController.userService.saveUser(user)) {
-      const strippedUser = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-        role: new Role(2, "applicant"),
-      };
-      created(response, await createJWT(strippedUser));
+      created(response, await createJWT(new SafeUser(undefined, user.email, user.username, user.firstName, user.lastName, new Role(2, "applicant"))));
       this.log.success(`Successfully created user ${user.firstName} with email ${user.email}`);
     } else {
       badRequest(response, `User ${user.firstName} could not be created.`);
@@ -64,15 +58,7 @@ export default class UserController extends IController {
     response.headers.append("Access-Control-Allow-Origin", "*");
     if (verifiedUser) {
       // We want to remove sensitive information before sending the user back to the client
-      const strippedUser = {
-        id: verifiedUser.id,
-        firstName: verifiedUser.firstName,
-        lastName: verifiedUser.lastName,
-        username: verifiedUser.username,
-        email: verifiedUser.email,
-        role: verifiedUser.role,
-      };
-      ok(response, await createJWT(strippedUser));
+      ok(response, await createJWT(new SafeUser(verifiedUser.id, verifiedUser.email, verifiedUser.username, verifiedUser.firstName, verifiedUser.lastName, verifiedUser.role)));
       this.log.success(`Successfully validated user ${email} and created JWT session`);
     } else {
       notFound(response);
