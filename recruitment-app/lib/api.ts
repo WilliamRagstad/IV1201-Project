@@ -26,7 +26,7 @@ export async function getAPI(endpoint: string, options: any = []) {
   let results;
   try {
     results = await firstOf(
-      baseURLs.map((b) => fetch(`${b}/${endpoint}`, options)),
+      baseURLs.map(async (b) => await fetch(`${b}/${endpoint}`, options)),
     );
   } catch { /* Ignore failed requests */ }
   if (Array.isArray(results)) {
