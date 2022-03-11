@@ -21,7 +21,7 @@ export default function Signup({ user }: any) {
     setError("");
     const passwordElm = document.getElementById("password") as HTMLInputElement;
     const password = passwordElm.value;
-    const hashedPassword = hashPassword(password + Salt);
+    const hashedPassword = hashPassword(password);
     passwordElm.value = hashedPassword;
     const data = new URLSearchParams();
     for (const pair of new FormData(document.getElementById('signup_form') as HTMLFormElement | undefined)){
