@@ -32,7 +32,7 @@ export default function Signup({ user }: any) {
       body: data,
     });
     const jwt = await res.text();
-    if(jwt && res.status==201){
+    if(res.ok && jwt){
       document.cookie = `JWT=${jwt}`;
       window.location.href = "/";
     }
