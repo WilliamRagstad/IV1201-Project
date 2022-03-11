@@ -36,7 +36,7 @@ jobs:
       #  run: deno lint
 
       - name: Run APP tests
-        run: deno test --config recruitment-app\deno.json recruitment-app
+        run: deno test --config recruitment-app/deno.json recruitment-app
 
       - name: Run API tests
         run: test -A recruitment-api
