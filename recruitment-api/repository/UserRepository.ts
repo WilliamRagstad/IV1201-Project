@@ -110,6 +110,18 @@ export default class UserRepository extends Repository<User> {
   }
 
   /**
+     * Update password for user with specified email.
+     * @param email The email of the user.
+     * @param password The new password to save.
+     * @returns Whether or not the password could be updated.
+     */
+   public async updatePassword(email: string, password: string, transaction: Transaction) {
+    await this.query(
+      "UPDATE person SET password='" + password + "' WHERE email='" + email + "'", transaction
+    );
+  }
+
+  /**
    * Delete a user by id.
    * @param id The id of the user to delete.
    */
