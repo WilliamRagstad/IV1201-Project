@@ -41,8 +41,9 @@ export default class UserController extends IController {
       password: { type: "string", required: true },
     }, true);
     if (!validResult.isValid) {
-      badRequest(response, validResult.errors.join("\n"));
       this.log.warn(`Failed to create user ${user.email} due to validation errors`, validResult.errors);
+      badRequest(response, validResult.errors.join("\n"));
+      return;
     }
     if (validResult.casted !== undefined) {
       this.log.debug(`Successfully validated and casted user to`, JSON.stringify(validResult.casted));
