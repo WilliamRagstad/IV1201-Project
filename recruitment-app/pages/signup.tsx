@@ -25,7 +25,7 @@ export default function Signup({ user }: any) {
     passwordElm.value = hashedPassword;
     const data = new URLSearchParams();
     for (const pair of new FormData(document.getElementById('signup_form') as HTMLFormElement | undefined)){
-      data.append(pair[0], pair[1] as string);
+      data.append(pair[0], pair[1].valueOf().toString());
     }
     console.log(data);
     const res = await getAPI('user', {
