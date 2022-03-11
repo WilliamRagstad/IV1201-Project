@@ -65,4 +65,17 @@ export default class UserController extends IController {
       this.log.warn(`Failed to validate user ${email}`);
     }
   }
+
+  @Endpoint("GET", "/password/:email/:password")
+  async setPassword({ email, password }: Params, { response }: Context){
+    this.log.debug("Request to: GET /user/password/ by " + email);
+
+    if (await UserController.userService.updatePassword(email, password)) {
+      ok(response, `Successfully updated password for user ${email}`);
+      this.log.success(`Successfully updated password for user ${email}`);
+    } else {
+      notFound(response);
+      this.log.warn(`Failed to update password for user ${email}`);
+    }
+  }
 }
