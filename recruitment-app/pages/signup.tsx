@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from "react";
 import { useDeno } from "aleph/react";
 import DefaultPage from "../components/defaultPage.tsx";
-import { Salt, hashPassword } from "../lib/passhash.ts";
+import { hashPassword } from "../lib/passhash.ts";
 export { ssr } from "~/lib/verification.ts";
 import { getAPI } from "../lib/api.ts";
 
