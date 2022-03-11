@@ -5,8 +5,11 @@ import LoggingService from "./LoggingService.ts";
 export type ValidationRule =
   & (
     | { type: "string" }
+    | { type: "symbol" }
     | { type: "number" }
+    | { type: "bigint" }
     | { type: "boolean" }
+    | { type: "function" }
     | { type: "array"; elements: ValidationRule }
     | { type: "object"; schema: ValidationSchema }
     | { type: "enum"; values: string[] }
@@ -42,9 +45,19 @@ export default Service(
             return { isValid: false, errors: ["must be a string"] };
           }
           break;
+        case "symbol":
+          if (typeof data !== "symbol") {
+            return { isValid: false, errors: ["must be a symbol"] };
+          }
+          break;
         case "number":
           if (typeof data !== "number") {
             return { isValid: false, errors: ["must be a number"] };
+          }
+          break;
+        case "bigint":
+          if (typeof data !== "bigint") {
+            return { isValid: false, errors: ["must be a bigint"] };
           }
           break;
         case "boolean":
@@ -88,6 +101,11 @@ export default Service(
             };
           }
           break;
+        case "function":
+          if (typeof data !== "function") {
+            return { isValid: false, errors: ["must be a function"] };
+          }
+          break;
         case "null":
           if (data !== null) {
             return { isValid: false, errors: ["must be null"] };
@@ -101,7 +119,7 @@ export default Service(
         case "any":
           break; // Always valid
         default:
-          this.log.error(`Unknown validation rule type: ${(rule as any).type}`);
+          this.log.error(`Unknown validation rule type ${(rule as any).type} for ${JSON.stringify(data)} (${typeof data})`);
           return { isValid: false, errors: ["Unknown validation rule type"] };
       }
       return { isValid: true };
