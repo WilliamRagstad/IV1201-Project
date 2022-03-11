@@ -69,7 +69,7 @@ export default class UserController extends IController {
   @Endpoint("GET", "/password/:email/:password")
   async setPassword({ email, password }: Params, { response }: Context){
     this.log.debug("Request to: GET /user/password/ by " + email);
-
+    response.headers.append("Access-Control-Allow-Origin", "*");
     if (await UserController.userService.updatePassword(email, password)) {
       ok(response, `Successfully updated password for user ${email}`);
       this.log.success(`Successfully updated password for user ${email}`);
