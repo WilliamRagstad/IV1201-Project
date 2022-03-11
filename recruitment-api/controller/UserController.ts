@@ -23,14 +23,14 @@ import { createJWT } from "../../shared/auth/jwt.ts";
  */
 @Controller("/user")
 export default class UserController extends IController {
-  static userService = UserService.instance();
+  private userService = UserService.instance();
   private log = LoggingService.instance().logger;
 
   async post({ request, response }: Context) {
     this.log.debug("Request to: POST /user");
-    response.headers.append("Access-Control-Allow-Origin", "*");  
+    response.headers.append("Access-Control-Allow-Origin", "*");
     const user = await bodyMappingForm(request, User);
-    if (await UserController.userService.saveUser(user)) {
+    if (await this.userService.saveUser(user)) {
       created(response, await createJWT(new SafeUser(undefined, user.email, user.username, user.firstName, user.lastName, new Role(2, "applicant"))));
       this.log.success(`Successfully created user ${user.firstName} with email ${user.email}`);
     } else {
@@ -51,7 +51,7 @@ export default class UserController extends IController {
   @Endpoint("GET", "/validate/:email/:password")
   async validation({ email, password }: Params, { response }: Context) {
     this.log.debug("Request to: GET /user/validate/ by " + email);
-    const verifiedUser = await UserController.userService.verifyUser(
+    const verifiedUser = await this.userService.verifyUser(
       email,
       password,
     );
