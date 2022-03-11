@@ -31,15 +31,23 @@ export default class UserController extends IController {
   async post({ request, response }: Context) {
     this.log.debug("Request to: POST /user");
     response.headers.append("Access-Control-Allow-Origin", "*");
-    const user = await bodyMappingForm(request, User);
-    this.validationService.validate(user, {
+    let user = await bodyMappingForm(request, User);
+    const validResult = this.validationService.validate(user, {
       firstName: { type: "string", required: true },
       lastName: { type: "string", required: true },
       username: { type: "string", required: true },
       socialSecurityNumber: { type: "number", required: true },
       email: { type: "string", required: true },
       password: { type: "string", required: true },
-    });
+    }, true);
+    if (!validResult.isValid) {
+      badRequest(response, validResult.errors.join("\n"));
+      this.log.warn(`Failed to create user ${user.email} due to validation errors`, validResult.errors);
+    }
+    if (validResult.casted !== undefined) {
+      this.log.debug(`Successfully validated and casted user to`, JSON.stringify(validResult.casted));
+      user = validResult.casted as User;
+    }
     if (await this.userService.saveUser(user)) {
       created(
         response,
