@@ -51,8 +51,8 @@ export default Service(
         case "number":
           if (typeof data === "number") {
             return data;
-          } else if (typeof data === "string") {
-            return Number.parseInt(data);
+          } else if (typeof data === "string" && !isNaN(Number(data))) {
+            return Number(data);
           }
           throw new Error(`Cannot cast ${typeof data} to number`);
         case "bigint":
