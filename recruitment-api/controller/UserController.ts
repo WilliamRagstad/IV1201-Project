@@ -66,6 +66,7 @@ export default class UserController extends IController {
     }
   }
 
+  //TODO: Change to POST request
   @Endpoint("GET", "/password/:email/:password")
   async setPassword({ email, password }: Params, { response }: Context){
     this.log.debug("Request to: GET /user/password/ by " + email);

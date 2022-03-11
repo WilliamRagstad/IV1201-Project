@@ -19,7 +19,7 @@ export default function ForgotPassword({ user }: { user: any }) {
     setError("");
     const emailElm = document.getElementById("email") as HTMLInputElement;
     console.log("Email sent to: " + emailElm.value);
-    console.log("Link in email: " + window.location.href.replace("/forgotPassword", "") + "/passwordChange?email=" + emailElm.value)
+    console.log("Link in email: " + window.location.href.replace("/forgotPassword", "") + "/passwordChange?email=" + emailElm.value); //TODO: change to token from server to increase security
   };
 
   return (
