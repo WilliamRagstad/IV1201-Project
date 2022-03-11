@@ -111,6 +111,7 @@ export default Service(
       data: Record<string, any>,
       schema: ValidationSchema,
     ): ValidationResult {
+      this.log.debug("Validating data:", data);
       const errors: string[] = [];
       for (const key in schema) {
         const rule = schema[key];
@@ -133,6 +134,7 @@ export default Service(
         this.log.warn(errors);
         return { isValid: false, errors };
       }
+      this.log.success("Validation successful");
       return { isValid: true };
     }
   },
