@@ -39,7 +39,7 @@ export default function Signup({ user }: any) {
     }
     else{
       passwordElm.value = "";
-      setError("Something went wrong, try again. <br/>" + txt);
+      setError("Something went wrong, try again. " + txt);
     }
   };
 
