@@ -63,6 +63,7 @@ export default function Login({ user }: { user: any }) {
               Login
             </button>
           </form>
+          <a href="/forgotPassword"> Forgot your password?</a>
         </>
       )) || (
         <>
