@@ -1,5 +1,2 @@
 # Test app
-deno test --config recruitment-app\deno.json recruitment-app
-
-# Test API
-deno test -A recruitment-api
+deno test -A --config recruitment-app\deno.json 
