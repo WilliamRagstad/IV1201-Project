@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from "react";
 import { useDeno } from "aleph/react";
 import DefaultPage from "../components/defaultPage.tsx";
-import { Salt, hashPassword } from "../lib/passhash.ts";
+import { hashPassword } from "../lib/passhash.ts";
 export { ssr } from "~/lib/verification.ts";
 import { getAPI } from "../lib/api.ts";
 
@@ -21,7 +21,7 @@ export default function Signup({ user }: any) {
     setError("");
     const passwordElm = document.getElementById("password") as HTMLInputElement;
     const password = passwordElm.value;
-    const hashedPassword = hashPassword(password + Salt);
+    const hashedPassword = hashPassword(password);
     passwordElm.value = hashedPassword;
     const data = new URLSearchParams();
     for (const pair of new FormData(document.getElementById('signup_form') as HTMLFormElement | undefined)){

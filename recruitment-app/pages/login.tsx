@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from "react";
 import { useDeno } from "aleph/react";
 import DefaultPage from "~/components/defaultPage.tsx";
-import { Salt, hashPassword } from "../lib/passhash.ts";
+import { hashPassword } from "../lib/passhash.ts";
 import { getAPI } from "../lib/api.ts";
 export { ssr } from "~/lib/verification.ts";
 
@@ -23,7 +23,7 @@ export default function Login({ user }: { user: any }) {
     const emailElm = document.getElementById("email") as HTMLInputElement;
     const passwordElm = document.getElementById("password") as HTMLInputElement;
     const password = passwordElm.value;
-    const hashedPassword = hashPassword(password + Salt);
+    const hashedPassword = hashPassword(password);
 
     //TODO: Make POST request instead (data as body)
     const res = await getAPI(
