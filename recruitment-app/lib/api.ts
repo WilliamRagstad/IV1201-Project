@@ -19,19 +19,15 @@ const firstOf = <T>(ps: Promise<T>[]): Promise<T> | Promise<string[]> =>
 /**
  * Fetch data from the local or public API.
  * @param endpoint Name of the endpoint without the base url. Must not contain a leading slash!
- * @param options Optional settings that you want to apply to the request.
- * @returns The response from the server.
  */
-export async function getAPI(endpoint: string, options: any = []) {
-  let results;
-  try {
-    results = await firstOf(
-      baseURLs.map(async (b) => await fetch(`${b}/${endpoint}`, options)),
-    );
-  } catch { /* Ignore failed requests */ }
+export async function getAPI(endpoint: string) {
+
+  const results = await firstOf(
+    baseURLs.map((b) => fetch(`${b}/${endpoint}`)),
+  );
   if (Array.isArray(results)) {
     console.error(results);
     return emptyResponse;
   }
-  return results ?? emptyResponse;
+  return results;
 }

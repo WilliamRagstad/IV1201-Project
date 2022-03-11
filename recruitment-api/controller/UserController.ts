@@ -1,6 +1,6 @@
 import {
   badRequest,
-  bodyMappingForm,
+  bodyMappingFormData,
   Context,
   Controller,
   created,
@@ -14,7 +14,6 @@ import {
 import User from "../model/User.ts";
 import UserService from "../service/UserService.ts";
 import LoggingService from "../service/LoggingService.ts";
-import Role from "../model/Role.ts";
 import { createJWT } from "../../shared/auth/jwt.ts";
 
 /**
@@ -27,17 +26,9 @@ export default class UserController extends IController {
 
   async post({ request, response }: Context) {
     this.log.debug("Request to: POST /user");
-    response.headers.append("Access-Control-Allow-Origin", "*");  
-    const user = await bodyMappingForm(request, User);
+    const user = await bodyMappingFormData(request, User);
     if (await UserController.userService.saveUser(user)) {
-      const strippedUser = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-        role: new Role(2, "applicant"),
-      };
-      created(response, await createJWT(strippedUser));
+      created(response, `User ${user.firstName} was successfully created!`);
       this.log.success(`Successfully created user ${user.firstName} with email ${user.email}`);
     } else {
       badRequest(response, `User ${user.firstName} could not be created.`);
