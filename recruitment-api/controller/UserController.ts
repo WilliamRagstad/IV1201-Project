@@ -17,6 +17,7 @@ import UserService from "../service/UserService.ts";
 import LoggingService from "../service/LoggingService.ts";
 import Role from "../model/Role.ts";
 import { createJWT } from "../../shared/auth/jwt.ts";
+import ValidationService from "../service/ValidationService.ts";
 
 /**
  * User controller class.
@@ -24,12 +25,21 @@ import { createJWT } from "../../shared/auth/jwt.ts";
 @Controller("/user")
 export default class UserController extends IController {
   private userService = UserService.instance();
+  private validationService = ValidationService.instance();
   private log = LoggingService.instance().logger;
 
   async post({ request, response }: Context) {
     this.log.debug("Request to: POST /user");
     response.headers.append("Access-Control-Allow-Origin", "*");
     const user = await bodyMappingForm(request, User);
+    this.validationService.validate(user, {
+      firstName: { type: "string", required: true },
+      lastName: { type: "string", required: true },
+      username: { type: "string", required: true },
+      socialSecurityNumber: { type: "number", required: true },
+      email: { type: "string", required: true },
+      password: { type: "string", required: true },
+    });
     if (await this.userService.saveUser(user)) {
       created(response, await createJWT(new SafeUser(undefined, user.email, user.username, user.firstName, user.lastName, new Role(2, "applicant"))));
       this.log.success(`Successfully created user ${user.firstName} with email ${user.email}`);
