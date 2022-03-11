@@ -10,6 +10,8 @@ First you need to have Deno installed. Run the command below to install the late
 ```shell
 deno install -A -f -n aleph https://deno.land/x/aleph/cli.ts
 ```
+You also need the Heroku CLI for the database.<br />
+https://devcenter.heroku.com/articles/heroku-cli
 ### Start the Environment
 
 ```shell
@@ -18,7 +20,13 @@ deno run --allow-net recruitment-api\index.ts
 
 # Start webapp
 aleph dev recruitment-app
+
+# Start both together
+./run.bat
 ```
+
+### View the work
+The website can be viewed at: https://iv1201-recruitment.herokuapp.com/
 
 ### Further Development
 
