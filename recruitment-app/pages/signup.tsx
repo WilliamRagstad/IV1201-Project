@@ -3,7 +3,7 @@ import { useDeno } from "aleph/react";
 import DefaultPage from "../components/defaultPage.tsx";
 import { hashPassword } from "../lib/passhash.ts";
 export { ssr } from "~/lib/verification.ts";
-import { postAPI } from "../lib/api.ts";
+import { getAPI } from "../lib/api.ts";
 
 
 /**
@@ -27,7 +27,7 @@ export default function Signup({ user }: any) {
     for (const pair of new FormData(document.getElementById('signup_form_data') as HTMLFormElement | undefined)){
       data.append(pair[0], pair[1] as string);
     }
-    const res = await postAPI('user', {
+    const res = await getAPI('user', {
       method: 'POST',
       body: data,
     });
