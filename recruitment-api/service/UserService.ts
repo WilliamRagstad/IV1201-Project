@@ -18,6 +18,7 @@ export default Service(
     /**
      * Save a user to the database.
      * @param user Save a user to the database.
+     * @returns Whether the user could be saved to the database or not
      */
     async saveUser(user: User): Promise<boolean> {
       this.log.debug("Save user transaction started");
@@ -74,6 +75,29 @@ export default Service(
       }
       this.log.warn("Could not verify user");
       return false;
+    }
+
+    /**
+     * Update password for user with specified email.
+     * @param email The email of the user.
+     * @param password The new password to save in the database.
+     * @returns Whether or not the password could be updated in the database.
+     */
+     async updatePassword(email: string, password: string): Promise<boolean> {
+      this.log.debug("updatePassword transaction started");
+      const wasSuccessful = await this.userRepository.db.useTransaction<boolean>(
+        "transaction_user_passwordupdate",
+        async (t) => {
+          await this.userRepository.updatePassword(email, password, t);
+          return true;
+        },
+      ) ?? false;
+      if (wasSuccessful) {
+        this.log.success("Transaction successful, password updated");
+      } else {
+        this.log.error("Transaction failed, database rollback");
+      }
+      return wasSuccessful;
     }
   },
 );
