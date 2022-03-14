@@ -17,25 +17,60 @@ import UserService from "../service/UserService.ts";
 import LoggingService from "../service/LoggingService.ts";
 import Role from "../model/Role.ts";
 import { createJWT } from "../../shared/auth/jwt.ts";
+import ValidationService from "../service/ValidationService.ts";
 
 /**
  * User controller class.
  */
 @Controller("/user")
 export default class UserController extends IController {
-  static userService = UserService.instance();
+  private userService = UserService.instance();
+  private validationService = ValidationService.instance();
   private log = LoggingService.instance().logger;
 
   async post({ request, response }: Context) {
     this.log.debug("Request to: POST /user");
-    response.headers.append("Access-Control-Allow-Origin", "*");  
-    const user = await bodyMappingForm(request, User);
-    if (await UserController.userService.saveUser(user)) {
-      created(response, await createJWT(new SafeUser(undefined, user.email, user.username, user.firstName, user.lastName, new Role(2, "applicant"))));
-      this.log.success(`Successfully created user ${user.firstName} with email ${user.email}`);
+    response.headers.append("Access-Control-Allow-Origin", "*");
+    let user = await bodyMappingForm(request, User);
+    const validResult = this.validationService.validate(user, {
+      firstName: { type: "string", required: true },
+      lastName: { type: "string", required: true },
+      username: { type: "string", required: true },
+      socialSecurityNumber: { type: "number", required: true },
+      email: { type: "string", required: true },
+      password: { type: "string", required: true },
+    }, true);
+    if (!validResult.isValid) {
+      this.log.warn(`Failed to create user ${user.email} due to validation errors`, validResult.errors);
+      badRequest(response, validResult.errors.join("\n"));
+      return;
+    }
+    if (validResult.casted !== undefined) {
+      this.log.debug(`Successfully validated and casted user to`, JSON.stringify(validResult.casted));
+      user = validResult.casted as User;
+    }
+    if (await this.userService.saveUser(user)) {
+      created(
+        response,
+        await createJWT(
+          new SafeUser(
+            undefined,
+            user.email,
+            user.username,
+            user.firstName,
+            user.lastName,
+            new Role(2, "applicant"),
+          ),
+        ),
+      );
+      this.log.success(
+        `Successfully created user ${user.firstName} with email ${user.email}`,
+      );
     } else {
       badRequest(response, `User ${user.firstName} could not be created.`);
-      this.log.warn(`Failed to create user ${user.firstName} with email ${user.email}`);
+      this.log.warn(
+        `Failed to create user ${user.firstName} with email ${user.email}`,
+      );
     }
   }
 
@@ -51,15 +86,29 @@ export default class UserController extends IController {
   @Endpoint("GET", "/validate/:email/:password")
   async validation({ email, password }: Params, { response }: Context) {
     this.log.debug("Request to: GET /user/validate/ by " + email);
-    const verifiedUser = await UserController.userService.verifyUser(
+    const verifiedUser = await this.userService.verifyUser(
       email,
       password,
     );
     response.headers.append("Access-Control-Allow-Origin", "*");
     if (verifiedUser) {
       // We want to remove sensitive information before sending the user back to the client
-      ok(response, await createJWT(new SafeUser(verifiedUser.id, verifiedUser.email, verifiedUser.username, verifiedUser.firstName, verifiedUser.lastName, verifiedUser.role)));
-      this.log.success(`Successfully validated user ${email} and created JWT session`);
+      ok(
+        response,
+        await createJWT(
+          new SafeUser(
+            verifiedUser.id,
+            verifiedUser.email,
+            verifiedUser.username,
+            verifiedUser.firstName,
+            verifiedUser.lastName,
+            verifiedUser.role,
+          ),
+        ),
+      );
+      this.log.success(
+        `Successfully validated user ${email} and created JWT session`,
+      );
     } else {
       notFound(response);
       this.log.warn(`Failed to validate user ${email}`);
@@ -68,10 +117,10 @@ export default class UserController extends IController {
 
   //TODO: Change to POST request
   @Endpoint("GET", "/password/:email/:password")
-  async setPassword({ email, password }: Params, { response }: Context){
+  async setPassword({ email, password }: Params, { response }: Context) {
     this.log.debug("Request to: GET /user/password/ by " + email);
     response.headers.append("Access-Control-Allow-Origin", "*");
-    if (await UserController.userService.updatePassword(email, password)) {
+    if (await this.userService.updatePassword(email, password)) {
       ok(response, `Successfully updated password for user ${email}`);
       this.log.success(`Successfully updated password for user ${email}`);
     } else {

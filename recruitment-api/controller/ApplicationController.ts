@@ -13,12 +13,12 @@ import LoggingService from "../service/LoggingService.ts";
  */
 @Controller("/application")
 export default class ApplicationController extends IController {
-  static applicationService = ApplicationService.instance();
+  private applicationService = ApplicationService.instance();
   private log = LoggingService.instance().logger;
 
   async get({ response }: Context) {
     this.log.debug("Request to: GET /application");
-    const applications = await ApplicationController.applicationService.getAll();
+    const applications = await this.applicationService.getAll();
     if (applications) {
       this.log.success(`Successfully retrieved ${applications.length} applications`);
     } else {

@@ -25,21 +25,21 @@ export default function Signup({ user }: any) {
     passwordElm.value = hashedPassword;
     const data = new URLSearchParams();
     for (const pair of new FormData(document.getElementById('signup_form') as HTMLFormElement | undefined)){
-      data.append(pair[0], pair[1] as string);
+      data.append(pair[0], pair[1].valueOf().toString());
     }
     console.log(data);
     const res = await getAPI('user', {
       method: 'POST',
       body: data,
     });
-    const jwt = await res.text();
-    if(res.ok && jwt){
-      document.cookie = `JWT=${jwt}`;
+    const txt = await res.text();
+    if(res.ok && txt){
+      document.cookie = `JWT=${txt}`;
       window.location.href = "/";
     }
     else{
       passwordElm.value = "";
-      setError("Something went wrong, try again");
+      setError("Something went wrong, try again. " + txt);
     }
   };
 
