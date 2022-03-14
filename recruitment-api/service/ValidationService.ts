@@ -105,6 +105,13 @@ export default Service(
       }
     }
 
+	/**
+	 * Validates a single rule
+	 * @param data The data to validate
+	 * @param rule The rule to validate against
+	 * @param tryCast If true, try to cast the data to the rule type
+	 * @returns A ValidationResult
+	 */
     public validateRule(
       data: any,
       rule: ValidationRule,
@@ -222,6 +229,13 @@ export default Service(
       return { isValid: true, casted: wasCasted ? castedValue : undefined };
     }
 
+	/**
+	 * Validates an object against a schema
+	 * @param data The data to validate
+	 * @param schema The schema to validate against
+	 * @param tryCast If true, try to cast the data to the schema type
+	 * @returns A ValidationResult
+	 */
     public validate(
       data: Record<string, any>,
       schema: ValidationSchema,
