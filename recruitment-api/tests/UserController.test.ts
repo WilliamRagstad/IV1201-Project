@@ -11,7 +11,7 @@ import { getAPI } from "../../recruitment-app/lib/api.ts";
 Deno.test({
   name: "UserController Endpoint GET Validate test",
   async fn(){
-    const res = await getAPI(`user/validate/waxbrink@kth.se/f52fbd32b2b3b86ff88ef6c490628285f482af15ddcb29541f94bcf526a3f6c7`);
+    const res = await getAPI(`user/validate/waxbrink@kth.se/cc45188c02bc0e37f71f4586fdcbaf9c80b09f01ebc5934c84366ca01ddba45a`);
     assert(res.ok);
   },
   sanitizeOps: false,
