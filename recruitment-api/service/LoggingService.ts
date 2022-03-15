@@ -13,7 +13,7 @@ export default Service(
       this.logger = new Logger()
         .attach(new ConsoleSink())
         .attach(
-          new FileSink("./recruitment-api/logs/log.txt").fromRange(
+          new FileSink("./logs/log.txt").fromRange(
             // Log everything from the warning level and above to a file
             LoggingLevel.Warning,
           ),
