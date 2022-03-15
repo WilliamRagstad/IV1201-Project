@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from "react";
 import { useDeno } from "aleph/react";
 import DefaultPage from "~/components/defaultPage.tsx";
-import { hashPassword, Salt } from "../lib/passhash.ts";
+import { hashPassword } from "../lib/passhash.ts";
 import { getAPI } from "../lib/api.ts";
 export { ssr } from "~/lib/verification.ts";
 
@@ -26,9 +26,9 @@ export default function PasswordChange({ user }: { user: any }) {
       "password2",
     ) as HTMLInputElement;
     const password = password1Elm.value;
-    
+
     if (password == password2Elm.value) {
-      const hashedPassword = hashPassword(password + Salt);
+      const hashedPassword = hashPassword(password);
       const email: string = window.location.href.split("?")[1].split("=")[1];
       const res = await getAPI(
         `user/password/${email}/${hashedPassword}`,
