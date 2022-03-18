@@ -102,7 +102,7 @@ export default class UserRepository extends Repository<User> {
    * @param id The id of the user to find.
    * @returns The user with the given id.
    */
-  public async findById(id: number, transaction: Transaction): Promise<User | undefined> {
+  public async findById(id: string, transaction: Transaction): Promise<User | undefined> {
     const result = await this.query(
       "SELECT * FROM person WHERE person_id=" + id, transaction
     );
