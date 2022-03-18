@@ -31,5 +31,24 @@ export default Service(
       }
       return applications;
     }
+
+	/**
+	 * Retrieves an application by id
+	 * @param id Application id
+	 * @returns Application with the given id
+	 */
+	async getById(id: string): Promise<Application | undefined> {
+	  this.log.debug(`Get application transaction started for id: ${id}`);
+	  const application = await this.applicationRepository.db.useTransaction<Application>(
+		"transaction_application_by_id_get",
+		async (t) => await this.applicationRepository.findById(id, t),
+	  );
+	  if (application) {
+		this.log.debug(`Get application transaction finished for id: ${id}`);
+	  } else {
+		this.log.error(`Get application transaction failed for id: ${id}`);
+	  }
+	  return application;
+	}
   },
 );
