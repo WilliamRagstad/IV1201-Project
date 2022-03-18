@@ -53,10 +53,10 @@ export default abstract class Repository<TModel> {
    * Find a model object by its id.
    * @param id The id of the model object to find.
    */
-  findById?(id: number, transaction: Transaction): Promise<TModel | undefined>;
+  findById?(id: string, transaction: Transaction): Promise<TModel | undefined>;
   /**
    * Delete a model object from the database.
    * @param id The id of the model object to delete.
    */
-  delete?(id: number, transaction: Transaction): Promise<void> | void;
+  delete?(id: string, transaction: Transaction): Promise<void> | void;
 }
