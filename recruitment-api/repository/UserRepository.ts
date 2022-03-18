@@ -125,7 +125,7 @@ export default class UserRepository extends Repository<User> {
    * Delete a user by id.
    * @param id The id of the user to delete.
    */
-  public async delete(id: number, transaction: Transaction) {
+  public async delete(id: string, transaction: Transaction) {
     await this.query("DELETE FROM person WHERE person_id=" + id, transaction);
   }
 }
