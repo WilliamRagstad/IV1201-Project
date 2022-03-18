@@ -27,4 +27,16 @@ export default class ApplicationController extends IController {
     response.headers.set("Access-Control-Allow-Origin", "*");
     ok(response, applications);
   }
+
+  async getById(id: string, { response }: Context) {
+    this.log.debug(`Request to: GET /application/${id}`);
+    const application = await this.applicationService.getById(id);
+    if (application) {
+      this.log.success(`Successfully retrieved application ${id}`);
+    } else {
+      this.log.error(`Failed to retrieve application ${id}`);
+    }
+    response.headers.set("Access-Control-Allow-Origin", "*");
+    ok(response, application);
+  }
 }
