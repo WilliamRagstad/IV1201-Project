@@ -59,7 +59,7 @@ export default class RoleRepository extends Repository<Role> {
    * @param id The id of the user to find.
    * @returns The user with the given id.
    */
-  public async findById(id: number, transaction: Transaction): Promise<Role | undefined> {
+  public async findById(id: string, transaction: Transaction): Promise<Role | undefined> {
     const result = await this.query("SELECT * FROM role WHERE role_id=" + id, transaction);
     return result.length > 0 ? result[0] : undefined;
   }
