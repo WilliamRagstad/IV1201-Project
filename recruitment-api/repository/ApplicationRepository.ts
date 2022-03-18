@@ -110,4 +110,23 @@ export default class ApplicationRepository extends Repository<Application> {
       transaction,
     );
   }
+
+  /**
+   * Get an application by its id.
+   * @param id The id of the application.
+   * @returns The result of the query.
+   */
+  public async findById(id: string, transaction: Transaction): Promise<Application | undefined> {
+	 const results = await this.query(
+	  "SELECT person.person_id, person.email, person.password, person.name, person.surname, person.pnr, competence_profile.competence_id, competence_profile.years_of_experience, availability.from_date, availability.to_date " +
+		"FROM person " +
+		"INNER JOIN competence_profile " +
+		"ON person.person_id = competence_profile.person_id " +
+		"INNER JOIN availability " +
+		"ON person.person_id = availability.person_id " +
+		"WHERE person.person_id = " + id + ";",
+	  transaction
+	);
+	return results.length > 0 ? results[0] : undefined;
+  }
 }
